@@ -1,32 +1,27 @@
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Container from "@mui/material/Container";
-import Fab from "@mui/material/Fab";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import React, {
-    Dispatch,
-    FC,
-    MouseEventHandler,
-    SetStateAction,
-    useEffect,
-    useState,
-} from "react";
-import { useSort } from "../../hooks/useSort";
-import { IInvoice } from "../../interfaces/IInvoice";
-import { createData } from "../../scripts/createDate";
-import Cell from "./Cell";
-import Checkbox from "../CheckBox";
-import RemoveRow from "../RemoveRow";
 import ArrowDownwardSharpIcon from "@mui/icons-material/ArrowDownwardSharp";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { Box, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    Box,
+    Button,
+    Container,
+    Fab,
+    Paper,
+    Table,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from "@mui/material";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import React, { FC, MouseEventHandler, useEffect, useState } from "react";
+import { useSort } from "../../hooks/useSort";
+import { IInvoice } from "../../interfaces/IInvoice";
+import { useTypedDispatch } from "../../redux/hooks/hooks";
+import { createData } from "../../scripts/createDate";
 import Filter from "../Filter";
+import TableContent from "./TableContent";
 
 const makePointer = () => ({
     "&:hover": { cursor: "pointer" },
@@ -34,9 +29,10 @@ const makePointer = () => ({
 
 const BasicTable: FC<{
     invoices: IInvoice[];
-    action: Dispatch<SetStateAction<IInvoice[]>>;
+    action: ActionCreatorWithPayload<IInvoice[]>;
     clientType: string;
 }> = ({ invoices, action, clientType }) => {
+    const dispatch = useTypedDispatch();
     const [filtered, setFiltered] = useState<IInvoice[]>(invoices || []);
     const [sort, sortOrder] = useSort(action, filtered);
 
@@ -45,19 +41,11 @@ const BasicTable: FC<{
         | undefined;
 
     const addRow = () => {
-        const newPosition = createData("Дата", "Контрагент", 0, 0, false);
-        action((prev: IInvoice[]) => [...prev, newPosition]);
+        const newPosition = createData("№", "Дата", "Контрагент", 0, 0, false);
+        dispatch(action([...invoices, newPosition]));
     };
-    const deleteRows = () => {
-        action((invoices: IInvoice[]) =>
-            invoices.filter((invoice) => !invoice.checked)
-        );
-    };
-    const deleteRow = (index: number) => {
-        action((invoices: IInvoice[]) =>
-            invoices.filter((invoice, i) => i !== index)
-        );
-    };
+    const deleteRows = () =>
+        dispatch(action([...invoices].filter((invoice) => !invoice.checked)));
 
     useEffect(() => {
         setFiltered(invoices);
@@ -97,6 +85,13 @@ const BasicTable: FC<{
                                 onClick={typedSort}
                                 align="center"
                             >
+                                № п/п
+                            </TableCell>
+                            <TableCell
+                                sx={makePointer()}
+                                onClick={typedSort}
+                                align="center"
+                            >
                                 Дата
                             </TableCell>
                             <TableCell
@@ -116,58 +111,12 @@ const BasicTable: FC<{
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {filtered.map((invoice: IInvoice, index: number) => (
-                            <TableRow key={index}>
-                                <Checkbox
-                                    index={index}
-                                    action={action}
-                                    isChecked={invoice.checked}
-                                />
-                                <Cell
-                                    action={action}
-                                    name="Дата"
-                                    index={index}
-                                    prop="date"
-                                    type="date"
-                                    disabled={false}
-                                >
-                                    {invoice.date}
-                                </Cell>
-                                <Cell
-                                    action={action}
-                                    name={clientType}
-                                    index={index}
-                                    prop="client"
-                                    type=""
-                                    disabled={false}
-                                >
-                                    {invoice.client}
-                                </Cell>
-                                <Cell
-                                    action={action}
-                                    name="в т.ч. НДС"
-                                    index={index}
-                                    prop="nds"
-                                    type="number"
-                                    disabled={true}
-                                >
-                                    {invoice.nds}
-                                </Cell>
-                                <Cell
-                                    action={action}
-                                    name="Сумма"
-                                    index={index}
-                                    prop="summ"
-                                    type="number"
-                                    disabled={false}
-                                >
-                                    {invoice.summ}
-                                </Cell>
-                                <RemoveRow action={deleteRow} index={index} />
-                            </TableRow>
-                        ))}
-                    </TableBody>
+                    <TableContent
+                        invoices={invoices}
+                        filtered={filtered}
+                        action={action}
+                        clientType={clientType}
+                    />
                 </Table>
                 <Container
                     sx={{

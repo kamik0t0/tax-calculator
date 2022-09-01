@@ -17,7 +17,7 @@ export const useFilter = (
     const [column, setColumn] = useFilterColumn();
     const [summCriterion, setSummCriterion] = useSummFilter();
 
-    function filterList(event: ChangeEvent<HTMLInputElement>): void {
+    const filterList = (event: ChangeEvent<HTMLInputElement>): void => {
         switch (column) {
             case "summ":
                 setInvoices(filterBySumm(event, invoices, summCriterion));
@@ -27,7 +27,7 @@ export const useFilter = (
                 setInvoices(filterByColumn(event, invoices, column));
                 break;
         }
-    }
+    };
 
     return { column, setColumn, summCriterion, setSummCriterion, filterList };
 };

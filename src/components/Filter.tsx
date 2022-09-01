@@ -12,8 +12,8 @@ import React, {
     useEffect,
     useState,
 } from "react";
-import { IInvoice } from "../interfaces/IInvoice";
 import { useFilter } from "../hooks/useFilter";
+import { IInvoice } from "../interfaces/IInvoice";
 
 type FilterTyped = {
     invoices: IInvoice[];
@@ -28,21 +28,16 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
         useState<boolean>(false);
     const [inputType, setInputType] = useState("string");
     // изменить стейт колонки фильтрации
-    const handleChangeColumn = (event: SelectChangeEvent<typeof column>) => {
+    const handleChangeColumn = (event: SelectChangeEvent<typeof column>) =>
         setColumn(event.target.value);
-    };
     // изменить стейт колонки фильтрации
-    const handleChangeCriterion = (event: SelectChangeEvent<typeof column>) => {
+    const handleChangeCriterion = (event: SelectChangeEvent<typeof column>) =>
         setSummCriterion(event.target.value);
-    };
     // раскарыть/закрыть фильтр колонок
-    const handleSelectColumn = () => {
-        setSelectColumn(!selectColumn);
-    };
+    const handleSelectColumn = () => setSelectColumn(!selectColumn);
     // раскарыть/закрыть фильтр суммы
-    const handleSelectSummCriterion = () => {
+    const handleSelectSummCriterion = () =>
         setSelectSummCriterion(!selectSummCriterion);
-    };
     // Переключение типа поля фильтрации - текстовое или цифровое
     useEffect(() => {
         if (column === "summ") setInputType("number");

@@ -1,17 +1,22 @@
 import { Checkbox } from "@mui/material";
-import React, { Dispatch, FC, SetStateAction } from "react";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import React, { FC } from "react";
 import { IInvoice } from "../interfaces/IInvoice";
+import { useTypedDispatch } from "../redux/hooks/hooks";
 
 const CheckBox: FC<{
     index: number;
-    action: Dispatch<SetStateAction<IInvoice[]>>;
+    action: ActionCreatorWithPayload<IInvoice[]>;
+    invoices: IInvoice[];
     isChecked: boolean;
-}> = ({ index, action, isChecked }) => {
+}> = ({ index, action, invoices, isChecked }) => {
+    const dispatch = useTypedDispatch();
     const handleChange = () => {
-        action((prev: IInvoice[]) => {
-            prev[index].checked = !prev[index].checked;
-            return [...prev];
-        });
+        const InvoicesToDispatch = [...invoices].map((invoice: IInvoice) =>
+            Object.assign({}, invoice)
+        );
+        InvoicesToDispatch[index].checked = !InvoicesToDispatch[index].checked;
+        dispatch(action(InvoicesToDispatch));
     };
 
     return (

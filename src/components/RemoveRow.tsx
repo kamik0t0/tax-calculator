@@ -6,9 +6,7 @@ const RemoveRow: FC<{ action: (index: number) => void; index: number }> = ({
     action,
     index,
 }) => {
-    const deleteRow = () => {
-        action(index);
-    };
+    const deleteRow = () => action(index);
     return (
         <IconButton
             sx={{ marginTop: 1 }}

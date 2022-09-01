@@ -1,39 +1,38 @@
-import TableCell from "@mui/material/TableCell";
-import TextField from "@mui/material/TextField";
-import React, { Dispatch, FC, SetStateAction, useState } from "react";
+import { TableCell, TextField } from "@mui/material";
+import React, { FC, useState } from "react";
 import { toRU } from "../../helpers/currencyFormat";
 import { IInvoice } from "../../interfaces/IInvoice";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { useTypedDispatch } from "../../redux/hooks/hooks";
+import { calculateInvoiceNDS } from "../../scripts/calculateInvoiceNDS";
 
 const Cell: FC<{
+    invoices: IInvoice[];
     children: string | number;
     name: string;
-    action: Dispatch<SetStateAction<IInvoice[]>>;
+    action: ActionCreatorWithPayload<IInvoice[]>;
     index: number;
     prop: string;
     type: string;
     disabled: boolean;
-}> = ({ children, name, action, index, prop, type, disabled }) => {
+}> = ({ invoices, children, name, action, index, prop, type, disabled }) => {
+    const dispatch = useTypedDispatch();
     const [inputToggle, setInputToggle] = useState<boolean>(false);
 
-    const switchInput = () => {
-        setInputToggle((prev) => !prev);
-    };
+    const switchInput = () => setInputToggle((prev) => !prev);
 
-    const getValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const getValue = (event: React.ChangeEvent<HTMLInputElement>) =>
         setValue(event.target.value);
+
+    const setValue = (value: string) => {
+        const InvoicesToDispatch = calculateInvoiceNDS(
+            invoices,
+            index,
+            value,
+            prop
+        );
+        dispatch(action(InvoicesToDispatch));
     };
-
-    function setValue(value: string) {
-        action((prev: IInvoice[]) => {
-            if (prop === "summ") {
-                prev[index][prop] = +value;
-                prev[index].nds = +((+value * 20) / 120).toFixed(2);
-            }
-            prev[index][prop] = value;
-
-            return [...prev];
-        });
-    }
 
     const keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.code === "Enter" || event.code === "NumpadEnter") {

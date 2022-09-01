@@ -7,5 +7,13 @@ export interface ISummary {
         summ: number;
         nds: number;
     };
+    advPayIssued: {
+        summ: number;
+        nds: number;
+    };
+    advPayRecieved: {
+        summ: number;
+        nds: number;
+    };
     nds: number;
 }

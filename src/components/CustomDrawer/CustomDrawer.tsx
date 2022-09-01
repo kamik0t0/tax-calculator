@@ -1,35 +1,31 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
+import {
+    Box,
+    Divider,
+    Drawer,
+    IconButton,
+    List,
+    ListItemButton,
+    Toolbar,
+    Typography,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
 import LinkRouter from "../../routers/LinkRouter";
 import { drawerWidth } from "../../utils/drawerWidth";
-import { sideBarLinks } from "../../utils/Links";
+import { appBarLinks, sideBarLinks } from "../../utils/Links";
 import { AppBar } from "./AppBar";
 import DrawerHeader from "./DrawerHeader";
 import { Main } from "./Main";
-import { appBarLinks } from "../../utils/Links";
 
 export default function CustomDrawer() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const handleDrawerOpen = () => setOpen(true);
+    const handleDrawerClose = () => setOpen(false);
 
     return (
         <Box sx={{ display: "flex" }}>

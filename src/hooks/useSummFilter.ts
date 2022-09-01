@@ -6,8 +6,8 @@ export const useSummFilter = (
     const [summCriterion, setSummCriterionState] =
         useState<string>(initialSummCriterion);
 
-    const setSummCriterion = (value: React.SetStateAction<string>) => {
+    const setSummCriterion = (value: React.SetStateAction<string>) =>
         setSummCriterionState(value);
-    };
+
     return [summCriterion, setSummCriterion];
 };

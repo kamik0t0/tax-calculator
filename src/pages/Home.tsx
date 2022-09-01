@@ -1,9 +1,9 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import React, { FC } from "react";
 
 const Home: FC = () => {
     return (
-        <Container>
+        <Container maxWidth="xl">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum totam
             labore repudiandae. Cumque quis aliquid recusandae saepe vel natus,
             expedita maiores ad illum minus, quo optio, ipsum doloremque

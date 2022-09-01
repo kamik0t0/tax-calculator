@@ -13,17 +13,16 @@ const Summary: FC<{
             sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                marginTop: 1,
                 marginLeft: 2,
-                justifyContent: "flex-end",
             }}
         >
-            <Paper elevation={0} sx={{ height: 50, width }}>
+            <Paper elevation={0} sx={{ height: 30, width }}>
                 <CardContent
                     sx={{
                         display: "flex",
                         justifyContent: "space-around",
                         alignItems: "center",
+                        padding: 0.2,
                     }}
                 >
                     <Typography variant="body1">{text}</Typography>

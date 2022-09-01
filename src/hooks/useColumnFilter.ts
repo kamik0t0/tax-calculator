@@ -5,8 +5,8 @@ export const useFilterColumn = (
 ): [string, (value: string) => void] => {
     const [column, setColumnState] = useState<string>(initialColumn);
 
-    const setColumn = (value: React.SetStateAction<string>) => {
+    const setColumn = (value: React.SetStateAction<string>) =>
         setColumnState(value);
-    };
+
     return [column, setColumn];
 };
