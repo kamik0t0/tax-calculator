@@ -1,107 +1,62 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IInvoice, IInvoices } from "../../interfaces/IInvoice";
+import {
+    createSlice,
+    PayloadAction,
+    SliceCaseReducers,
+    ValidateSliceCaseReducers,
+} from "@reduxjs/toolkit";
+import { IInvoices } from "../../interfaces/IInvoice";
+import { calcSummary as calculateSummary } from "../scripts/invoiceCalculations";
+import * as Reducers from "./invoice-cases";
+import { initialState } from "./invoice-initial";
 
-const initialState: IInvoices = {
-    sales: [],
-    purches: [],
-    advPayIssued: [],
-    advPayRecieved: [],
-    summary: {
-        purches: {
-            summ: 0,
-            nds: 0,
+const createGenericSlice = <Reducers extends SliceCaseReducers<IInvoices>>({
+    name = "invoices",
+    initialState,
+    reducers,
+}: {
+    name: string;
+    initialState: IInvoices;
+    reducers: ValidateSliceCaseReducers<IInvoices, Reducers>;
+}) => {
+    return createSlice({
+        name,
+        initialState,
+        reducers: {
+            addRow: Reducers.addRowReducer(),
+            deleteRow: Reducers.deleteRowReducer(),
+            setCheckBox: Reducers.setCheckBoxReducer(),
+            updateInvoices: Reducers.updateInvoicesReducer(),
+            updateInvoice: Reducers.updateInvoiceReducer(),
+            deleteRows: Reducers.deleteRowsReducer,
+            ...reducers,
         },
-        sales: {
-            summ: 0,
-            nds: 0,
-        },
-        advPayIssued: {
-            summ: 0,
-            nds: 0,
-        },
-        advPayRecieved: {
-            summ: 0,
-            nds: 0,
-        },
-        nds: 0,
-    },
+    });
 };
 
-const invoiceSlice = createSlice({
-    name: "invoice",
+const wrappedSlice = createGenericSlice({
+    name: "test",
     initialState,
     reducers: {
-        setSales(state, action: PayloadAction<IInvoice[]>) {
-            state.sales = action.payload;
-            state.summary.sales.summ = action.payload.reduce(
-                (sale, current) => sale + +current.summ,
-                0
-            );
-            state.summary.sales.nds = action.payload.reduce(
-                (sale, current) => sale + +current.nds,
-                0
-            );
-            state.summary.nds =
-                state.summary.sales.nds +
-                state.summary.advPayRecieved.nds -
-                state.summary.purches.nds -
-                state.summary.advPayIssued.nds;
-            if (state.summary.nds < 0) state.summary.nds = 0;
+        setLocalStorage(state: IInvoices, action: PayloadAction<string>) {
+            const { payload: table } = action;
+            localStorage.setItem(table, JSON.stringify(state[table]));
         },
-        setPurches(state, action: PayloadAction<IInvoice[]>) {
-            state.purches = action.payload;
-            state.summary.purches.summ = action.payload.reduce(
-                (purchase, current) => purchase + +current.summ,
-                0
-            );
-            state.summary.purches.nds = action.payload.reduce(
-                (purchase, current) => purchase + +current.nds,
-                0
-            );
-            state.summary.nds =
-                state.summary.sales.nds +
-                state.summary.advPayRecieved.nds -
-                state.summary.purches.nds -
-                state.summary.advPayIssued.nds;
-            if (state.summary.nds < 0) state.summary.nds = 0;
-        },
-        setAdvPayRecieved(state, action: PayloadAction<IInvoice[]>) {
-            state.advPayRecieved = action.payload;
-            state.summary.advPayRecieved.summ = action.payload.reduce(
-                (purchase, current) => purchase + +current.summ,
-                0
-            );
-            state.summary.advPayRecieved.nds = action.payload.reduce(
-                (purchase, current) => purchase + +current.nds,
-                0
-            );
-            state.summary.nds =
-                state.summary.sales.nds +
-                state.summary.advPayRecieved.nds -
-                state.summary.purches.nds -
-                state.summary.advPayIssued.nds;
-            if (state.summary.nds < 0) state.summary.nds = 0;
-        },
-        setAdvPayIssued(state, action: PayloadAction<IInvoice[]>) {
-            state.advPayIssued = action.payload;
-            state.summary.advPayIssued.summ = action.payload.reduce(
-                (purchase, current) => purchase + +current.summ,
-                0
-            );
-            state.summary.advPayIssued.nds = action.payload.reduce(
-                (purchase, current) => purchase + +current.nds,
-                0
-            );
-            state.summary.nds =
-                state.summary.sales.nds +
-                state.summary.advPayRecieved.nds -
-                state.summary.purches.nds -
-                state.summary.advPayIssued.nds;
-            if (state.summary.nds < 0) state.summary.nds = 0;
+        calcSummary(state: IInvoices, action: PayloadAction<string>) {
+            const { payload: table } = action;
+            calculateSummary(state, state.summary[table], state[table]);
         },
     },
 });
 
-export const { setSales, setPurches, setAdvPayRecieved, setAdvPayIssued } =
-    invoiceSlice.actions;
-export default invoiceSlice.reducer;
+export const {
+    addRow,
+    deleteRow,
+    updateInvoices,
+    setCheckBox,
+    updateInvoice,
+    deleteRows,
+    setLocalStorage,
+    calcSummary,
+} = wrappedSlice.actions;
+
+export const { reducer } = wrappedSlice;

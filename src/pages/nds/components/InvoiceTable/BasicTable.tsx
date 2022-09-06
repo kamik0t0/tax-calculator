@@ -14,13 +14,13 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useSort } from "../../hooks/useSort";
-import { IInvoice } from "../../interfaces/IInvoice";
-import { useTypedDispatch } from "../../redux/hooks/hooks";
-import { createData } from "../../scripts/createDate";
-import Filter from "../Filter";
+import { IInvoice } from "../../../../interfaces/IInvoice";
+import { useTypedDispatch } from "../../../../redux/hooks/hooks";
+import { newInvoice } from "../../../../scripts/createData";
+import { addRow, deleteRows } from "../../../../redux/reducers/invoice-reducer";
+import Filter from "../Filter/Filter";
 import TableContent from "./TableContent";
 
 const makePointer = () => ({
@@ -29,23 +29,19 @@ const makePointer = () => ({
 
 const BasicTable: FC<{
     invoices: IInvoice[];
-    action: ActionCreatorWithPayload<IInvoice[]>;
     clientType: string;
-}> = ({ invoices, action, clientType }) => {
+    table: string;
+}> = ({ invoices, clientType, table }) => {
     const dispatch = useTypedDispatch();
     const [filtered, setFiltered] = useState<IInvoice[]>(invoices || []);
-    const [sort, sortOrder] = useSort(action, filtered);
+    const [sort, sortOrder] = useSort(table, filtered);
+
+    const createInvoice = () => dispatch(addRow(newInvoice, table));
+    const deleteInvoices = () => dispatch(deleteRows(table));
 
     const typedSort = sort as unknown as
         | MouseEventHandler<HTMLTableCellElement>
         | undefined;
-
-    const addRow = () => {
-        const newPosition = createData("№", "Дата", "Контрагент", 0, 0, false);
-        dispatch(action([...invoices, newPosition]));
-    };
-    const deleteRows = () =>
-        dispatch(action([...invoices].filter((invoice) => !invoice.checked)));
 
     useEffect(() => {
         setFiltered(invoices);
@@ -114,7 +110,7 @@ const BasicTable: FC<{
                     <TableContent
                         invoices={invoices}
                         filtered={filtered}
-                        action={action}
+                        table={table}
                         clientType={clientType}
                     />
                 </Table>
@@ -126,7 +122,7 @@ const BasicTable: FC<{
                     }}
                 >
                     <Fab
-                        onClick={addRow}
+                        onClick={createInvoice}
                         color="secondary"
                         aria-label="add"
                         size="small"
@@ -134,7 +130,7 @@ const BasicTable: FC<{
                         <AddIcon />
                     </Fab>
                     <Button
-                        onClick={deleteRows}
+                        onClick={deleteInvoices}
                         variant="outlined"
                         startIcon={<DeleteIcon />}
                     >

@@ -1,30 +1,43 @@
-import { IInvoice } from "../interfaces/IInvoice";
+import { IPropSignature } from "../interfaces/IPropSignature";
 
 // сортировки по:
 // - дате
-export function sortByDate(
-    invoices: IInvoice[],
-    sortOrder: boolean
-): IInvoice[] {
+export function sortByDate<T extends IPropSignature>(
+    items: T[],
+    sortOrder: boolean,
+    prop: string
+): T[] {
     return sortOrder
-        ? invoices.sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
-        : invoices.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+        ? items.sort(
+              (a, b) =>
+                  Date.parse(a[prop] as string) - Date.parse(b[prop] as string)
+          )
+        : items.sort(
+              (a, b) =>
+                  Date.parse(b[prop] as string) - Date.parse(a[prop] as string)
+          );
 }
 // - контрагенту
-export function sortByCounterparty(
-    invoices: IInvoice[],
-    sortOrder: boolean
-): IInvoice[] {
+export function sortByString<T extends IPropSignature>(
+    items: T[],
+    sortOrder: boolean,
+    prop: string
+): T[] {
     return sortOrder
-        ? invoices.sort((a, b) => a.client.localeCompare(b.client))
-        : invoices.sort((a, b) => b.client.localeCompare(a.client));
+        ? items.sort((a, b) =>
+              a[prop].toString().localeCompare(b[prop].toString())
+          )
+        : items.sort((a, b) =>
+              b[prop].toString().localeCompare(a[prop].toString())
+          );
 }
 // - сумме
-export function sortBySumm(
-    invoices: IInvoice[],
-    sortOrder: boolean
-): IInvoice[] {
+export function sortByNumber<T extends IPropSignature>(
+    items: T[],
+    sortOrder: boolean,
+    prop: string
+): T[] {
     return sortOrder
-        ? invoices.sort((a, b) => +a.summ - +b.summ)
-        : invoices.sort((a, b) => +b.summ - +a.summ);
+        ? items.sort((a, b) => +a[prop] - +b[prop])
+        : items.sort((a, b) => +b[prop] - +a[prop]);
 }

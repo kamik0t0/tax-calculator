@@ -6,7 +6,6 @@ export const calculateInvoiceNDS = (
     value: string,
     prop: string
 ): IInvoice[] => {
-    [...invoices];
     const InvoicesToDispatch = [...invoices].map((invoice: IInvoice) =>
         Object.assign({}, invoice)
     );

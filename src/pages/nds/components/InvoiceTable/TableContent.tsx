@@ -1,23 +1,21 @@
 import { TableBody, TableRow } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { FC } from "react";
-import { IInvoice } from "../../interfaces/IInvoice";
-import { useTypedDispatch } from "../../redux/hooks/hooks";
-import RemoveRow from "../RemoveRow";
+import { IInvoice } from "../../../../interfaces/IInvoice";
+import { useTypedDispatch } from "../../../../redux/hooks/hooks";
+import { deleteRow as deleteTableRow } from "../../../../redux/reducers/invoice-reducer";
 import Cell from "./Cell";
-import CheckBox from "../CheckBox";
+import CheckBox from "./CheckBox";
+import RemoveRow from "./RemoveRow";
 
 const TableContent: FC<{
     invoices: IInvoice[];
     filtered: IInvoice[];
-    action: ActionCreatorWithPayload<IInvoice[]>;
+    table: string;
     clientType: string;
-}> = ({ invoices, filtered, action, clientType }) => {
+}> = ({ invoices, filtered, table, clientType }) => {
     const dispatch = useTypedDispatch();
 
-    const deleteRow = (index: number) =>
-        dispatch(action([...invoices].filter((invoice, i) => i !== index)));
-
+    const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
     return (
         <>
             <TableBody>
@@ -25,13 +23,12 @@ const TableContent: FC<{
                     <TableRow key={index}>
                         <CheckBox
                             index={index}
-                            action={action}
-                            invoices={invoices}
+                            table={table}
                             isChecked={invoice.checked}
                         />
                         <Cell
                             invoices={invoices}
-                            action={action}
+                            table={table}
                             name="Номер"
                             index={index}
                             prop="number"
@@ -42,7 +39,7 @@ const TableContent: FC<{
                         </Cell>
                         <Cell
                             invoices={invoices}
-                            action={action}
+                            table={table}
                             name="Дата"
                             index={index}
                             prop="date"
@@ -53,7 +50,7 @@ const TableContent: FC<{
                         </Cell>
                         <Cell
                             invoices={invoices}
-                            action={action}
+                            table={table}
                             name={clientType}
                             index={index}
                             prop="client"
@@ -64,7 +61,7 @@ const TableContent: FC<{
                         </Cell>
                         <Cell
                             invoices={invoices}
-                            action={action}
+                            table={table}
                             name="в т.ч. НДС"
                             index={index}
                             prop="nds"
@@ -75,7 +72,7 @@ const TableContent: FC<{
                         </Cell>
                         <Cell
                             invoices={invoices}
-                            action={action}
+                            table={table}
                             name="Сумма"
                             index={index}
                             prop="summ"

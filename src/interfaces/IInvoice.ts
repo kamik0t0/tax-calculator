@@ -13,7 +13,8 @@ export interface IInvoice {
 export interface IInvoices {
     sales: IInvoice[];
     purches: IInvoice[];
-    advPayIssued: IInvoice[];
-    advPayRecieved: IInvoice[];
+    issued: IInvoice[];
+    recieved: IInvoice[];
     summary: ISummary;
+    [prop: string]: any;
 }

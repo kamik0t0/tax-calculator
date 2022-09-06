@@ -1,6 +1,6 @@
 import { Box, CardContent, Paper, Typography } from "@mui/material";
 import React, { FC } from "react";
-import { toRU } from "../../helpers/currencyFormat";
+import { toRU } from "../../../../helpers/currencyFormat";
 
 const Summary: FC<{
     children: number;

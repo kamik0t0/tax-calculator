@@ -1,19 +1,17 @@
 import { Box, Container, Divider, Stack } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import React, { FC } from "react";
-import { IInvoice } from "../../interfaces/IInvoice";
-import Summary from "./Summary";
+import { IInvoice } from "../../../../interfaces/IInvoice";
 import BasicTable from "./BasicTable";
+import Summary from "./Summary";
 
 const Invoices: FC<{
     textInfo1: string;
     textInfo2: string;
     invoices: IInvoice[];
-    action: ActionCreatorWithPayload<IInvoice[]>;
     clientType: string;
     summ: number;
     nds: number;
-}> = ({ textInfo1, textInfo2, invoices, action, clientType, summ, nds }) => {
+}> = ({ textInfo1, textInfo2, invoices, clientType, summ, nds }) => {
     return (
         <Container maxWidth="xl">
             <Box sx={{ display: "flex" }}>
@@ -23,17 +21,13 @@ const Invoices: FC<{
                         direction="row"
                     >
                         <Summary
-                            text={textInfo1}
+                            text={textInfo2}
                             width={280}
                             textVariant="body1"
                         >
                             {summ}
                         </Summary>
-                        <Summary
-                            text={textInfo2}
-                            width={260}
-                            textVariant="body1"
-                        >
+                        <Summary text="НДС" width={260} textVariant="body1">
                             {nds}
                         </Summary>
                     </Stack>
@@ -44,8 +38,8 @@ const Invoices: FC<{
                 <Box sx={{ width: 1 }}>
                     <BasicTable
                         invoices={invoices}
-                        action={action}
                         clientType={clientType}
+                        table={textInfo1}
                     ></BasicTable>
                 </Box>
             </Stack>

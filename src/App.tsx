@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-// import NDS from "./components/NDS";
-import CustomDrawer from "./components/CustomDrawer/CustomDrawer";
+import CustomDrawer from "./nav/CustomDrawer";
 import { CustomContext } from "./hooks/customContext";
 import { ISummary } from "./interfaces/ISummary";
 import AppRouter from "./routers/AppRouter";

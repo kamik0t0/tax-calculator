@@ -1,6 +1,6 @@
 import { IInvoice } from "../interfaces/IInvoice";
 
-export function createData(
+function createData(
     number: string,
     date: string,
     client: string,
@@ -10,3 +10,12 @@ export function createData(
 ): IInvoice {
     return { number, date, client, nds, summ, checked };
 }
+
+export const newInvoice = createData(
+    "№",
+    new Date().toLocaleDateString(),
+    "Контрагент",
+    0,
+    0,
+    false
+);

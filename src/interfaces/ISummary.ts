@@ -1,19 +1,13 @@
-export interface ISummary {
-    purches: {
-        summ: number;
-        nds: number;
-    };
-    sales: {
-        summ: number;
-        nds: number;
-    };
-    advPayIssued: {
-        summ: number;
-        nds: number;
-    };
-    advPayRecieved: {
-        summ: number;
-        nds: number;
-    };
+type total = {
+    summ: number;
     nds: number;
+};
+
+export interface ISummary {
+    purches: total;
+    sales: total;
+    issued: total;
+    recieved: total;
+    nds: number;
+    [prop: string]: any;
 }
