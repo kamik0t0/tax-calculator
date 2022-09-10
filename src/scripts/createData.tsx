@@ -1,4 +1,4 @@
-import { IInvoice } from "../interfaces/IInvoice";
+import { IInvoice } from "../pages/nds/interfaces/IInvoice";
 
 function createData(
     number: string,

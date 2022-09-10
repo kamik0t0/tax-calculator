@@ -22,3 +22,10 @@ export enum SortFields {
     summ = "summ",
     date = "date",
 }
+
+export enum HeaderNames {
+    number = "№",
+    date = "Дата",
+    nds = "в т.ч. НДС",
+    summ = "Сумма",
+}

@@ -1,58 +1,66 @@
-import { Box, Tab, Tabs } from "@mui/material";
-import React, { FC } from "react";
+import { Box } from "@mui/material";
+import React, { FC, useState } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useTypedSelector } from "../../redux/hooks/hooks";
+import TabPanel from "../../shared/TabPanel";
 import Invoices from "./components/InvoiceTable/Invoices";
-import Summary from "./components/InvoiceTable/Summary";
-import TabPanel from "./components/InvoiceTable/TabPanel";
-import { a11yProps } from "./utils/a11yProps";
+import Tabs from "./components/InvoiceTable/Tabs";
+import TotalSummary from "./components/InvoiceTable/TotalSummary";
 import { ClyentTypes, Tables, TabsTables } from "./utils/enums";
+import {
+    updateInvoices,
+    calcSummary,
+    setLocalStorage,
+} from "../../redux/reducers/invoices/invoice-reducer";
 
 const Nds: FC = () => {
-    const { summary } = useTypedSelector((state) => state.invoiceSlice);
-    const sales = useLocalStorage(Tables.Sale);
-    const purches = useLocalStorage(Tables.Purchase);
-    const recieved = useLocalStorage(Tables.Received);
-    const issued = useLocalStorage(Tables.Issued);
-    const [value, setValue] = React.useState(0);
+    const { summary, sales, purches, recieved, issued } = useTypedSelector(
+        (state) => state.invoiceSlice
+    );
+    const watchedSales = useLocalStorage(
+        Tables.Sale,
+        sales,
+        updateInvoices,
+        calcSummary,
+        setLocalStorage
+    );
+    const watchedPurches = useLocalStorage(
+        Tables.Purchase,
+        purches,
+        updateInvoices,
+        calcSummary,
+        setLocalStorage
+    );
+    const watchedRecieved = useLocalStorage(
+        Tables.Received,
+        recieved,
+        updateInvoices,
+        calcSummary,
+        setLocalStorage
+    );
+    const watchedIssued = useLocalStorage(
+        Tables.Issued,
+        issued,
+        updateInvoices,
+        calcSummary,
+        setLocalStorage
+    );
+
+    const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
-
     return (
         <>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                    centered={true}
-                    sx={{ height: 50 }}
-                >
-                    <Tab label={TabsTables.Sale} {...a11yProps(0)} />
-                    <Tab label={TabsTables.Purchase} {...a11yProps(1)} />
-                    <Tab label={TabsTables.Received} {...a11yProps(2)} />
-                    <Tab label={TabsTables.Issued} {...a11yProps(3)} />
-                </Tabs>
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-around",
-                        mb: 3,
-                        mt: 3,
-                    }}
-                >
-                    <Summary text="НДС к уплате: " width={300} textVariant="h6">
-                        {summary.nds}
-                    </Summary>
-                </Box>
+                <Tabs value={value} handleChange={handleChange} />
+                <TotalSummary nds={summary.nds} />
             </Box>
             <TabPanel value={value} index={0}>
                 <Invoices
                     textInfo1={Tables.Sale}
                     textInfo2={TabsTables.Sale}
-                    invoices={sales}
+                    invoices={watchedSales}
                     clientType={ClyentTypes.Buyer}
                     summ={summary.sales.summ}
                     nds={summary.sales.nds}
@@ -62,7 +70,7 @@ const Nds: FC = () => {
                 <Invoices
                     textInfo1={Tables.Purchase}
                     textInfo2={TabsTables.Purchase}
-                    invoices={purches}
+                    invoices={watchedPurches}
                     clientType={ClyentTypes.Seller}
                     summ={summary.purches.summ}
                     nds={summary.purches.nds}
@@ -72,7 +80,7 @@ const Nds: FC = () => {
                 <Invoices
                     textInfo1={Tables.Received}
                     textInfo2={TabsTables.Received}
-                    invoices={recieved}
+                    invoices={watchedRecieved}
                     clientType={ClyentTypes.Buyer}
                     summ={summary.recieved.summ}
                     nds={summary.recieved.nds}
@@ -82,7 +90,7 @@ const Nds: FC = () => {
                 <Invoices
                     textInfo1={Tables.Issued}
                     textInfo2={TabsTables.Issued}
-                    invoices={issued}
+                    invoices={watchedIssued}
                     clientType={ClyentTypes.Seller}
                     summ={summary.issued.summ}
                     nds={summary.issued.nds}

@@ -1,3 +1,3 @@
 export interface IPropSignature {
-    [prop: string]: string | number | boolean;
+    [prop: string]: any;
 }

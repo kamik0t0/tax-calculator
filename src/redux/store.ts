@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { reducer as invoiceSlice } from "./reducers/invoice-reducer";
+import { reducer as invoiceSlice } from "./reducers/invoices/invoice-reducer";
+import { reducer as salarySlice } from "./reducers/salary/salary-reducer";
 
 const store = configureStore({
     reducer: {
         invoiceSlice: invoiceSlice,
+        salarySlice: salarySlice,
     },
 });
 

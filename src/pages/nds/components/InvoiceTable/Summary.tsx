@@ -7,11 +7,14 @@ const Summary: FC<{
     text: string;
     width: number;
     textVariant: any;
-}> = ({ children, text, width, textVariant }) => {
+    direction?: string;
+}> = ({ children, text, width, textVariant, direction }) => {
+    const flexDirection = direction ? direction : "row";
     return (
         <Box
             sx={{
                 display: "flex",
+                justifyContent: "center",
                 flexWrap: "wrap",
                 marginLeft: 2,
             }}
@@ -21,6 +24,7 @@ const Summary: FC<{
                     sx={{
                         display: "flex",
                         justifyContent: "space-around",
+                        flexDirection: { flexDirection },
                         alignItems: "center",
                         padding: 0.2,
                     }}

@@ -1,11 +1,13 @@
-import { TableBody, TableRow } from "@mui/material";
+import { Checkbox, TableBody, TableRow } from "@mui/material";
 import React, { FC } from "react";
-import { IInvoice } from "../../../../interfaces/IInvoice";
+import { IInvoice } from "../../interfaces/IInvoice";
 import { useTypedDispatch } from "../../../../redux/hooks/hooks";
-import { deleteRow as deleteTableRow } from "../../../../redux/reducers/invoice-reducer";
+import {
+    deleteRow as deleteTableRow,
+    setCheckBox,
+} from "../../../../redux/reducers/invoices/invoice-reducer";
 import Cell from "./Cell";
-import CheckBox from "./CheckBox";
-import RemoveRow from "./RemoveRow";
+import RemoveRow from "../../../../shared/RemoveRow";
 
 const TableContent: FC<{
     invoices: IInvoice[];
@@ -14,17 +16,16 @@ const TableContent: FC<{
     clientType: string;
 }> = ({ invoices, filtered, table, clientType }) => {
     const dispatch = useTypedDispatch();
-
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
     return (
         <>
             <TableBody>
                 {filtered.map((invoice: IInvoice, index: number) => (
                     <TableRow key={index}>
-                        <CheckBox
-                            index={index}
-                            table={table}
-                            isChecked={invoice.checked}
+                        <Checkbox
+                            checked={invoice.checked}
+                            onChange={() => dispatch(setCheckBox(index, table))}
+                            sx={{ marginTop: 1 }}
                         />
                         <Cell
                             invoices={invoices}

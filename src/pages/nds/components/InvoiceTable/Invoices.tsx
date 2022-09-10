@@ -1,8 +1,8 @@
-import { Box, Container, Divider, Stack } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import React, { FC } from "react";
-import { IInvoice } from "../../../../interfaces/IInvoice";
-import BasicTable from "./BasicTable";
-import Summary from "./Summary";
+import { IInvoice } from "../../interfaces/IInvoice";
+import InvoiceTable from "./Table";
+import TableSummary from "./TableSummary";
 
 const Invoices: FC<{
     textInfo1: string;
@@ -14,35 +14,13 @@ const Invoices: FC<{
 }> = ({ textInfo1, textInfo2, invoices, clientType, summ, nds }) => {
     return (
         <Container maxWidth="xl">
-            <Box sx={{ display: "flex" }}>
-                <Container>
-                    <Stack
-                        sx={{ width: 1, justifyContent: "center" }}
-                        direction="row"
-                    >
-                        <Summary
-                            text={textInfo2}
-                            width={280}
-                            textVariant="body1"
-                        >
-                            {summ}
-                        </Summary>
-                        <Summary text="НДС" width={260} textVariant="body1">
-                            {nds}
-                        </Summary>
-                    </Stack>
-                </Container>
-            </Box>
-            <Divider sx={{ marginY: 2, color: "#2477CC" }} />
-            <Stack direction="row" spacing={2}>
-                <Box sx={{ width: 1 }}>
-                    <BasicTable
-                        invoices={invoices}
-                        clientType={clientType}
-                        table={textInfo1}
-                    ></BasicTable>
-                </Box>
-            </Stack>
+            <TableSummary textInfo={textInfo2} summ={summ} nds={nds} />
+            <Divider sx={{ marginY: 2, color: "#2477CC" }} />.
+            <InvoiceTable
+                invoices={invoices}
+                clientType={clientType}
+                table={textInfo1}
+            ></InvoiceTable>
         </Container>
     );
 };

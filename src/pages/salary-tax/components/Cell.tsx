@@ -1,34 +1,25 @@
 import { TableCell, TextField } from "@mui/material";
 import React, { FC } from "react";
-import { IInvoice } from "../../interfaces/IInvoice";
-import { cellValueDisplayFormat } from "../../../../helpers/cellValueDisplayFormat";
-import { InputDataFormat } from "../../../../helpers/inputDataFormat";
-import { useToggle } from "../../../../hooks/useToggle";
-import { useCellValue } from "../../hooks/useCellValue";
+import { useToggle } from "../../../hooks/useToggle";
+import { cellValueDisplayFormat } from "../../../helpers/cellValueDisplayFormat";
+import { useCellValue } from "../hooks/useCellValue";
+import { ISalary } from "../interfaces/ISalary";
 
 const Cell: FC<{
-    invoices: IInvoice[];
+    salary: ISalary[];
     children: string | number;
-    name: string;
     table: string;
     index: number;
     prop: string;
-    type: string;
+    type?: string;
+    inputMode?: "text" | "numeric" | "decimal" | undefined;
+    step?: number;
     disabled: boolean;
-}> = ({ invoices, children, name, table, index, prop, type, disabled }) => {
+}> = ({ children, table, index, type, inputMode, prop, disabled, step }) => {
     const [inputToggle, switchInput] = useToggle(false);
-
-    const [getValue, keyDown] = useCellValue(
-        invoices,
-        index,
-        prop,
-        table,
-        switchInput
-    );
-
-    const formattedInputValue = InputDataFormat(type, children);
+    const [getValue, keyDown] = useCellValue(index, prop, table, switchInput);
     const cellDisplayValue = cellValueDisplayFormat(type, children);
-
+    const stepValue = step ? step : 0.01;
     return (
         <>
             {!disabled && inputToggle ? (
@@ -39,13 +30,13 @@ const Cell: FC<{
                         onBlur={switchInput}
                         onChange={getValue}
                         onKeyDown={keyDown}
-                        label={name}
-                        value={formattedInputValue}
+                        value={children}
                         variant="filled"
                         type={type}
+                        inputMode={inputMode}
                         disabled={disabled}
                         fullWidth={true}
-                        inputProps={{ step: 0.01 }}
+                        inputProps={{ step: stepValue }}
                     />
                 </TableCell>
             ) : (
@@ -59,7 +50,7 @@ const Cell: FC<{
                         justifySelf: "center",
                     }}
                 >
-                    {cellDisplayValue}
+                    {prop === "childrenQtty" ? children : cellDisplayValue}
                 </TableCell>
             )}
         </>
