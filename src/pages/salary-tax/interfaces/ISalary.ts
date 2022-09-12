@@ -3,7 +3,6 @@ interface insurance {
     medical: number;
     social: number;
     accident: number;
-    total: number;
 }
 
 interface IMonths {
@@ -39,6 +38,7 @@ export interface ISalary {
     childrenQtty: number;
     tax: number;
     insurance: insurance;
+    insuranceTotal: number;
     checked: boolean;
     [prop: string]: string | number | boolean | insurance;
 }
@@ -46,8 +46,8 @@ export interface ISalary {
 export interface ISalarySummary {
     accruedTotal: number;
     taxTotal: number;
-    insuranceTotal: number;
     payTotal: number;
+    insuranceTotal: number;
 }
 
 export interface ISalaries {

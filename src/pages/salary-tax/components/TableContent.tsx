@@ -1,6 +1,5 @@
 import { Checkbox, TableBody, TableRow } from "@mui/material";
 import React, { FC } from "react";
-import { toRU } from "../../../helpers/currencyFormat";
 import { useTypedDispatch } from "../../../redux/hooks/hooks";
 import {
     deleteRow as deleteTableRow,
@@ -22,9 +21,9 @@ const TableContent: FC<{
                 {salary.map((employeeSalary: ISalary, index: number) => (
                     <TableRow key={employeeSalary.id}>
                         <Checkbox
+                            size="small"
                             checked={employeeSalary.checked}
                             onChange={() => dispatch(setCheckBox(index, table))}
-                            sx={{ marginTop: 1 }}
                         />
                         <Cell
                             salary={salary}
@@ -34,6 +33,7 @@ const TableContent: FC<{
                             type="string"
                             inputMode="text"
                             disabled={true}
+                            width={20}
                         >
                             {index + 1}
                         </Cell>
@@ -45,6 +45,7 @@ const TableContent: FC<{
                             type="string"
                             inputMode="text"
                             disabled={false}
+                            width={285}
                         >
                             {employeeSalary.employee}
                         </Cell>
@@ -56,6 +57,7 @@ const TableContent: FC<{
                             type="number"
                             inputMode="decimal"
                             disabled={false}
+                            width={100}
                         >
                             {employeeSalary.accrued}
                         </Cell>
@@ -66,6 +68,7 @@ const TableContent: FC<{
                             prop="pay"
                             type="number"
                             disabled={true}
+                            width={100}
                         >
                             {employeeSalary.pay}
                         </Cell>
@@ -78,6 +81,7 @@ const TableContent: FC<{
                             inputMode="numeric"
                             disabled={false}
                             step={1}
+                            width={60}
                         >
                             {employeeSalary.childrenQtty}
                         </Cell>
@@ -88,6 +92,7 @@ const TableContent: FC<{
                             prop="tax"
                             type="number"
                             disabled={true}
+                            width={100}
                         >
                             {employeeSalary.tax}
                         </Cell>
@@ -98,8 +103,9 @@ const TableContent: FC<{
                             prop="insurance"
                             type="number"
                             disabled={true}
+                            width={100}
                         >
-                            {employeeSalary.insurance.total}
+                            {employeeSalary.insuranceTotal}
                         </Cell>
                         <RemoveRow action={deleteRow} index={index} />
                     </TableRow>

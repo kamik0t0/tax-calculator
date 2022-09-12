@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs as MaterialTabs } from "@mui/material";
+import { Box, Stack, Tab, Tabs as MaterialTabs } from "@mui/material";
 import React, { FC } from "react";
 import TabPanel from "../../shared/TabPanel";
 import { MonthsDisplay } from "./utils/months";
@@ -12,6 +12,7 @@ import {
     calcSummary,
 } from "../../redux/reducers/salary/salary-reducer";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import SelectTaxRate from "./components/SelectTaxRate";
 
 const Salary: FC = () => {
     const { months } = useTypedSelector((state) => state.salarySlice);
@@ -150,6 +151,9 @@ const Salary: FC = () => {
                     }}
                 ></Box>
             </Box>
+            <Stack spacing={1} sx={{ mt: 1 }}>
+                <SelectTaxRate />
+            </Stack>
             <TabPanel value={value} index={0}>
                 <SalaryTable
                     salary={watchedJan}

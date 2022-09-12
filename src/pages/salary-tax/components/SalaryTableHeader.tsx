@@ -25,7 +25,9 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = ({
     const sortByAccrued = (event: React.MouseEvent<HTMLTableCellElement>) =>
         dispatch(updateSalaries(byNumber(SalarySortFields.accrued), table));
     const sortByRecoupment = (event: React.MouseEvent<HTMLTableCellElement>) =>
-        dispatch(updateSalaries(byNumber(SalarySortFields.recoupment), table));
+        dispatch(
+            updateSalaries(byNumber(SalarySortFields.childrenQtty), table)
+        );
     const sortByInsurance = (event: React.MouseEvent<HTMLTableCellElement>) =>
         dispatch(updateSalaries(byNumber(SalarySortFields.insurance), table));
 
@@ -42,49 +44,49 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = ({
                     </Box>
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 20 }}
                     onClick={sortByIndex}
                     align="center"
                 >
                     №
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 650 }}
                     onClick={sortByEmployee}
                     align="center"
                 >
                     Сотрудник
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 200 }}
                     onClick={sortByAccrued}
                     align="center"
                 >
                     Начислено
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 200 }}
                     onClick={sortByAccrued}
                     align="center"
                 >
                     К выплате
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 60 }}
                     onClick={sortByRecoupment}
                     align="center"
                 >
                     Дети
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 200 }}
                     onClick={sortByTax}
                     align="center"
                 >
                     НДФЛ
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 200 }}
                     onClick={sortByInsurance}
                     align="center"
                 >

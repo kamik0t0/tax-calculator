@@ -2,7 +2,7 @@ export enum SalarySortFields {
     number = "number",
     employee = "employee",
     accrued = "accrued",
-    recoupment = "recoupment",
+    childrenQtty = "childrenQtty",
     tax = "tax",
-    insurance = "insurance",
+    insurance = "insuranceTotal",
 }

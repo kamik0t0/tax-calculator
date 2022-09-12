@@ -17,7 +17,6 @@ import {
 } from "../../../redux/reducers/salary/salary-reducer";
 import { useTypedDispatch } from "../../../redux/hooks/hooks";
 import { newEmployee } from "../utils/createData";
-import SelectTaxRate from "./SelectTaxRate";
 import { nanoid } from "@reduxjs/toolkit";
 import Summary from "../../nds/components/InvoiceTable/Summary";
 import { fillByPrevMonth } from "../../../redux/reducers/salary/salary-reducer";
@@ -43,7 +42,6 @@ const SalaryTable: FC<{
                 direction="row"
                 sx={{ display: "flex", justifyContent: "space-around" }}
             >
-                <SelectTaxRate />
                 <Summary
                     text="Итого начислено"
                     width={140}
@@ -79,7 +77,7 @@ const SalaryTable: FC<{
                 <Button onClick={fillByPrevios}>Заполнить</Button>
             </Stack>
             <TableContainer component={Paper}>
-                <Table aria-label="simple table">
+                <Table size="small" aria-label="a dense table">
                     <TableHeader salary={salary} table={table} />
                     <TableContent salary={salary} table={table} />
                 </Table>

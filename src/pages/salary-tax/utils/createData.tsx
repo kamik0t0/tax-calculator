@@ -14,6 +14,7 @@ export function createData(
         accident: number;
         total: number;
     },
+    insuranceTotal: number,
     checked: boolean
 ): ISalary {
     return {
@@ -24,6 +25,7 @@ export function createData(
         childrenQtty,
         tax,
         insurance,
+        insuranceTotal,
         checked,
     };
 }
@@ -42,5 +44,6 @@ export const newEmployee = createData(
         accident: 0,
         total: 0,
     },
+    0,
     false
 );

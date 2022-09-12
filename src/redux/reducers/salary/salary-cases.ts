@@ -1,9 +1,17 @@
-import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
+import { CaseReducer, current, PayloadAction, nanoid } from "@reduxjs/toolkit";
 import {
     ISalaries,
     ISalary,
 } from "../../../pages/salary-tax/interfaces/ISalary";
-import { calcGlobalTax, calcPIT, calcTax } from "./scripts/calculateTaxes";
+import { newEmployee } from "../../../pages/salary-tax/utils/createData";
+import {
+    calcBasicInsurance,
+    calcBusinessInsurance,
+    calcGlobalTax,
+    calcITinsurance,
+    calcPIT,
+    calcTax,
+} from "./scripts/calculateTaxes";
 import { months, getPrevMonth } from "./scripts/getPrevMonth";
 
 export const deleteRowsReducer: CaseReducer<
@@ -38,8 +46,46 @@ export const fillByPrevMonthReducer: CaseReducer<
     if (prevMonth) {
         if (state.months[prevMonth].salary.length === 0)
             return alert("В предыдущем месяце нет данных");
-        state.months[table].salary = state.months[prevMonth].salary;
-        state.months[table].summary = state.months[prevMonth].summary;
+        const newSalaryTable: ISalary[] = [];
+        const prevSalaryTable: ISalary[] = state.months[prevMonth].salary;
+
+        for (let i = 0; i < state.months[prevMonth].salary.length; i++) {
+            const prevMonthEmployee = prevSalaryTable[i];
+
+            let insurance;
+            switch (state.rateCode) {
+                case "06":
+                    insurance = calcITinsurance(prevMonthEmployee.accrued);
+                    break;
+                case "20":
+                    insurance = calcBusinessInsurance(
+                        prevMonthEmployee.accrued,
+                        table
+                    );
+                    break;
+                default:
+                    insurance = calcBasicInsurance(prevMonthEmployee.accrued);
+                    break;
+            }
+            newSalaryTable.push(
+                Object.assign({}, prevMonthEmployee, {
+                    employee: prevMonthEmployee.employee,
+                    accrued: prevMonthEmployee.accrued,
+                    id: nanoid(6),
+                    childrenQtty: prevMonthEmployee.childrenQtty,
+                    tax: prevMonthEmployee.tax,
+                    pay: prevMonthEmployee.pay,
+                    insurance: {
+                        retirement: insurance?.retirement,
+                        accident: insurance?.accident,
+                        medical: insurance?.medical,
+                        social: insurance?.social,
+                    },
+                    insuranceTotal: insurance?.total,
+                })
+            );
+        }
+        state.months[table].salary = newSalaryTable;
     }
 };
 
@@ -65,6 +111,8 @@ export const updateSalaryReducer = () => ({
                 calcPIT(state, +value, table, index);
                 break;
             default:
+                // console.log(value, table, state.rateCode);
+
                 calcTax(state, +value, table, index, state.rateCode);
                 break;
         }

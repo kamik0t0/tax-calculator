@@ -7,8 +7,8 @@ import { useTypedDispatch, useTypedSelector } from "../../../redux/hooks/hooks";
 import { setTaxStateRate } from "../../../redux/reducers/salary/salary-reducer";
 
 const SelectTaxRate = () => {
-    const { rateCode } = useTypedSelector((state) => state.salarySlice);
     const dispatch = useTypedDispatch();
+    const { rateCode } = useTypedSelector((state) => state.salarySlice);
 
     const handleChange = (event: SelectChangeEvent) =>
         dispatch(setTaxStateRate(event.target.value));
@@ -26,7 +26,7 @@ const SelectTaxRate = () => {
                 size="small"
                 value={rateCode}
                 onChange={handleChange}
-                sx={{ ml: 1 }}
+                sx={{ ml: 1, width: 189 }}
             >
                 <MenuItem value="01">01 - Базовый</MenuItem>
                 <MenuItem value="06">06 - IT компании</MenuItem>

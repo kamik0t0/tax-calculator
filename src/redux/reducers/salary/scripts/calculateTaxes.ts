@@ -68,6 +68,58 @@ const calcBasicPIT = (
 };
 
 // Расчет страховых взносов по базовой ставке. Код 01
+export const calcBasicInsurance = (value: number) => {
+    const medical = value * BasicRates.medical;
+    const retirement = value * BasicRates.retirement;
+    const social = value * BasicRates.social;
+    const accident = value * StaticRates.accident;
+    const total = medical + retirement + social + accident;
+    return { accident, medical, retirement, social, total };
+};
+// Расчет страховых взносов для АйТи компаний. Код 06
+export const calcITinsurance = (value: number) => {
+    const medical = value * itRates.medical;
+    const retirement = value * itRates.retirement;
+    const social = value * itRates.social;
+    const accident = value * StaticRates.accident;
+    const total = medical + retirement + social + accident;
+    return { accident, medical, retirement, social, total };
+};
+// Расчет страховых взносов для Малого и среднего бизнеса. Код 20
+export const calcBusinessInsurance = (value: number, table: string) => {
+    const minimalSalary = getMinimalSalary(table);
+
+    if (value <= minimalSalary) {
+        const medical = value * BasicRates.medical;
+        const retirement = value * BasicRates.retirement;
+        const social = value * BasicRates.social;
+        const accident = value * StaticRates.accident;
+        const total = medical + retirement + social + accident;
+        return {
+            accident,
+            medical,
+            retirement,
+            social,
+            total,
+        };
+    } else if (value > minimalSalary) {
+        const accident = minimalSalary * StaticRates.accident;
+
+        const minMedical = minimalSalary * BasicRates.medical;
+        const minRetirement = minimalSalary * BasicRates.retirement;
+        const minSocial = minimalSalary * BasicRates.social;
+
+        const medical =
+            (value - minimalSalary) * BusinessRates.medical + minMedical;
+        const retirement =
+            (value - minimalSalary) * BusinessRates.retirement + minRetirement;
+        const social =
+            (value - minimalSalary) * BusinessRates.social + minSocial;
+        const total = medical + retirement + social;
+
+        return { accident, medical, retirement, social, total };
+    }
+};
 const calcBasicTax = (
     state: ISalaries,
     value: number,
@@ -84,7 +136,7 @@ const calcBasicTax = (
     state.months[table].salary[index].insurance.medical = medical;
     state.months[table].salary[index].insurance.retirement = retirement;
     state.months[table].salary[index].insurance.social = social;
-    state.months[table].salary[index].insurance.total = insuranceTotal;
+    state.months[table].salary[index].insuranceTotal = insuranceTotal;
     state.months[table].salary[index].accrued = value;
 
     calcBasicPIT(state, value, table, index);
@@ -97,6 +149,7 @@ const calcITtax = (
     table: string,
     index: number
 ) => {
+    console.log(value, table);
     const medical = value * itRates.medical;
     const retirement = value * itRates.retirement;
     const social = value * itRates.social;
@@ -107,7 +160,7 @@ const calcITtax = (
     state.months[table].salary[index].insurance.medical = medical;
     state.months[table].salary[index].insurance.retirement = retirement;
     state.months[table].salary[index].insurance.social = social;
-    state.months[table].salary[index].insurance.total = insuranceTotal;
+    state.months[table].salary[index].insuranceTotal = insuranceTotal;
     state.months[table].salary[index].accrued = value;
 
     calcBasicPIT(state, value, table, index);
@@ -132,9 +185,9 @@ const calcBusinessTax = (
         state.months[table].salary[index].insurance.medical = minMedical;
         state.months[table].salary[index].insurance.retirement = minRetirement;
         state.months[table].salary[index].insurance.social = minSocial;
-        state.months[table].salary[index].insurance.total = minTotal;
+        state.months[table].salary[index].insuranceTotal = minTotal;
         state.months[table].salary[index].accrued = value;
-    } else if (value > minimalSalary) {
+    } else {
         const minMedical = minimalSalary * BasicRates.medical;
         const minRetirement = minimalSalary * BasicRates.retirement;
         const minSocial = minimalSalary * BasicRates.social;
@@ -152,7 +205,7 @@ const calcBusinessTax = (
         state.months[table].salary[index].insurance.retirement =
             minRetirement + retirement;
         state.months[table].salary[index].insurance.social = minSocial + social;
-        state.months[table].salary[index].insurance.total =
+        state.months[table].salary[index].insuranceTotal =
             minTotal + businessTotal;
         state.months[table].salary[index].accrued = value;
     }
@@ -167,6 +220,7 @@ export const calcTax = (
     index: number,
     rateCode: string
 ) => {
+    console.log(rateCode);
     switch (rateCode) {
         case "06":
             calcITtax(state, value, table, index);
@@ -197,7 +251,7 @@ export const calcGlobalTax = (state: ISalaries, rateCode: string) => {
                     employee.insurance.medical = medical;
                     employee.insurance.retirement = retirement;
                     employee.insurance.social = social;
-                    employee.insurance.total =
+                    employee.insuranceTotal =
                         accident + medical + retirement + social;
                 });
 
@@ -216,7 +270,7 @@ export const calcGlobalTax = (state: ISalaries, rateCode: string) => {
                         employee.insurance.medical = medical;
                         employee.insurance.retirement = retirement;
                         employee.insurance.social = social;
-                        employee.insurance.total =
+                        employee.insuranceTotal =
                             accident + medical + retirement + social;
                     } else {
                         const minMedical = minimalSalary * BasicRates.medical;
@@ -244,7 +298,7 @@ export const calcGlobalTax = (state: ISalaries, rateCode: string) => {
                         employee.insurance.medical = medical;
                         employee.insurance.retirement = retirement;
                         employee.insurance.social = social;
-                        employee.insurance.total = minTotal + businessTotal;
+                        employee.insuranceTotal = minTotal + businessTotal;
                     }
                 });
                 state.months[table].salary = salary;
@@ -262,7 +316,7 @@ export const calcGlobalTax = (state: ISalaries, rateCode: string) => {
                     employee.insurance.medical = medical;
                     employee.insurance.retirement = retirement;
                     employee.insurance.social = social;
-                    employee.insurance.total =
+                    employee.insuranceTotal =
                         accident + medical + retirement + social;
                 });
 
@@ -282,9 +336,10 @@ export const calcSalarySummary = (
         0
     );
     summary.insuranceTotal = salary.reduce(
-        (acc, current) => acc + current.insurance.total,
+        (acc, current) => acc + current.insuranceTotal,
         0
     );
+
     summary.payTotal = salary.reduce((acc, current) => acc + current.pay, 0);
     summary.taxTotal = salary.reduce((acc, current) => acc + current.tax, 0);
 };
