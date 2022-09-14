@@ -1,4 +1,4 @@
-interface insurance {
+interface IInsurance {
     retirement: number;
     medical: number;
     social: number;
@@ -21,7 +21,7 @@ interface IMonths {
     [prop: string]: any;
 }
 
-interface IEmployees {
+export interface IEmployees {
     id: string;
     name: string;
     surname: string;
@@ -37,10 +37,10 @@ export interface ISalary {
     accrued: number;
     childrenQtty: number;
     tax: number;
-    insurance: insurance;
+    insurance: IInsurance;
     insuranceTotal: number;
     checked: boolean;
-    [prop: string]: string | number | boolean | insurance;
+    [prop: string]: string | number | boolean | IInsurance;
 }
 
 export interface ISalarySummary {

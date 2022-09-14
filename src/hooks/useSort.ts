@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IPropSignature } from "../interfaces/IPropSignature";
-import { sortByDate, sortByNumber, sortByString } from "../scripts/sorts";
+import { sortByDate, sortByNumber, sortByString } from "@scripts/sorts";
 
 export const useSort = <T extends IPropSignature>(items: T[]) => {
     const [sortOrder, setSortOrder] = useState<boolean>(true);

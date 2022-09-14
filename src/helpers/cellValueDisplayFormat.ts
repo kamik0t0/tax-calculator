@@ -1,4 +1,4 @@
-import { toRU } from "./currencyFormat";
+import { toRU } from "@helpers/currencyFormat";
 
 export const cellValueDisplayFormat = (
     type: string = "string",

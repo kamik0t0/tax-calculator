@@ -1,10 +1,9 @@
+import { Select, SelectChangeEvent, Typography } from "@mui/material/";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Typography } from "antd";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { setTaxStateRate } from "@salarystore/salary-reducer";
 import * as React from "react";
-import { useTypedDispatch, useTypedSelector } from "../../../redux/hooks/hooks";
-import { setTaxStateRate } from "../../../redux/reducers/salary/salary-reducer";
 
 const SelectTaxRate = () => {
     const dispatch = useTypedDispatch();

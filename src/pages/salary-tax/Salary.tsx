@@ -1,18 +1,16 @@
 import { Box, Stack, Tab, Tabs as MaterialTabs } from "@mui/material";
 import React, { FC } from "react";
-import TabPanel from "../../shared/TabPanel";
-import { MonthsDisplay } from "./utils/months";
-import { Months } from "./utils/months";
-import { a11yProps } from "../../utils/a11yProps";
-import SalaryTable from "./components/SalaryTable";
-import { useTypedSelector } from "../../redux/hooks/hooks";
-import { updateSalaries } from "../../redux/reducers/salary/salary-reducer";
+import { useLocalStorage } from "@customhooks/useLocalStorage";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import {
-    setLocalStorage,
     calcSummary,
-} from "../../redux/reducers/salary/salary-reducer";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import SelectTaxRate from "./components/SelectTaxRate";
+    setLocalStorage,
+    updateSalaries,
+} from "@salarystore/salary-reducer";
+import TabPanel from "@sharedcomponents/TabPanel";
+import { a11yProps } from "@utils/a11yProps";
+import { SalaryTable, SelectTaxRate } from "./exports/components";
+import { Months, MonthsDisplay } from "./utils/months";
 
 const Salary: FC = () => {
     const { months } = useTypedSelector((state) => state.salarySlice);

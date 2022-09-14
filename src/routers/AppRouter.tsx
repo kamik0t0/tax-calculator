@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "../layout/Layout";
-import Nds from "../pages/nds/Nds";
-import Home from "../pages/home/Home";
-import About from "../pages/about/About";
-import Contacts from "../pages/contacts/Contacts";
-import Salary from "../pages/salary-tax/Salary";
+import About from "../pages/about";
+import Contacts from "../pages/contacts";
+import Home from "../pages/home";
+import Nds from "../pages/nds/exports/components";
+import Salary from "../pages/salary-tax/exports/components";
 
 const AppRouter: React.FC = () => {
     return (

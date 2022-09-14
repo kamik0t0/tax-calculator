@@ -1,6 +1,6 @@
 import { ISalary } from "../interfaces/ISalary";
 
-export function createData(
+function createData(
     id: string,
     employee: string,
     pay: number,

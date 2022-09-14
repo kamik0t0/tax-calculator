@@ -1,13 +1,13 @@
 import { Checkbox, TableBody, TableRow } from "@mui/material";
-import React, { FC } from "react";
-import { useTypedDispatch } from "../../../redux/hooks/hooks";
+import { useTypedDispatch } from "@reduxhooks/hooks";
 import {
     deleteRow as deleteTableRow,
     setCheckBox,
-} from "../../../redux/reducers/salary/salary-reducer";
-import RemoveRow from "../../../shared/RemoveRow";
-import { ISalary } from "../interfaces/ISalary";
-import Cell from "./Cell";
+} from "@salarystore/salary-reducer";
+import RemoveRow from "@sharedcomponents/RemoveRow";
+import React, { FC } from "react";
+import { Cell } from "../exports/components";
+import { ISalary } from "../exports/interfaces";
 
 const TableContent: FC<{
     salary: ISalary[];

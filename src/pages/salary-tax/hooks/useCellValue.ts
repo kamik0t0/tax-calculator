@@ -1,6 +1,6 @@
 import React from "react";
-import { useTypedDispatch } from "../../../redux/hooks/hooks";
-import { updateSalary } from "../../../redux/reducers/salary/salary-reducer";
+import { useTypedDispatch } from "@reduxhooks/hooks";
+import { updateSalary } from "@salarystore/salary-reducer";
 
 export const useCellValue = (
     index: number,

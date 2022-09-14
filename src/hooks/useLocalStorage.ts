@@ -3,7 +3,7 @@ import {
     ActionCreatorWithPreparedPayload,
 } from "@reduxjs/toolkit";
 import { useEffect } from "react";
-import { useTypedDispatch } from "../redux/hooks/hooks";
+import { useTypedDispatch } from "@reduxhooks/hooks";
 
 export function useLocalStorage<T, S>(
     key: string,

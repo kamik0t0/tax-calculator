@@ -1,19 +1,17 @@
-import { Box } from "@mui/material";
-import React, { FC, useState } from "react";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { useTypedSelector } from "../../redux/hooks/hooks";
-import TabPanel from "../../shared/TabPanel";
-import Invoices from "./components/InvoiceTable/Invoices";
-import Tabs from "./components/InvoiceTable/Tabs";
-import TotalSummary from "./components/InvoiceTable/TotalSummary";
-import { ClyentTypes, Tables, TabsTables } from "./utils/enums";
+import { useLocalStorage } from "@customhooks/useLocalStorage";
 import {
-    updateInvoices,
     calcSummary,
     setLocalStorage,
-} from "../../redux/reducers/invoices/invoice-reducer";
+    updateInvoices,
+} from "@invoicesstore/invoice-reducer";
+import { Box } from "@mui/material";
+import { useTypedSelector } from "@reduxhooks/hooks";
+import TabPanel from "@sharedcomponents/TabPanel";
+import React, { FC, useState } from "react";
+import { Invoices, Tabs, TotalSummary } from "./exports/components";
+import { ClyentTypes, Tables, TabsTables } from "./exports/utils";
 
-const Nds: FC = () => {
+const InvoiceTable: FC = () => {
     const { summary, sales, purches, recieved, issued } = useTypedSelector(
         (state) => state.invoiceSlice
     );
@@ -100,4 +98,4 @@ const Nds: FC = () => {
     );
 };
 
-export default Nds;
+export default InvoiceTable;

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import React from "react";
 import { Button } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "../redux/hooks/hooks";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 
 const Layout: React.FC = () => {
     // const dispatch = useTypedDispatch();

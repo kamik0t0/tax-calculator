@@ -1,25 +1,20 @@
-import {
-    Container,
-    Paper,
-    Stack,
-    Table,
-    TableContainer,
-    Button,
-} from "@mui/material";
-import LastRow from "../../../shared/LastRow";
-import React, { FC } from "react";
-import TableHeader from "./SalaryTableHeader";
-import { ISalary, ISalarySummary } from "../interfaces/ISalary";
-import TableContent from "./TableContent";
+import { Button, Paper, Stack, Table, TableContainer } from "@mui/material";
+import { useTypedDispatch } from "@reduxhooks/hooks";
+import { nanoid } from "@reduxjs/toolkit";
 import {
     addRow,
     deleteRows,
-} from "../../../redux/reducers/salary/salary-reducer";
-import { useTypedDispatch } from "../../../redux/hooks/hooks";
-import { newEmployee } from "../utils/createData";
-import { nanoid } from "@reduxjs/toolkit";
-import Summary from "../../nds/components/InvoiceTable/Summary";
-import { fillByPrevMonth } from "../../../redux/reducers/salary/salary-reducer";
+    fillByPrevMonth,
+} from "@salarystore/salary-reducer";
+import React, { FC } from "react";
+import {
+    LastRow,
+    Summary,
+    TableContent,
+    TableHeader,
+} from "../exports/components";
+import { ISalary, ISalarySummary } from "../exports/interfaces";
+import { newEmployee } from "../exports/utils";
 
 const SalaryTable: FC<{
     salary: ISalary[];
@@ -32,10 +27,8 @@ const SalaryTable: FC<{
     const dispatch = useTypedDispatch();
     const createItem = () => dispatch(addRow(employee, table));
     const deleteItems = () => dispatch(deleteRows(table));
+    const fillByPrevios = () => dispatch(fillByPrevMonth(table));
 
-    const fillByPrevios = () => {
-        dispatch(fillByPrevMonth(table));
-    };
     return (
         <Stack spacing={3}>
             <Stack
@@ -74,8 +67,8 @@ const SalaryTable: FC<{
                 >
                     {summary.insuranceTotal}
                 </Summary>
-                <Button onClick={fillByPrevios}>Заполнить</Button>
             </Stack>
+            <Button onClick={fillByPrevios}>Заполнить</Button>
             <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
                     <TableHeader salary={salary} table={table} />

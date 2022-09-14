@@ -90,7 +90,14 @@ module.exports = {
     },
     resolve: {
         alias: {
-            models: path.resolve(__dirname, "src/models"),
+            "@sharedcomponents": path.resolve(__dirname, "shared"),
+            "@customhooks": path.resolve(__dirname, "hooks"),
+            "@helpers": path.resolve(__dirname, "helpers"),
+            "@scripts": path.resolve(__dirname, "scripts"),
+            "@utils": path.resolve(__dirname, "utils"),
+            "@reduxhooks": path.resolve(__dirname, "redux/hooks"),
+            "@salarystore": path.resolve(__dirname, "pages/salary-tax/slice"),
+            "@invoicesstore": path.resolve(__dirname, "pages/nds/slice"),
         },
         extensions: [".js", ".jsx", ".ts", ".tsx", ".jpg"],
     },

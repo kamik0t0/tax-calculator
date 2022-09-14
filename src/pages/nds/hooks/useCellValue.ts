@@ -1,7 +1,7 @@
 import React from "react";
-import { IInvoice } from "../interfaces/IInvoice";
-import { useTypedDispatch } from "../../../redux/hooks/hooks";
-import { updateInvoice } from "../../../redux/reducers/invoices/invoice-reducer";
+import { IInvoice } from "../exports/interfaces";
+import { useTypedDispatch } from "@reduxhooks/hooks";
+import { updateInvoice } from "@invoicesstore/invoice-reducer";
 
 export const useCellValue = (
     invoices: IInvoice[],

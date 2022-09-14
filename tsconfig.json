@@ -131,6 +131,17 @@
 // // }
 {
     "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@sharedcomponents/*": ["shared/*"],
+            "@customhooks/*": ["hooks/*"],
+            "@helpers/*": ["helpers/*"],
+            "@scripts/*": ["scripts/*"],
+            "@utils/*": ["utils/*"],
+            "@reduxhooks/*": ["redux/hooks/*"],
+            "@salarystore/*": ["pages/salary-tax/slice/*"],
+            "@invoicesstore/*": ["pages/nds/slice/*"]
+        },
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
@@ -147,6 +158,6 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules"]
 }

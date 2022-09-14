@@ -1,13 +1,12 @@
 import { Box, TableCell, TableHead, TableRow } from "@mui/material";
 import React, { FC } from "react";
-import { makePointer } from "../../../utils/malePointer";
-import { useSort } from "../../../hooks/useSort";
+import { useSort } from "@customhooks/useSort";
 import ArrowDownwardSharpIcon from "@mui/icons-material/ArrowDownwardSharp";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import { updateSalaries } from "../../../redux/reducers/salary/salary-reducer";
-import { useTypedDispatch } from "../../../redux/hooks/hooks";
-import { ISalary } from "../interfaces/ISalary";
-import { SalarySortFields } from "../utils/sortFields";
+import { updateSalaries } from "@salarystore/salary-reducer";
+import { useTypedDispatch } from "@reduxhooks/hooks";
+import { ISalary } from "../exports/interfaces";
+import { SalarySortFields } from "../exports/utils";
 
 const TableHeader: FC<{ salary: ISalary[]; table: string }> = ({
     salary,
