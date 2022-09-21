@@ -1,6 +1,12 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 export const CustomContext = <A extends {} | null>() => {
-    const context = createContext<A | undefined>(undefined);
-    return context;
+    const ctx = createContext<A | undefined>(undefined);
+    function useCtx() {
+        const c = useContext(ctx);
+        if (c === undefined)
+            throw new Error("useCtx must be inside a Provider with a value");
+        return c;
+    }
+    return [useCtx, ctx.Provider] as const;
 };

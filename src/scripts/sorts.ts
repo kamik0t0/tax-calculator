@@ -1,4 +1,4 @@
-import { IPropSignature } from "../interfaces/IPropSignature";
+import { IPropSignature } from "../types/propSignature";
 
 // сортировки по:
 // - дате

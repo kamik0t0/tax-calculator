@@ -139,8 +139,9 @@
             "@scripts/*": ["scripts/*"],
             "@utils/*": ["utils/*"],
             "@reduxhooks/*": ["redux/hooks/*"],
-            "@salarystore/*": ["pages/salary-tax/slice/*"],
-            "@invoicesstore/*": ["pages/nds/slice/*"]
+            "@salarystore/*": ["pages/salary/slice/*"],
+            "@invoicesstore/*": ["pages/vat/slice/*"],
+            "@themes/*": ["themes/*"]
         },
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],

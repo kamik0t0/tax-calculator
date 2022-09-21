@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IPropSignature } from "../interfaces/IPropSignature";
+import { IPropSignature } from "../types/propSignature";
 import { sortByDate, sortByNumber, sortByString } from "@scripts/sorts";
 
 export const useSort = <T extends IPropSignature>(items: T[]) => {

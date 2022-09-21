@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Card } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 
 const Layout: React.FC = () => {
@@ -21,7 +21,9 @@ const Layout: React.FC = () => {
             >
                 increment
             </Button> */}
-            <Outlet />
+            <Card sx={{ width: "100vw", height: "90vh", overflow: "auto" }}>
+                <Outlet />
+            </Card>
         </>
     );
 };

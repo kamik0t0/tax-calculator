@@ -1,4 +1,4 @@
-import { Box, CardContent, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { toRU } from "@helpers/currencyFormat";
 
@@ -19,21 +19,22 @@ const Summary: FC<{
                 marginLeft: 2,
             }}
         >
-            <Paper elevation={0} sx={{ height: 30, width }}>
-                <CardContent
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                        flexDirection: { flexDirection },
-                        alignItems: "center",
-                        padding: 0.2,
-                    }}
-                >
-                    <Typography variant="body1">{text}</Typography>
-                    <Typography variant={textVariant}>
-                        {toRU.format(children)}
-                    </Typography>
-                </CardContent>
+            <Paper
+                elevation={0}
+                sx={{
+                    height: 30,
+                    width,
+                    display: "flex",
+                    justifyContent: "space-around",
+                    flexDirection: { flexDirection },
+                    alignItems: "center",
+                    padding: 0.2,
+                }}
+            >
+                <Typography variant="body1">{text}</Typography>
+                <Typography variant={textVariant}>
+                    {toRU.format(children)}
+                </Typography>
             </Paper>
         </Box>
     );

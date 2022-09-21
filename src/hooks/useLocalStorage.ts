@@ -5,16 +5,18 @@ import {
 import { useEffect } from "react";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 
-export function useLocalStorage<T, S>(
+export function useLocalStorage<T>(
     key: string,
     items: T[],
-    loadAction: ActionCreatorWithPreparedPayload<
-        [payload: S[], table: string],
-        S[],
-        string,
-        never,
-        { table: string }
-    >,
+    loadAction:
+        | ActionCreatorWithPreparedPayload<
+              [payload: T[], table: string],
+              T[],
+              string,
+              never,
+              { table: string }
+          >
+        | ActionCreatorWithPayload<T[]>,
     setLocalStorageAction: ActionCreatorWithPayload<string>,
     ...sideActions: ActionCreatorWithPayload<string>[]
 ): T[] {

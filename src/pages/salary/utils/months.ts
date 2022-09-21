@@ -1,0 +1,43 @@
+export enum MonthsDisplay {
+    jan = "Январь",
+    feb = "Февраль",
+    march = "Март",
+    april = "Апрель",
+    may = "Май",
+    june = "Июнь",
+    july = "Июль",
+    aug = "Август",
+    sep = "Сентябрь",
+    oct = "Октябрь",
+    nov = "Ноябрь",
+    dec = "Декабрь",
+}
+export enum Months {
+    jan = "jan",
+    feb = "feb",
+    march = "march",
+    april = "april",
+    may = "may",
+    june = "june",
+    july = "july",
+    aug = "aug",
+    sep = "sep",
+    oct = "oct",
+    nov = "nov",
+    dec = "dec",
+}
+
+export const months: string[] = [
+    Months.jan,
+    Months.feb,
+    Months.march,
+    Months.april,
+    Months.may,
+    Months.june,
+    Months.july,
+    Months.aug,
+    Months.sep,
+    Months.oct,
+    Months.nov,
+    Months.dec,
+];

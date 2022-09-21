@@ -14,13 +14,15 @@ import {
 import { useTheme } from "@mui/material/styles";
 import * as React from "react";
 import LinkRouter from "../../routers/LinkRouter";
-import { drawerWidth } from "../../pages/nds/utils/drawerWidth";
+import { drawerWidth } from "@utils/drawerWidth";
 import { appBarLinks, sideBarLinks } from "@utils/Links";
 import { AppBar } from "./AppBar";
 import DrawerHeader from "./DrawerHeader";
 import { Main } from "./Main";
+import ThemeSwitcher from "./ThemeSwitch";
+import { FC } from "react";
 
-export default function CustomDrawer() {
+const CustomDrawer: FC = () => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -64,6 +66,7 @@ export default function CustomDrawer() {
                                 </ListItemButton>
                             </LinkRouter>
                         ))}
+                        <ThemeSwitcher />
                     </Box>
                 </Box>
             </AppBar>
@@ -108,4 +111,6 @@ export default function CustomDrawer() {
             </Main>
         </Box>
     );
-}
+};
+
+export default CustomDrawer;

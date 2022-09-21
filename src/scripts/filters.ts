@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { IPropSignature } from "../interfaces/IPropSignature";
+import { IPropSignature } from "../types/propSignature";
 
 export const filterByString = <T extends IPropSignature>(
     event: ChangeEvent<HTMLInputElement>,
