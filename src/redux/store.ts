@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { reducer as invoiceSlice } from "@invoicesstore/invoice-reducer";
 import { reducer as salarySlice } from "@salarystore/salary-reducer";
+import { reducer as snackBarSlice } from "./slice/ui-reducer";
+import { reducer as dialogSlice } from "./dialog-slice/dialog-reducer";
 
 const store = configureStore({
     reducer: {
         invoiceSlice: invoiceSlice,
         salarySlice: salarySlice,
+        snackBarSlice: snackBarSlice,
+        dialogSlice: dialogSlice,
     },
 });
 

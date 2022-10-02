@@ -8,7 +8,7 @@ const RemoveRow: FC<{ action: (index: number) => void; index: number }> = ({
 }) => {
     const deleteRow = () => action(index);
     return (
-        <IconButton onClick={deleteRow} aria-label="delete">
+        <IconButton sx={{ ml: 1 }} onClick={deleteRow} aria-label="delete">
             <DeleteIcon />
         </IconButton>
     );

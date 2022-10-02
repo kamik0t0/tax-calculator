@@ -2,19 +2,21 @@ import { IInvoice } from "../exports/interfaces";
 
 function createData(
     number: string,
-    date: string,
+    date: number,
     client: string,
+    rate: number,
     nds: number,
     summ: number,
     checked: boolean
 ): IInvoice {
-    return { number, date, client, nds, summ, checked };
+    return { number, date, client, rate, nds, summ, checked };
 }
 
 export const newInvoice = createData(
     "№",
-    new Date().toLocaleDateString(),
+    Date.now(),
     "Контрагент",
+    0.2,
     0,
     0,
     false

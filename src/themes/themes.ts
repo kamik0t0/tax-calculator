@@ -1,5 +1,35 @@
 import { PaletteMode } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+
+export const getDesignTokens = (mode: PaletteMode) => ({
+    palette: {
+        mode,
+    },
+    components: {
+        ...(mode === "light"
+            ? {
+                  MuiTypography: {
+                      defaultProps: {
+                          color: "#1E1E1E",
+                      },
+                  },
+              }
+            : {
+                  MuiPaper: {
+                      styleOverrides: {
+                          root: {
+                              background: "#1E1E1E",
+                          },
+                      },
+                  },
+                  MuiTypography: {
+                      defaultProps: {
+                          color: "#BCBCB2",
+                      },
+                  },
+              }),
+    },
+});
+
 // export const darkTheme = createTheme({
 //     palette: {
 //         mode: "dark",
@@ -46,27 +76,3 @@ import { createTheme } from "@mui/material/styles";
 //         },
 //     },
 // });
-
-export const getDesignTokens = (mode: PaletteMode) => ({
-    palette: {
-        mode,
-    },
-    components: {
-        ...(mode === "light"
-            ? {}
-            : {
-                  MuiPaper: {
-                      styleOverrides: {
-                          root: {
-                              background: "#1E1E1E",
-                          },
-                      },
-                  },
-                  MuiTypography: {
-                      defaultProps: {
-                          color: "#BCBCB2",
-                      },
-                  },
-              }),
-    },
-});

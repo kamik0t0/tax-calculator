@@ -26,6 +26,7 @@ export enum SortFields {
 export enum HeaderNames {
     number = "№",
     date = "Дата",
+    rate = "Ставка НДС",
     nds = "в т.ч. НДС",
     summ = "Сумма",
 }

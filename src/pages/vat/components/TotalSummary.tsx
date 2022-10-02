@@ -9,8 +9,8 @@ export const TotalSummary: FC<{ nds: number }> = ({ nds }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",
-                mb: 3,
-                mt: 3,
+                mb: 1,
+                mt: 1,
             }}
         >
             <Summary text="НДС к уплате: " width={300} textVariant="h6">

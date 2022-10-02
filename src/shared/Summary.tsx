@@ -8,7 +8,7 @@ const Summary: FC<{
     width: number;
     textVariant: any;
     direction?: string;
-}> = ({ children, text, width, textVariant, direction }) => {
+}> = React.memo(({ children, text, width, textVariant, direction }) => {
     const flexDirection = direction ? direction : "row";
     return (
         <Box
@@ -22,13 +22,12 @@ const Summary: FC<{
             <Paper
                 elevation={0}
                 sx={{
-                    height: 30,
                     width,
                     display: "flex",
                     justifyContent: "space-around",
                     flexDirection: { flexDirection },
                     alignItems: "center",
-                    padding: 0.2,
+                    padding: 0.1,
                 }}
             >
                 <Typography variant="body1">{text}</Typography>
@@ -38,6 +37,6 @@ const Summary: FC<{
             </Paper>
         </Box>
     );
-};
+});
 
 export default Summary;

@@ -80,7 +80,7 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
             {
-                test: /\.(png|jpg|gif|svg)$/i,
+                test: /\.(jpg|png|gif|svg)$/i,
                 type: "asset/resource",
             },
             createRuleWithPreset("js", "@babel/preset-env"),
@@ -96,9 +96,16 @@ module.exports = {
             "@scripts": path.resolve(__dirname, "src/scripts"),
             "@utils": path.resolve(__dirname, "src/utils"),
             "@reduxhooks": path.resolve(__dirname, "src/redux/hooks"),
-            "@salarystore": path.resolve(__dirname, "src/pages/salary/slice"),
+            "@salarystore": path.resolve(
+                __dirname,
+                "src/pages/salary/pages/accrual/slice"
+            ),
+            "@uistore": path.resolve(__dirname, "src/redux/slice"),
+            "@dialogstore": path.resolve(__dirname, "src/redux/dialog-slice"),
             "@invoicesstore": path.resolve(__dirname, "src/pages/vat/slice"),
             "@themes": path.resolve(__dirname, "src/themes"),
+            "@router": path.resolve(__dirname, "src/routers"),
+            "@components": path.resolve(__dirname, "src/components"),
         },
         extensions: [".js", ".jsx", ".ts", ".tsx", ".jpg"],
     },
@@ -109,5 +116,6 @@ module.exports = {
         port: 4200,
         // react-router-dom
         historyApiFallback: true,
+        // contentBase: "./",
     },
 };

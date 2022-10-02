@@ -1,29 +1,29 @@
-import React from "react";
-import { IInvoice } from "../exports/interfaces";
+import React, { useState } from "react";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import { updateInvoice } from "@invoicesstore/invoice-reducer";
+import { SelectChangeEvent } from "@mui/material";
 
 export const useCellValue = (
-    invoices: IInvoice[],
     index: number,
     prop: string,
     table: string,
+    vatRate: number = 0.2,
     switchInput: () => void
 ) => {
     const dispatch = useTypedDispatch();
-    const getValue = (event: React.ChangeEvent<HTMLInputElement>) =>
-        setValue(event.target.value);
+    const [rate, setRate] = useState<string>(vatRate ? vatRate.toString() : "");
 
-    const setValue = (value: string) => {
-        const InvoiceToDispatch = Object.assign({}, invoices[index]);
-        if (prop === "summ") {
-            // присваиваем значение
-            InvoiceToDispatch[prop] = +value;
-            // вычисляем НДС
-            InvoiceToDispatch.nds = +((+value * 20) / 120).toFixed(2);
-        }
-        InvoiceToDispatch[prop] = value;
-        dispatch(updateInvoice(InvoiceToDispatch, table, index.toString()));
+    const getInputValue = (event: React.ChangeEvent<HTMLInputElement>) =>
+        setInputValue(event.target.value);
+
+    const getSelectValue = (event: SelectChangeEvent<string>) =>
+        setSelectValue(event.target.value);
+
+    const setInputValue = (value: string) =>
+        dispatch(updateInvoice(value, table, index.toString(), prop));
+    const setSelectValue = (value: string) => {
+        setRate(value);
+        dispatch(updateInvoice(value, table, index.toString(), prop));
     };
 
     const keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,9 +31,9 @@ export const useCellValue = (
             const ChangeEvent =
                 event as unknown as React.ChangeEvent<HTMLInputElement>;
             switchInput();
-            return setValue(ChangeEvent.target.value);
+            return setInputValue(ChangeEvent.target.value);
         }
     };
 
-    return [getValue, keyDown] as const;
+    return [getInputValue, getSelectValue, keyDown, rate] as const;
 };

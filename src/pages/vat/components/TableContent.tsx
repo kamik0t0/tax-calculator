@@ -2,7 +2,7 @@ import {
     deleteRow as deleteTableRow,
     setCheckBox,
 } from "@invoicesstore/invoice-reducer";
-import { Checkbox, TableBody, TableRow } from "@mui/material";
+import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import RemoveRow from "@sharedcomponents/RemoveRow";
 import React, { FC } from "react";
@@ -10,11 +10,9 @@ import { Cell } from "../exports/components";
 import { IInvoice } from "../exports/interfaces";
 
 const TableContent: FC<{
-    invoices: IInvoice[];
     filtered: IInvoice[];
     table: string;
-    clientType: string;
-}> = ({ invoices, filtered, table, clientType }) => {
+}> = ({ filtered, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
     return (
@@ -22,67 +20,81 @@ const TableContent: FC<{
             <TableBody>
                 {filtered.map((invoice: IInvoice, index: number) => (
                     <TableRow key={index}>
-                        <Checkbox
-                            checked={invoice.checked}
-                            onChange={() => dispatch(setCheckBox(index, table))}
-                            sx={{ marginTop: 1 }}
-                        />
+                        <TableCell sx={{ width: 40 }}>
+                            <Checkbox
+                                size="small"
+                                checked={invoice.checked}
+                                onChange={() =>
+                                    dispatch(setCheckBox(index, table))
+                                }
+                                sx={{ ml: 1 }}
+                            />
+                        </TableCell>
+
                         <Cell
-                            invoices={invoices}
                             table={table}
-                            name="Номер"
                             index={index}
                             prop="number"
                             type=""
                             disabled={false}
+                            width={40}
                         >
                             {invoice.number}
                         </Cell>
                         <Cell
-                            invoices={invoices}
                             table={table}
-                            name="Дата"
                             index={index}
                             prop="date"
                             type="date"
                             disabled={false}
+                            width={120}
                         >
                             {invoice.date}
                         </Cell>
                         <Cell
-                            invoices={invoices}
                             table={table}
-                            name={clientType}
                             index={index}
                             prop="client"
                             type=""
                             disabled={false}
+                            width={230}
                         >
                             {invoice.client}
                         </Cell>
                         <Cell
-                            invoices={invoices}
                             table={table}
-                            name="в т.ч. НДС"
+                            index={index}
+                            prop="rate"
+                            type="select"
+                            disabled={false}
+                            width={140}
+                            vatRate={invoice.rate}
+                        >
+                            {invoice.rate}
+                        </Cell>
+                        <Cell
+                            table={table}
                             index={index}
                             prop="nds"
                             type="number"
-                            disabled={true}
+                            disabled={false}
+                            width={100}
                         >
                             {invoice.nds}
                         </Cell>
                         <Cell
-                            invoices={invoices}
                             table={table}
-                            name="Сумма"
                             index={index}
                             prop="summ"
                             type="number"
                             disabled={false}
+                            width={110}
                         >
                             {invoice.summ}
                         </Cell>
-                        <RemoveRow action={deleteRow} index={index} />
+                        <TableCell>
+                            <RemoveRow action={deleteRow} index={index} />
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

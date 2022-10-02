@@ -1,27 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Card } from "@mui/material";
 import React from "react";
-import { Button, Card } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { Outlet } from "react-router-dom";
+import { BreadCrumbs } from "@components/index";
 
 const Layout: React.FC = () => {
-    // const dispatch = useTypedDispatch();
-    // const { data } = useTypedSelector((state) => state.wrappedSlice);
-    // console.log(data);
-
     return (
         <>
-            {/* <Button
-                onClick={() => {
-                    const items = localStorage.getItem("sales");
-                    if (items) {
-                        dispatch(success(JSON.parse(items)));
-                        dispatch(magic(JSON.parse(items)));
-                    }
+            <Card
+                sx={{
+                    width: "100vw",
+                    height: "91vh",
+                    overflow: "clip",
                 }}
             >
-                increment
-            </Button> */}
-            <Card sx={{ width: "100vw", height: "90vh", overflow: "auto" }}>
+                <BreadCrumbs />
                 <Outlet />
             </Card>
         </>

@@ -13,6 +13,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Filter, TableContent, TableHeader } from "../exports/components";
 import { IInvoice } from "../exports/interfaces";
 import { newInvoice } from "../exports/scripts";
+import { useScrollToLastRow } from "@customhooks/useScrollToLastRow";
 
 const InvoiceTable: FC<{
     invoices: IInvoice[];
@@ -23,8 +24,12 @@ const InvoiceTable: FC<{
     const elevation = theme.palette.mode === "dark" ? 10 : 1;
     const dispatch = useTypedDispatch();
     const [filtered, setFiltered] = useState<IInvoice[]>(invoices || []);
+    const setConteinerHeight = useScrollToLastRow("lastRow");
 
-    const createInvoice = () => dispatch(addRow(newInvoice, table));
+    const createInvoice = () => {
+        setConteinerHeight(1);
+        dispatch(addRow(newInvoice, table));
+    };
     const deleteInvoices = () => dispatch(deleteRows(table));
 
     useEffect(() => {
@@ -36,25 +41,38 @@ const InvoiceTable: FC<{
             <Stack direction="row" spacing={2}>
                 <Box sx={{ width: 1 }}>
                     <Filter invoices={invoices} setFiltered={setFiltered} />
-                    <TableContainer component={Paper} elevation={elevation}>
-                        <Table aria-label="simple table">
-                            <TableHeader
-                                clientType={clientType}
-                                filtered={filtered}
-                                table={table}
+                    <Paper
+                        component="div"
+                        sx={{
+                            width: "100%",
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                        }}
+                        elevation={elevation}
+                    >
+                        <TableContainer sx={{ maxHeight: 570 }}>
+                            <Table
+                                stickyHeader
+                                size="small"
+                                aria-label="a dense table"
+                                id="InvoiceTable"
+                            >
+                                <TableHeader
+                                    clientType={clientType}
+                                    filtered={filtered}
+                                    table={table}
+                                />
+                                <TableContent
+                                    filtered={filtered}
+                                    table={table}
+                                />
+                            </Table>
+                            <LastRow
+                                createItem={createInvoice}
+                                deleteItem={deleteInvoices}
                             />
-                            <TableContent
-                                invoices={invoices}
-                                filtered={filtered}
-                                table={table}
-                                clientType={clientType}
-                            />
-                        </Table>
-                        <LastRow
-                            createItem={createInvoice}
-                            deleteItem={deleteInvoices}
-                        />
-                    </TableContainer>
+                        </TableContainer>
+                    </Paper>
                 </Box>
             </Stack>
         </>

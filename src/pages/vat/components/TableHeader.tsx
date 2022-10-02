@@ -4,7 +4,6 @@ import ArrowDownwardSharpIcon from "@mui/icons-material/ArrowDownwardSharp";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Box, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
-import { makePointer } from "@utils/makePointer";
 import React, { FC } from "react";
 import { IInvoice } from "../exports/interfaces";
 import { HeaderNames, SortFields } from "../exports/utils";
@@ -15,10 +14,10 @@ const TableHeader: FC<{
     table: string;
 }> = ({ clientType, filtered, table }) => {
     const dispatch = useTypedDispatch();
-    const { byDate, byNumber, byString, sortOrder } = useSort(filtered);
+    const { byNumber, byString, sortOrder } = useSort(filtered);
 
     const sortByDate = (event: React.MouseEvent<HTMLTableCellElement>) =>
-        dispatch(updateInvoices(byDate(SortFields.date), table));
+        dispatch(updateInvoices(byNumber(SortFields.date), table));
 
     const sortByString = (event: React.MouseEvent<HTMLTableCellElement>) =>
         dispatch(updateInvoices(byString(SortFields.client), table));
@@ -29,8 +28,8 @@ const TableHeader: FC<{
     return (
         <TableHead>
             <TableRow>
-                <TableCell align="center">
-                    <Box>
+                <TableCell sx={{ width: 40 }}>
+                    <Box sx={{ ml: 2 }}>
                         {sortOrder ? (
                             <ArrowDownwardSharpIcon sx={{ height: 15 }} />
                         ) : (
@@ -38,41 +37,50 @@ const TableHeader: FC<{
                         )}
                     </Box>
                 </TableCell>
+
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 40 }}
                     onClick={sortByString}
                     align="center"
                 >
                     {HeaderNames.number}
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 130 }}
                     onClick={sortByDate}
                     align="center"
                 >
                     {HeaderNames.date}
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 230 }}
                     onClick={sortByString}
                     align="center"
                 >
                     {clientType}
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 140 }}
+                    onClick={sortByNumber}
+                    align="center"
+                >
+                    {HeaderNames.rate}
+                </TableCell>
+                <TableCell
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByNumber}
                     align="center"
                 >
                     {HeaderNames.nds}
                 </TableCell>
                 <TableCell
-                    sx={makePointer()}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 110 }}
                     onClick={sortByNumber}
                     align="center"
                 >
                     {HeaderNames.summ}
                 </TableCell>
+                <TableCell sx={{ width: 20 }}>Удалить</TableCell>
             </TableRow>
         </TableHead>
     );

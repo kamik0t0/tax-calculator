@@ -2,9 +2,10 @@ import { ISummary } from "./summary";
 
 export interface IInvoice {
     number: string;
-    date: string;
+    date: number;
     client: string;
     nds: number;
+    rate: number;
     summ: number;
     checked: boolean;
     [prop: string]: string | number | boolean;

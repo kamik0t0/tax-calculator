@@ -1,6 +1,8 @@
 import { ChangeEvent } from "react";
 import { IPropSignature } from "../types/propSignature";
 
+// TODO: refactor - отвязать функции фильтрации по сумме от конкретных значений свойств. Свойства должны приходить параметрами
+
 export const filterByString = <T extends IPropSignature>(
     event: ChangeEvent<HTMLInputElement>,
     items: T[],
@@ -13,13 +15,13 @@ export const filterByString = <T extends IPropSignature>(
     );
 };
 
-export const filterByDate = <T extends { date: string }>(
+export const filterByDate = <T extends { date: number }>(
     items: T[],
     dateStart: number,
     dateEnd: number
 ) => {
     return [...items].filter((item) => {
-        const invoiceDate = Date.parse(item.date);
+        const invoiceDate = item.date;
         return invoiceDate >= dateStart && invoiceDate <= dateEnd;
     });
 };

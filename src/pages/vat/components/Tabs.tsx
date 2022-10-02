@@ -13,7 +13,6 @@ const Tabs: FC<{
             onChange={handleChange}
             aria-label="basic tabs example"
             centered={true}
-            sx={{ height: 50 }}
         >
             <Tab label={TabsTables.Sale} {...a11yProps(0)} />
             <Tab label={TabsTables.Purchase} {...a11yProps(1)} />

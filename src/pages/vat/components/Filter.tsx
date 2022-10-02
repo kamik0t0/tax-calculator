@@ -1,5 +1,6 @@
-import { Box, InputLabel, TextField } from "@mui/material";
+import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import React, { Dispatch, FC, SetStateAction } from "react";
+import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import { FilterSelect } from "../exports/components";
 import {
     useFilter,
@@ -9,6 +10,7 @@ import {
 } from "../exports/hooks";
 import { IInvoice } from "../exports/interfaces";
 import { filterColumns, summColumns } from "../exports/utils";
+import { useTypedDispatch } from "@reduxhooks/hooks";
 
 type FilterTyped = {
     invoices: IInvoice[];
@@ -16,6 +18,7 @@ type FilterTyped = {
 };
 
 const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
+    const dispatch = useTypedDispatch();
     // хук "раскрыть/закрыть" колонки фильтрации
     const [handleSelectColumn, handleSelectSummCriterion] = useSelectColumn();
     // хук значений фильтрации
@@ -42,6 +45,17 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
         endDateDisplay,
     ] = useInputDateValue(invoices, setFiltered);
 
+    const reset = () => {
+        dispatch(
+            showSuccessSnackBar({
+                open: true,
+                severity: "info",
+                message: "Результат фильтрации сброшен!",
+            })
+        );
+        setFiltered(invoices);
+    };
+
     return (
         <>
             <Box
@@ -50,11 +64,13 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
                     direction: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: 40,
-                    mb: 1,
+                    height: 30,
+                    mb: 3,
                 }}
             >
-                <InputLabel sx={{ color: "#2477CC" }}>Фильтр по:</InputLabel>
+                <InputLabel sx={{ color: "#2477CC" }}>
+                    <Typography>Фильтр по:</Typography>
+                </InputLabel>
                 <FilterSelect
                     onClick={handleSelectColumn}
                     onChange={handleChangeColumn}
@@ -115,6 +131,9 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
                         type={inputType}
                     />
                 )}
+                <Button variant="outlined" sx={{ ml: 3 }} onClick={reset}>
+                    Сброс
+                </Button>
             </Box>
         </>
     );

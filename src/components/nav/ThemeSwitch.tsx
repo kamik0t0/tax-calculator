@@ -1,6 +1,6 @@
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import React from "react";
@@ -10,28 +10,31 @@ const ThemeSwitcher: React.FC = () => {
     const theme = useTheme();
     const colorMode = useColorModeContext();
     return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                ml: 6,
-                mr: 2,
-            }}
-        >
-            {theme.palette.mode === "light" ? (
-                <WbSunnyIcon />
-            ) : (
-                <DarkModeIcon />
-            )}
-            <Switch
-                color="default"
+        <Tooltip title="Тема" placement="right" enterDelay={300}>
+            <Box
                 sx={{
-                    ml: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    ml: 8,
+                    mr: 2,
+                    width: 75,
                 }}
-                onClick={colorMode.toggleColorMode}
-            />
-        </Box>
+            >
+                {theme.palette.mode === "light" ? (
+                    <WbSunnyIcon />
+                ) : (
+                    <DarkModeIcon />
+                )}
+                <Switch
+                    color="default"
+                    sx={{
+                        ml: 1,
+                    }}
+                    onClick={colorMode.toggleColorMode}
+                />
+            </Box>
+        </Tooltip>
     );
 };
 
