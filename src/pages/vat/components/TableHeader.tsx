@@ -39,7 +39,7 @@ const TableHeader: FC<{
                 </TableCell>
 
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 40 }}
+                    sx={{ "&:hover": { cursor: "pointer" }, width: 100 }}
                     onClick={sortByString}
                     align="center"
                 >

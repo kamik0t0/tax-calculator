@@ -2,7 +2,7 @@ export { default } from "../Invoices";
 
 export { default as Filter } from "../components/Filter";
 export { default as FilterSelect } from "../components/FilterSelect";
-export { default as Cell } from "../components/Cell";
+export { default as SelectRateCell } from "../components/SelectRate/SelectRateCell";
 export { default as Invoices } from "../components/Invoices";
 export { default as InvoiceTable } from "../components/Table";
 export { default as TableContent } from "../components/TableContent";

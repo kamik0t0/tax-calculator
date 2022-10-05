@@ -8,8 +8,8 @@ export const salaryEmployeeDelete = (
     const leftSalaries: ISalary[] = [];
     const mapped1: string[] = [...employees].map((elem) => elem.id);
     const mapped2: string[] = [...salary].map((elem) => elem.id);
-    // employees.length === 0 - при первом запуске приложения либо при обновлении
-    if (employees.length > 0) {
+    // salary.length = 0 - при первом запуске приложения либо при обновлении, т.е. в данном случае все данные в таблице начислений (если например стартануть не с неё) просто сотрутся
+    if (salary.length > 0) {
         mapped2.forEach((id) => {
             const existedAccrual = salary.find(
                 (accrual: ISalary) => accrual.id === id

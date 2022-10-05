@@ -118,7 +118,7 @@ export const initialState: ISalaries = {
         name: "",
         surname: "",
         position: "",
-        birth: "",
+        birth: 0,
         sex: "",
         patronymic: "",
     },

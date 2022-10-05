@@ -6,6 +6,11 @@ function createData(
     name: string,
     pay: number,
     accrued: number,
+    cumulativeAccrual: number,
+    overSocialLimit: number,
+    overRetirmentLimit: number,
+    insuranceRetirementBase: number,
+    insuranceSocialBase: number,
     childrenQtty: number,
     tax: number,
     insurance: {
@@ -16,7 +21,8 @@ function createData(
         total: number;
     },
     insuranceTotal: number,
-    checked: boolean
+    checked: boolean,
+    civilContract: boolean
 ): ISalary {
     return {
         id,
@@ -24,11 +30,17 @@ function createData(
         name,
         pay,
         accrued,
+        cumulativeAccrual,
+        overSocialLimit,
+        overRetirmentLimit,
+        insuranceRetirementBase,
+        insuranceSocialBase,
         childrenQtty,
         tax,
         insurance,
         insuranceTotal,
         checked,
+        civilContract,
     };
 }
 
@@ -36,6 +48,11 @@ export const newSalaryTableRow = createData(
     "",
     "",
     "",
+    0,
+    0,
+    0,
+    0,
+    0,
     0,
     0,
     0,
@@ -48,6 +65,7 @@ export const newSalaryTableRow = createData(
         total: 0,
     },
     0,
+    false,
     false
 );
 
@@ -55,8 +73,6 @@ export const newEmployee: IEmployee = {
     id: "",
     name: "",
     surname: "",
-    patronymic: "",
     position: "",
-    birth: "",
-    sex: "",
+    birth: 0,
 };

@@ -2,16 +2,21 @@ import { useLocalStorage } from "@customhooks/useLocalStorage";
 import {
     Box,
     Button,
+    Card,
     Container,
     FormControl,
     InputLabel,
     MenuItem,
     Select,
     SelectChangeEvent,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
 } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import {
-    deleteEmployee,
     setEmployeeById,
     setEmployees,
     setEmployeesToStorage,
@@ -20,18 +25,21 @@ import React from "react";
 import {
     setDialogEmployee,
     setDialogEmployeeDelete,
+    setDialogReportEmployee,
 } from "@dialogstore/dialog-reducer";
 import DeleteEmployeeDialog from "./deleteEmployeeDialog";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
+import { EmployeeDialog } from "../accrual/exports/components";
+import { timestampToNativeToLocaleString } from "@helpers/dateHelpers";
+import EmployeeReportDialog from "./employeeReportDialog";
 
-const Employees: React.FC = (props) => {
+const Employees: React.FC = () => {
     const dispatch = useTypedDispatch();
     const { employees, employee } = useTypedSelector(
         (state) => state.salarySlice
     );
-    const { dialogDeleteEmployee } = useTypedSelector(
-        (state) => state.dialogSlice
-    );
+    const { dialogDeleteEmployee, dialogEmployee, dialogReportEmployee } =
+        useTypedSelector((state) => state.dialogSlice);
 
     const watchedEmployees = useLocalStorage(
         "employees",
@@ -77,6 +85,20 @@ const Employees: React.FC = (props) => {
             return;
         }
     };
+    const reportEmployeeHandler = () => {
+        if (employee.id !== "") {
+            dispatch(setDialogReportEmployee(true));
+        } else {
+            dispatch(
+                showSuccessSnackBar({
+                    open: true,
+                    severity: "warning",
+                    message: "Сотрудник не выбран",
+                })
+            );
+            return;
+        }
+    };
 
     return (
         <>
@@ -84,10 +106,10 @@ const Employees: React.FC = (props) => {
                 sx={{
                     display: "flex",
                     flexDirection: "column",
-                    height: 100,
-                    width: 200,
+                    alignItems: "center",
+                    height: 250,
+                    width: "80vw",
                     mt: 2,
-                    ml: 2,
                 }}
             >
                 <FormControl sx={{ mb: 3 }}>
@@ -111,26 +133,70 @@ const Employees: React.FC = (props) => {
                         ))}
                     </Select>
                 </FormControl>
+                <TableContainer component={Card}>
+                    <Table
+                        stickyHeader
+                        sx={{ minWidth: 650 }}
+                        aria-label="simple table"
+                    >
+                        {employee && (
+                            <TableBody sx={{ height: 60 }}>
+                                <TableRow>
+                                    <TableCell align="center">
+                                        {employee.surname +
+                                            " " +
+                                            employee.name +
+                                            " " +
+                                            employee?.patronymic}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {employee?.position}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {employee.birth
+                                            ? timestampToNativeToLocaleString(
+                                                  employee.birth
+                                              )
+                                            : ""}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {employee.sex
+                                            ? employee.sex === "male"
+                                                ? "Мужской"
+                                                : "Женский"
+                                            : ""}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        )}
+                    </Table>
+                </TableContainer>
                 <Box
                     sx={{
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        width: 400,
+                        width: 800,
+                        mt: 3,
                     }}
                 >
                     <Button variant="outlined" onClick={openEmployee}>
                         Добавить
                     </Button>
+                    <Button variant="outlined" onClick={deleteEmployeeHandler}>
+                        Удалить
+                    </Button>
                     <Button variant="outlined" onClick={editEmployee}>
                         Редактировать
                     </Button>
-                    <Button variant="outlined" onClick={deleteEmployeeHandler}>
-                        Удалить
+                    <Button variant="outlined" onClick={reportEmployeeHandler}>
+                        Отчет по начислениям
                     </Button>
                 </Box>
             </Container>
             {dialogDeleteEmployee && <DeleteEmployeeDialog />}
+            {dialogEmployee && <EmployeeDialog />}
+            {dialogReportEmployee && <EmployeeReportDialog />}
         </>
     );
 };

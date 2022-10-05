@@ -58,7 +58,7 @@ export interface IEmployee {
     name: string;
     surname: string;
     position: string;
-    birth: string;
+    birth: number;
     sex?: string;
     patronymic?: string;
     [prop: string]: any;
@@ -70,11 +70,17 @@ export interface ISalary {
     name: string;
     pay: number;
     accrued: number;
+    cumulativeAccrual: number;
+    overSocialLimit: number;
+    overRetirmentLimit: number;
+    insuranceRetirementBase: number;
+    insuranceSocialBase: number;
     childrenQtty: number;
     tax: number;
     insurance: IInsurance;
     insuranceTotal: number;
     checked: boolean;
+    civilContract: boolean;
     [prop: string]: any;
 }
 

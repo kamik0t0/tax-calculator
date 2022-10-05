@@ -133,7 +133,7 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
-            "@sharedcomponents/*": ["shared/*"],
+            "@sharedcomponents/*": ["shared/components/*"],
             "@customhooks/*": ["hooks/*"],
             "@helpers/*": ["helpers/*"],
             "@scripts/*": ["scripts/*"],
@@ -141,7 +141,7 @@
             "@reduxhooks/*": ["redux/hooks/*"],
             "@salarystore/*": ["pages/salary/pages/accrual/slice/*"],
             "@invoicesstore/*": ["pages/vat/slice/*"],
-            "@uistore/*": ["redux/slice/*"],
+            "@uistore/*": ["redux/ui-slice/*"],
             "@dialogstore/*": ["redux/dialog-slice/*"],
             "@themes/*": ["themes/*"],
             "@router/*": ["routers/*"],

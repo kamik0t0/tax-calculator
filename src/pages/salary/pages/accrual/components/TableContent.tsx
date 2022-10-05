@@ -1,13 +1,25 @@
-import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
+import { toRU } from "@helpers/currencyFormat";
+import {
+    Checkbox,
+    TableBody,
+    TableCell,
+    TableRow,
+    Typography,
+} from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import {
     deleteRow as deleteTableRow,
     setCheckBox,
+    setCivil,
+    updateSalary,
 } from "@salarystore/salary-reducer";
+import InputCell from "@sharedcomponents/InputCell";
 import RemoveRow from "@sharedcomponents/RemoveRow";
+import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import React, { FC } from "react";
-import { Cell } from "../exports/components";
+import { useEmployees } from "../exports/hooks";
 import { ISalary } from "../exports/interfaces";
+import SelectEmployeeCell from "./SelectEmployee/SelectEmployeeCell";
 
 const TableContent: FC<{
     salary: ISalary[];
@@ -18,20 +30,39 @@ const TableContent: FC<{
         dispatch(deleteTableRow(index, table));
     };
 
+    // number
+    const getInputData = (
+        value: string | number,
+        index: number,
+        prop: string
+    ) => {
+        if (salary[index].employeeId.length === 0)
+            return dispatch(
+                showSuccessSnackBar({
+                    open: true,
+                    severity: "warning",
+                    message: "Выберите сотрудника либо удалите строку",
+                })
+            );
+        dispatch(
+            showSuccessSnackBar({
+                open: true,
+                severity: "warning",
+                message: "Не забудьте пересчитать взносы",
+            })
+        );
+        dispatch(updateSalary(value, table, index.toString(), prop));
+    };
+
+    // select
+    const [getSelectValue, filteredEmployees] = useEmployees(table);
+
     return (
         <>
             <TableBody>
                 {salary.map((employeeSalary: ISalary, index: number) => (
                     <TableRow key={employeeSalary.id}>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="number"
-                            type="string"
-                            inputMode="text"
-                            disabled={true}
-                            width={0}
-                        >
+                        <TableCell align="center">
                             <Checkbox
                                 size="small"
                                 checked={employeeSalary.checked}
@@ -39,86 +70,63 @@ const TableContent: FC<{
                                     dispatch(setCheckBox(index, table))
                                 }
                             />
-                        </Cell>
-                        <Cell
-                            table={table}
+                        </TableCell>
+                        <TableCell align="center">
+                            <Typography>{index + 1}</Typography>
+                        </TableCell>
+                        <SelectEmployeeCell
+                            employeeId={employeeSalary.employeeId}
                             index={index}
-                            prop="number"
-                            type="string"
-                            inputMode="text"
-                            disabled={true}
-                            width={0}
-                        >
-                            {index + 1}
-                        </Cell>
-                        <Cell
-                            defaultEmployeeId={employeeSalary.employeeId}
-                            table={table}
-                            index={index}
-                            prop="employee"
-                            type="select"
-                            inputMode="text"
-                            disabled={false}
                             width={350}
+                            selectItems={filteredEmployees}
+                            getSelectValue={getSelectValue}
                         >
                             {employeeSalary.name}
-                        </Cell>
-
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="accrued"
-                            type="number"
-                            inputMode="decimal"
-                            disabled={false}
+                        </SelectEmployeeCell>
+                        <TableCell align="center">
+                            <Checkbox
+                                size="small"
+                                checked={employeeSalary.civilContract}
+                                onChange={() =>
+                                    dispatch(setCivil(index, table))
+                                }
+                            />
+                        </TableCell>
+                        <InputCell
                             width={100}
-                            min={0}
+                            index={index}
+                            type="number"
+                            prop="accrued"
+                            getInputData={getInputData}
+                            isMoney={true}
                         >
                             {employeeSalary.accrued}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="pay"
-                            type="number"
-                            disabled={true}
-                            width={0}
-                        >
-                            {employeeSalary.pay}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="childrenQtty"
-                            type="number"
-                            inputMode="numeric"
-                            disabled={false}
-                            step={1}
+                        </InputCell>
+                        <TableCell align="center">
+                            <Typography>
+                                {toRU.format(employeeSalary.pay)}
+                            </Typography>
+                        </TableCell>
+                        <InputCell
                             width={60}
-                            min={0}
+                            index={index}
+                            type="number"
+                            prop="childrenQtty"
+                            step={1}
+                            getInputData={getInputData}
                         >
                             {employeeSalary.childrenQtty}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="tax"
-                            type="number"
-                            disabled={true}
-                            width={0}
-                        >
-                            {employeeSalary.tax}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="insurance"
-                            type="number"
-                            disabled={true}
-                            width={0}
-                        >
-                            {employeeSalary.insuranceTotal}
-                        </Cell>
+                        </InputCell>
+                        <TableCell align="center">
+                            <Typography>
+                                {toRU.format(+employeeSalary.tax.toFixed())}
+                            </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                            <Typography>
+                                {toRU.format(employeeSalary.insuranceTotal)}
+                            </Typography>
+                        </TableCell>
                         <TableCell>
                             <RemoveRow action={deleteRow} index={index} />
                         </TableCell>

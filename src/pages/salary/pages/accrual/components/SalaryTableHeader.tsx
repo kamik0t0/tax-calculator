@@ -64,6 +64,9 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
                     >
                         Сотрудник
                     </TableCell>
+                    <TableCell sx={{ width: 30 }} align="center">
+                        ГПХ
+                    </TableCell>
                     <TableCell
                         sx={{ "&:hover": { cursor: "pointer" }, width: 100 }}
                         onClick={sortByAccrued}

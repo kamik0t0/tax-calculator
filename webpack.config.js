@@ -90,7 +90,10 @@ module.exports = {
     },
     resolve: {
         alias: {
-            "@sharedcomponents": path.resolve(__dirname, "src/shared"),
+            "@sharedcomponents": path.resolve(
+                __dirname,
+                "src/shared/components"
+            ),
             "@customhooks": path.resolve(__dirname, "src/hooks"),
             "@helpers": path.resolve(__dirname, "src/helpers"),
             "@scripts": path.resolve(__dirname, "src/scripts"),
@@ -100,7 +103,7 @@ module.exports = {
                 __dirname,
                 "src/pages/salary/pages/accrual/slice"
             ),
-            "@uistore": path.resolve(__dirname, "src/redux/slice"),
+            "@uistore": path.resolve(__dirname, "src/redux/ui-slice"),
             "@dialogstore": path.resolve(__dirname, "src/redux/dialog-slice"),
             "@invoicesstore": path.resolve(__dirname, "src/pages/vat/slice"),
             "@themes": path.resolve(__dirname, "src/themes"),

@@ -24,6 +24,7 @@ export function useLocalStorage<T>(
 
     const getStorageData = () => {
         const storageData = localStorage.getItem(key);
+
         if (storageData) return JSON.parse(storageData);
         else return items;
     };

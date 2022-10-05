@@ -14,7 +14,7 @@ import {
     addRow,
     deleteRows,
     fillByPrevMonth,
-    recalculateMonth,
+    setTaxStateRate as reCalculateAll,
 } from "@salarystore/salary-reducer";
 import LastRow from "@sharedcomponents/LastRow";
 import React, { FC, memo } from "react";
@@ -32,6 +32,7 @@ const SalaryTable: FC<{
 }> = memo(({ salary, summary, table }) => {
     const dispatch = useTypedDispatch();
     const slice = useTypedSelector((state) => state.salarySlice);
+    const { rateCode } = useTypedSelector((state) => state.salarySlice);
     const theme = useTheme();
     const elevation = theme.palette.mode === "dark" ? 10 : 1;
     const newRow = Object.assign({}, newSalaryTableRow, {
@@ -41,7 +42,7 @@ const SalaryTable: FC<{
     const setConteinerHeight = useScrollToLastRow("lastRow");
 
     const createItem = () => {
-        setConteinerHeight(1);
+        setConteinerHeight(Math.random());
         dispatch(addRow(newRow, table));
     };
     const deleteItems = () => dispatch(deleteRows(table));
@@ -88,7 +89,7 @@ const SalaryTable: FC<{
                 message: "Взносы пересчитаны!",
             })
         );
-        dispatch(recalculateMonth(table));
+        dispatch(reCalculateAll(rateCode));
     };
 
     return (

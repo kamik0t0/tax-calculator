@@ -19,7 +19,7 @@ export const updateInvoiceReducer = () => ({
     reducer(
         state: IInvoices,
         action: PayloadAction<
-            string,
+            string | number,
             string,
             { table: string; index: string; prop: string }
         >
@@ -30,7 +30,12 @@ export const updateInvoiceReducer = () => ({
         const invoice = calcInvoice(value, prop, invoices, +index);
         state[table][+index] = invoice;
     },
-    prepare(payload: string, table: string, index: string, prop: string) {
+    prepare(
+        payload: string | number,
+        table: string,
+        index: string,
+        prop: string
+    ) {
         return { payload, meta: { table, index, prop } };
     },
 });

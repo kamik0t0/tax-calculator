@@ -20,6 +20,7 @@ import React, { FC, useEffect, useState } from "react";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import { IEmployee } from "../types/salary";
 import { setDialogEmployee } from "@dialogstore/dialog-reducer";
+import { timestampToNativeHTMLStringConverter } from "@helpers/dateHelpers";
 
 // TODO: придумать как вызывать диалог с разными children
 const FormDialog: FC = () => {
@@ -83,9 +84,10 @@ const FormDialog: FC = () => {
         setDialogValues({ ...dialogValues, position: event.target.value });
     };
     const handleBirthDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const HTMLDate = event.target.value;
         setDialogValues({
             ...dialogValues,
-            birth: event.target.value,
+            birth: Date.parse(HTMLDate),
         });
     };
     const handleSex = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,7 +182,9 @@ const FormDialog: FC = () => {
                             id="name"
                             type="date"
                             label="Дата рождения"
-                            value={dialogValues?.birth}
+                            value={timestampToNativeHTMLStringConverter(
+                                dialogValues?.birth
+                            )}
                             variant="standard"
                             InputLabelProps={{
                                 shrink: true,

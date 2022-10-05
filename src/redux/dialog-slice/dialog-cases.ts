@@ -13,3 +13,9 @@ export const setDialogEmployeeDeleteRducer: CaseReducer<
 > = (state, action) => {
     state.dialogDeleteEmployee = action.payload;
 };
+export const setDialogReportEmployeeRducer: CaseReducer<
+    IDialog,
+    PayloadAction<boolean>
+> = (state, action) => {
+    state.dialogReportEmployee = action.payload;
+};

@@ -1,13 +1,7 @@
-import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
-import employees from "../../employees";
+import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
 import { newEmployee } from "../exports/utils";
-import {
-    calcBasicPIT,
-    calcPIT,
-    calcTax,
-    recalculateMonth,
-} from "./scripts/calculateTaxes";
+import { calcPIT, calcTax } from "./scripts/calculateTaxes";
 import { fillByPrevMonth } from "./scripts/fillByPrevMonth";
 
 // Удаление начисления по сотруднику в конкретном месяце
@@ -47,15 +41,6 @@ export const fillByPrevMonthReducer: CaseReducer<
 > = (state, action) => {
     const table = action.payload;
     const filledMonth: ISalary[] = fillByPrevMonth(state, table);
-    state.months[table].salary = filledMonth;
-};
-// Заполнить текущую таблицу на основе предыдущей
-export const recalculateMonthReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const table = action.payload;
-    const filledMonth: ISalary[] = recalculateMonth(state, table);
     state.months[table].salary = filledMonth;
 };
 // TODO переписать на разные редюсеры (избавиться от switch)
@@ -125,14 +110,34 @@ export const setSalaryTaxRateReducer: CaseReducer<
         // пересчет взносов в месяце
         if (salary.length > 0) {
             salary.forEach((employee, index) => {
-                const { accident, medical, retirement, social, total } =
-                    calcTax(
-                        state,
-                        employee.accrued,
-                        table,
-                        index,
-                        state.rateCode
-                    );
+                const {
+                    accident,
+                    medical,
+                    retirement,
+                    social,
+                    total,
+                    overSocialLimit,
+                    employeeCumulativeTotal,
+                    overRetirmentLimit,
+                    insuranceRetirementBase,
+                    insuranceSocialBase,
+                } = calcTax(
+                    state,
+                    employee.accrued,
+                    table,
+                    index,
+                    state.rateCode
+                );
+
+                const { PIT, payment } = calcPIT(
+                    state,
+                    employee.childrenQtty,
+                    table,
+                    index
+                );
+
+                state.months[table].salary[index].tax = +PIT;
+                state.months[table].salary[index].pay = +payment;
 
                 state.months[table].salary[index].insurance.accident =
                     +accident;
@@ -141,11 +146,21 @@ export const setSalaryTaxRateReducer: CaseReducer<
                     +retirement;
                 state.months[table].salary[index].insurance.social = +social;
                 state.months[table].salary[index].insuranceTotal = +total;
+                state.months[table].salary[index].cumulativeAccrual =
+                    employeeCumulativeTotal;
+                state.months[table].salary[index].overSocialLimit =
+                    overSocialLimit;
+                state.months[table].salary[index].overRetirmentLimit =
+                    overRetirmentLimit;
+                state.months[table].salary[index].insuranceRetirementBase =
+                    insuranceRetirementBase;
+                state.months[table].salary[index].insuranceSocialBase =
+                    insuranceSocialBase;
             });
         }
     }
 };
-// checkbox сотрудника в таблице
+// выбор (checkbox) сотрудника в таблице
 export const setCheckBoxReducer = () => ({
     reducer(
         state: ISalaries,
@@ -160,6 +175,22 @@ export const setCheckBoxReducer = () => ({
         return { payload, meta: { table } };
     },
 });
+// ГПХ / Трудовой
+export const setCivilReducer = () => ({
+    reducer(
+        state: ISalaries,
+        action: PayloadAction<number, string, { table: string }>
+    ) {
+        const index = action.payload;
+        const { table } = action.meta;
+        state.months[table].salary[index].civilContract =
+            !state.months[table].salary[index].civilContract;
+    },
+    prepare(payload: number, table: string) {
+        return { payload, meta: { table } };
+    },
+});
+
 // Добавление сотрудника в таблицу
 export const addRowReducer = () => {
     return {

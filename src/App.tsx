@@ -1,10 +1,9 @@
 import { CustomContext } from "@customhooks/customContext";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import AppRouter from "@router/AppRouter";
 import { getDesignTokens } from "@themes/themes";
-import DeleteEmployeeDialog from "./pages/salary/pages/employees/deleteEmployeeDialog";
 import React, { useMemo, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { CustomDrawer, SnackBars } from "./components/index";
@@ -15,9 +14,7 @@ export const [useColorModeContext, ColorProvider] = CustomContext<{
 }>();
 
 const App: React.FC = () => {
-    const { dialogEmployee, dialogDeleteEmployee } = useTypedSelector(
-        (state) => state.dialogSlice
-    );
+    const { dialogEmployee } = useTypedSelector((state) => state.dialogSlice);
     const [mode, setMode] = useState<PaletteMode>("dark");
     const colorMode = useMemo(
         () => ({
@@ -40,7 +37,6 @@ const App: React.FC = () => {
                     <AppRouter />
                     <SnackBars />
                     {dialogEmployee && <EmployeeDialog />}
-                    {dialogDeleteEmployee && <DeleteEmployeeDialog />}
                 </ThemeProvider>
             </ColorProvider>
         </BrowserRouter>

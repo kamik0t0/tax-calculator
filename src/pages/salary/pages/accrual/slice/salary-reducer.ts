@@ -36,9 +36,9 @@ const createGenericSlice = <Reducers extends SliceCaseReducers<ISalaries>>({
             setSalaryDistrictCoeff:
                 SalaryReducers.setSalaryDistrictCoeffReducer,
             setMinimalSalary: SalaryReducers.setMinimalSalaryReducer,
-            recalculateMonth: SalaryReducers.recalculateMonthReducer,
             setEmployeeById: SalaryReducers.setEmployeeByIdReducer,
             deleteEmployee: SalaryReducers.deleteEmployeeReducer,
+            setCivil: SalaryReducers.setCivilReducer(),
             ...reducers,
         },
     });
@@ -97,11 +97,11 @@ export const {
     setTaxStateRate,
     calcSummary,
     fillByPrevMonth,
-    recalculateMonth,
     setSalaryDistrictCoeff,
     setMinimalSalary,
     setEmployeeById,
     deleteEmployee,
+    setCivil,
 } = wrappedSlice.actions;
 
 export const { reducer } = wrappedSlice;

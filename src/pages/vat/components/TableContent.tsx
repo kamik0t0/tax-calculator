@@ -1,13 +1,16 @@
 import {
     deleteRow as deleteTableRow,
     setCheckBox,
+    updateInvoice,
 } from "@invoicesstore/invoice-reducer";
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import RemoveRow from "@sharedcomponents/RemoveRow";
 import React, { FC } from "react";
-import { Cell } from "../exports/components";
+import { SelectRateCell } from "../exports/components";
 import { IInvoice } from "../exports/interfaces";
+import InputCell from "@sharedcomponents/InputCell";
+import DateCell from "@sharedcomponents/DateCell";
 
 const TableContent: FC<{
     filtered: IInvoice[];
@@ -15,6 +18,20 @@ const TableContent: FC<{
 }> = ({ filtered, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
+
+    // number | string
+    const getInputData = (
+        value: string | number,
+        index: number,
+        prop: string
+    ) => dispatch(updateInvoice(value, table, index.toString(), prop));
+    // date
+    const getDate = (date: string, index: number) =>
+        dispatch(updateInvoice(date, table, index.toString(), "date"));
+    // select
+    const getSelectValue = (rate: string, index: number) =>
+        dispatch(updateInvoice(rate, table, index.toString(), "rate"));
+
     return (
         <>
             <TableBody>
@@ -31,67 +48,54 @@ const TableContent: FC<{
                             />
                         </TableCell>
 
-                        <Cell
-                            table={table}
+                        <InputCell
                             index={index}
+                            width={100}
+                            type="string"
                             prop="number"
-                            type=""
-                            disabled={false}
-                            width={40}
+                            getInputData={getInputData}
                         >
                             {invoice.number}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="date"
-                            type="date"
-                            disabled={false}
-                            width={120}
-                        >
+                        </InputCell>
+                        <DateCell width={120} index={index} getDate={getDate}>
                             {invoice.date}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="client"
-                            type=""
-                            disabled={false}
+                        </DateCell>
+                        <InputCell
                             width={230}
+                            index={index}
+                            type="string"
+                            prop="client"
+                            getInputData={getInputData}
                         >
                             {invoice.client}
-                        </Cell>
-                        <Cell
-                            table={table}
+                        </InputCell>
+                        <SelectRateCell
                             index={index}
-                            prop="rate"
-                            type="select"
-                            disabled={false}
                             width={140}
-                            vatRate={invoice.rate}
+                            getSelectValue={getSelectValue}
                         >
                             {invoice.rate}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="nds"
-                            type="number"
-                            disabled={false}
+                        </SelectRateCell>
+                        <InputCell
                             width={100}
+                            index={index}
+                            type="number"
+                            prop="nds"
+                            isMoney={true}
+                            getInputData={getInputData}
                         >
                             {invoice.nds}
-                        </Cell>
-                        <Cell
-                            table={table}
-                            index={index}
-                            prop="summ"
-                            type="number"
-                            disabled={false}
+                        </InputCell>
+                        <InputCell
                             width={110}
+                            index={index}
+                            type="number"
+                            prop="summ"
+                            isMoney={true}
+                            getInputData={getInputData}
                         >
                             {invoice.summ}
-                        </Cell>
+                        </InputCell>
                         <TableCell>
                             <RemoveRow action={deleteRow} index={index} />
                         </TableCell>

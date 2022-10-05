@@ -24,9 +24,9 @@ export const calcSummary = (
         state.summary.issued.nds;
     if (state.summary.nds < 0) state.summary.nds = 0;
 };
-
+// TODO: Прописать отдельную функцию для каждого случае и избавиться от switch
 export const calcInvoice = (
-    value: string,
+    value: string | number,
     prop: string,
     invoices: IInvoice[],
     index: number
@@ -66,7 +66,7 @@ export const calcInvoice = (
             }
             break;
         case "date":
-            InvoiceToDispatch.date = Date.parse(value);
+            InvoiceToDispatch.date = Date.parse(value.toString());
             break;
         case "nds":
             InvoiceToDispatch.nds = +value;
