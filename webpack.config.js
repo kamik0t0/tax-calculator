@@ -49,7 +49,7 @@ module.exports = {
     output: {
         filename: filename("js"),
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/tax-calculator/",
+        publicPath: "/tax-calculator/",
     },
     plugins: [
         new HtmlWebpackPlugin({
