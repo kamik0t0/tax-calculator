@@ -143,11 +143,12 @@ const Employees: React.FC = () => {
                             <TableBody sx={{ height: 60 }}>
                                 <TableRow>
                                     <TableCell align="center">
-                                        {employee.surname +
+                                        {" " +
+                                            employee.surname +
                                             " " +
                                             employee.name +
                                             " " +
-                                            employee?.patronymic}
+                                            employee.patronymic}
                                     </TableCell>
                                     <TableCell align="center">
                                         {employee?.position}
