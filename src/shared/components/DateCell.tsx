@@ -11,9 +11,7 @@ const DateCell: FC<{
 }> = ({ children, width, index, getDate }) => {
     const [input, setInput] = useState<boolean>(false);
 
-    const handleSwitchInput = () => {
-        setInput(!input);
-    };
+    const handleSwitchInput = () => setInput(!input);
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
         getDate(event.target.value, index);

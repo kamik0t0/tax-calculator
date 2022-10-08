@@ -41,7 +41,7 @@ const getInsuranceRates = (rateCode: string) => {
 // TODO: придумать как вызывать диалог с разными children
 const EmployeeReportDialog: FC = () => {
     const dispatch = useTypedDispatch();
-    const { employee, months, rateCode } = useTypedSelector(
+    const { employee, rateCode } = useTypedSelector(
         (state) => state.salarySlice
     );
     const { dialogReportEmployee } = useTypedSelector(

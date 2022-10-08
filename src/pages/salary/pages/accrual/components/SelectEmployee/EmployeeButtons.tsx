@@ -17,6 +17,7 @@ const EmployeeButtons: React.FC<{
         dispatch(setEmployeeById(employee?.id || ""));
         dispatch(setDialogEmployee(true));
     };
+
     return (
         <>
             {employee ? (

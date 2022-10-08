@@ -1,8 +1,6 @@
 import { Input, TableCell, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { toRU } from "@helpers/currencyFormat";
-import { useTypedDispatch } from "@reduxhooks/hooks";
-import { showSuccessSnackBar } from "@uistore/ui-reducer";
 
 const InputCell: FC<{
     children: string | number;
@@ -22,9 +20,8 @@ const InputCell: FC<{
         setInput(!input);
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
         getInputData(event.target.value, index, prop);
-    };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.code === "Enter" || event.code === "NumpadEnter") {

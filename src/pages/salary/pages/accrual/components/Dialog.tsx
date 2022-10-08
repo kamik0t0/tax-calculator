@@ -93,10 +93,6 @@ const FormDialog: FC = () => {
     const handleSex = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDialogValues({ ...dialogValues, sex: event.target.value });
     };
-    // useEffect(() => {
-    //     if (employee) setDialogValues(employee);
-    // }, [employee]);
-
     return (
         <Dialog open={dialogEmployee || false} fullWidth>
             <DialogContent>
