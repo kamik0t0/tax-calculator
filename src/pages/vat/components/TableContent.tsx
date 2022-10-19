@@ -4,13 +4,15 @@ import {
     updateInvoice,
 } from "@invoicesstore/invoice-reducer";
 import { Checkbox, TableBody, TableCell, TableRow } from "@mui/material";
-import { useTypedDispatch } from "@reduxhooks/hooks";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import RemoveRow from "@sharedcomponents/RemoveRow";
 import React, { FC } from "react";
 import { SelectRateCell } from "../exports/components";
 import { IInvoice } from "../exports/interfaces";
 import InputCell from "@sharedcomponents/InputCell";
 import DateCell from "@sharedcomponents/DateCell";
+import { showSuccessSnackBar } from "@uistore/ui-reducer";
+import { toRU } from "@helpers/currencyFormat";
 
 const TableContent: FC<{
     filtered: IInvoice[];
@@ -18,16 +20,40 @@ const TableContent: FC<{
 }> = ({ filtered, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
-
+    const VATSlice = useTypedSelector(state => state.invoiceSlice)
     // number | string
     const getInputData = (
         value: string | number,
         index: number,
         prop: string
-    ) => dispatch(updateInvoice(value, table, index.toString(), prop));
+    ) => {
+        if (prop === "nds") {
+            const maxVAT = VATSlice[table][index].summ * 20 / 120;
+            if (+value > maxVAT) return dispatch(
+                showSuccessSnackBar({
+                    open: true,
+                    severity: "warning",
+                    message: `НДС не может превышать 20% от суммы документа (${toRU.format(maxVAT)}})`,
+                })
+            );
+        } 
+        dispatch(updateInvoice(value, table, index.toString(), prop));    
+    }
     // date
-    const getDate = (date: string, index: number) =>
+    const getDate = (date: string, index: number) => {
+        const Year = new Date().getFullYear();
+        const userYear = new Date(Date.parse(date)).getFullYear();
+        // if (userYear !== Year) return dispatch(
+        //         showSuccessSnackBar({
+        //             open: true,
+        //             severity: "warning",
+        //             message: `Допустима дата в рамках текущего года - ${Year}`,
+        //         })
+        //     );
+        
+        
         dispatch(updateInvoice(date, table, index.toString(), "date"));
+    }
     // select
     const getSelectValue = (rate: string, index: number) =>
         dispatch(updateInvoice(rate, table, index.toString(), "rate"));

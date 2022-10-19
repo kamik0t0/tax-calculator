@@ -61,6 +61,7 @@ export interface IEmployee {
     birth: number;
     sex?: string;
     patronymic?: string;
+    civilContract?: boolean;
     [prop: string]: any;
 }
 

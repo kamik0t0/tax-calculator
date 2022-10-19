@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Checkbox, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -151,18 +151,30 @@ const FormDialog: FC = () => {
                             sx={{ width: 170 }}
                         />
                     </Box>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Должность"
-                        value={dialogValues?.position}
-                        type="text"
-                        variant="standard"
-                        size="small"
-                        onChange={handlePosition}
-                        fullWidth
-                    />
+                    <Box 
+                        mb={2}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "flex-end"
+                        }}
+                    >
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Должность"
+                            value={dialogValues?.position}
+                            type="text"
+                            variant="standard"
+                            size="small"
+                            onChange={handlePosition}
+                            fullWidth
+                        />
+
+         
+                    </Box>
                     <Box
                         sx={{
                             display: "flex",
@@ -188,6 +200,23 @@ const FormDialog: FC = () => {
                             onChange={handleBirthDate}
                             sx={{ width: 150 }}
                         />
+                                                <Box                         
+                            sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center"
+                            
+                        }}>   
+                            <Typography>ГПХ</Typography>                    
+                            <Checkbox
+                                size="small"
+                                // checked={employeeSalary.checked}
+                                // onChange={() =>
+                                //     dispatch(setCheckBox(index, table))
+                                // }
+                            />
+                        </Box>
                         <FormControl>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
