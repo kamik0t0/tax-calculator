@@ -4,9 +4,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Container, Link } from "@mui/material";
+import { Container, Link, useTheme } from "@mui/material";
 
 export default function SimpleAccordion() {
+    const theme = useTheme();
+    const headersTextColor =
+        theme.palette.mode === "dark" ? { color: "snow" } : { color: "black" };
+
     return (
         <Container sx={{ overflowY: "auto", height: "85vh" }}>
             <Accordion disabled>
@@ -15,7 +19,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel3a-content"
                     id="panel3a-header"
                 >
-                    <Typography>Описание проекта</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Описание проекта
+                    </Typography>
                 </AccordionSummary>
             </Accordion>
             <Accordion>
@@ -24,7 +30,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                 >
-                    <Typography>Основная концепция</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Основная концепция
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
@@ -60,7 +68,7 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
                         Калькулятор налогов по заработной плате
                     </Typography>
                 </AccordionSummary>
@@ -149,7 +157,7 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
                         Калькулятор налога на добавленную стоимость
                     </Typography>
                 </AccordionSummary>
@@ -195,7 +203,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>Калькулятор дивидендов</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Калькулятор дивидендов
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
@@ -213,7 +223,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>Страница Сотрудники</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Страница Сотрудники
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
@@ -229,7 +241,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>Дополнительные возможности</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Дополнительные возможности
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
@@ -257,7 +271,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>Технические ограничения</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Технические ограничения
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
@@ -283,7 +299,9 @@ export default function SimpleAccordion() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                 >
-                    <Typography>ВАЖНО!!!</Typography>
+                    <Typography variant="h6" sx={headersTextColor}>
+                        ВАЖНО!!!
+                    </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography sx={{ textIndent: 30 }}>
