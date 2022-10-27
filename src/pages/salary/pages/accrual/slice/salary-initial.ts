@@ -121,6 +121,7 @@ export const initialState: ISalaries = {
         birth: 0,
         sex: "",
         patronymic: "",
+        civilContract: false,
     },
     rateCode: BasicRates.code as string,
     districtCoeff: 1,

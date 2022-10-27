@@ -14,7 +14,7 @@ export const [useColorModeContext, ColorProvider] = CustomContext<{
 }>();
 
 const App: React.FC = () => {
-    const { dialogEmployee } = useTypedSelector((state) => state.dialogSlice);
+    const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
     const [mode, setMode] = useState<PaletteMode>("dark");
     const colorMode = useMemo(
         () => ({
@@ -36,7 +36,7 @@ const App: React.FC = () => {
                     <CustomDrawer />
                     <AppRouter />
                     <SnackBars />
-                    {dialogEmployee && <EmployeeDialog />}
+                    {isDialogEmployee && <EmployeeDialog />}
                 </ThemeProvider>
             </ColorProvider>
         </BrowserRouter>

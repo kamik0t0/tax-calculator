@@ -5,6 +5,7 @@ import {
 import { filterByDate } from "@scripts/filters";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { IInvoice } from "../exports/interfaces";
+import { Dayjs } from "dayjs";
 
 const currentDate = Date.now();
 
@@ -19,20 +20,29 @@ export const useInputDateValue = (
     // стейт ошибки (в случае если начальная дата больше конечной)
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
     // обработчик начальной даты
-    const startDateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const date = Date.parse(event.target.value);
-        const isCorrectDate = isInteravalCorrect(date, dateEnd);
-        setIsCorrect(isCorrectDate);
-        if (isCorrectDate) setFiltered(filterByDate(invoices, date, dateEnd));
-        setDateStart(date);
+    const startDateHandler = (date: Dayjs | null) => {
+        const parsedDate = date && Date.parse(date.format());
+
+        if (parsedDate) {
+            const isDateCorrect = isInteravalCorrect(parsedDate, dateEnd);
+            setIsCorrect(isDateCorrect);
+            if (isDateCorrect)
+                setFiltered(filterByDate(invoices, parsedDate, dateEnd));
+            setDateStart(parsedDate);
+        }
     };
     // обработчик конечной даты
-    const endDateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const date = Date.parse(event.target.value);
-        const isCorrectDate = isInteravalCorrect(dateStart, date);
-        setIsCorrect(isCorrectDate);
-        if (isCorrectDate) setFiltered(filterByDate(invoices, dateStart, date));
-        setDateEnd(date);
+    const endDateHandler = (date: Dayjs | null) => {
+        const parsedDate = date && Date.parse(date.format());
+
+        if (parsedDate) {
+            const isDateCorrect = isInteravalCorrect(dateStart, parsedDate);
+            setIsCorrect(isDateCorrect);
+
+            if (isDateCorrect)
+                setFiltered(filterByDate(invoices, dateStart, parsedDate));
+            setDateEnd(parsedDate);
+        }
     };
     // конвертация значения для отображения внутре TextField
     const startDateDisplay = useMemo(

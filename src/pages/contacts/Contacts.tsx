@@ -1,7 +1,4 @@
-import { ArrowRight } from "@mui/icons-material";
 import {
-    Box,
-    Link,
     List,
     ListItem,
     ListItemIcon,
@@ -10,8 +7,6 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import CakeIcon from "@mui/icons-material/Cake";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
 import HomeIcon from "@mui/icons-material/Home";
 import { Container } from "@mui/material";

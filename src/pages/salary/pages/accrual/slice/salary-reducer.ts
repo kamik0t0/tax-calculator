@@ -39,6 +39,7 @@ const createGenericSlice = <Reducers extends SliceCaseReducers<ISalaries>>({
             setEmployeeById: SalaryReducers.setEmployeeByIdReducer,
             deleteEmployee: SalaryReducers.deleteEmployeeReducer,
             setCivil: SalaryReducers.setCivilReducer(),
+            updateCivilContract: SalaryReducers.updateCivilContractReducer(),
             ...reducers,
         },
     });
@@ -102,6 +103,7 @@ export const {
     setEmployeeById,
     deleteEmployee,
     setCivil,
+    updateCivilContract,
 } = wrappedSlice.actions;
 
 export const { reducer } = wrappedSlice;

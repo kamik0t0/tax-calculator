@@ -1,36 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    setDialogEmployeeRducer,
-    setDialogEmployeeDeleteRducer,
-    setDialogReportEmployeeRducer,
+    setIsDialogEmployeeRducer,
+    setIsDialogEmployeeDeleteRducer,
+    setIsDialogReportEmployeeRducer,
 } from "./dialog-cases";
 
 export type IDialog = {
-    dialogEmployee: boolean;
-    dialogDeleteEmployee: boolean;
-    dialogReportEmployee: boolean;
+    isDialogEmployee: boolean;
+    isDialogDeleteEmployee: boolean;
+    isDialogReportEmployee: boolean;
 };
 
 const initialState: IDialog = {
-    dialogEmployee: false,
-    dialogDeleteEmployee: false,
-    dialogReportEmployee: false,
+    isDialogEmployee: false,
+    isDialogDeleteEmployee: false,
+    isDialogReportEmployee: false,
 };
 
 export const snackBarSlice = createSlice({
-    name: "salaries",
+    name: "dialog",
     initialState,
     reducers: {
-        setDialogEmployee: setDialogEmployeeRducer,
-        setDialogEmployeeDelete: setDialogEmployeeDeleteRducer,
-        setDialogReportEmployee: setDialogReportEmployeeRducer,
+        setIsDialogEmployee: setIsDialogEmployeeRducer,
+        setIsDialogEmployeeDelete: setIsDialogEmployeeDeleteRducer,
+        setIsDialogReportEmployee: setIsDialogReportEmployeeRducer,
     },
 });
 
 export const {
-    setDialogEmployee,
-    setDialogEmployeeDelete,
-    setDialogReportEmployee,
+    setIsDialogEmployee,
+    setIsDialogEmployeeDelete,
+    setIsDialogReportEmployee,
 } = snackBarSlice.actions;
 
 export const { reducer } = snackBarSlice;

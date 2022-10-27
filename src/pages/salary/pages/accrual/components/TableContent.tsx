@@ -6,11 +6,10 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import { useTypedDispatch } from "@reduxhooks/hooks";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import {
     deleteRow as deleteTableRow,
     setCheckBox,
-    setCivil,
     updateSalary,
 } from "@salarystore/salary-reducer";
 import InputCell from "@sharedcomponents/InputCell";
@@ -19,6 +18,7 @@ import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import React, { FC } from "react";
 import { useEmployees } from "../exports/hooks";
 import { ISalary } from "../exports/interfaces";
+import CivilContractCheck from "./CivilContractCheck";
 import SelectEmployeeCell from "./SelectEmployee/SelectEmployeeCell";
 
 const TableContent: FC<{
@@ -29,7 +29,6 @@ const TableContent: FC<{
     const deleteRow = (index: number) => {
         dispatch(deleteTableRow(index, table));
     };
-
     // number
     const getInputData = (
         value: string | number,
@@ -83,15 +82,11 @@ const TableContent: FC<{
                         >
                             {employeeSalary.name}
                         </SelectEmployeeCell>
-                        <TableCell align="center">
-                            <Checkbox
-                                size="small"
-                                checked={employeeSalary.civilContract}
-                                onChange={() =>
-                                    dispatch(setCivil(index, table))
-                                }
-                            />
-                        </TableCell>
+                        <CivilContractCheck
+                            employeeSalary={employeeSalary}
+                            table={table}
+                            index={index}
+                        ></CivilContractCheck>
                         <InputCell
                             width={100}
                             index={index}

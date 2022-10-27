@@ -1,4 +1,4 @@
-import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
+import { CaseReducer, PayloadAction, current } from "@reduxjs/toolkit";
 import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
 import { newEmployee } from "../exports/utils";
 import { calcPIT, calcTax } from "./scripts/calculateTaxes";
@@ -95,6 +95,33 @@ export const updateSalaryReducer = () => ({
         return { payload, meta: { table, index, prop } };
     },
 });
+export const updateCivilContractReducer = () => ({
+    reducer(
+        state: ISalaries,
+        action: PayloadAction<boolean, string, { employeeId: string }>
+    ) {
+        const isCivilContract = action.payload;
+        const employeeId = action.meta.employeeId;
+
+        for (const table in state.months) {
+            const accrualIndex = state.months[table].salary.findIndex(
+                (accrual: ISalary) => {
+                    return employeeId === accrual.employeeId;
+                }
+            );
+            if (accrualIndex !== -1) {
+                if (state.months[table].salary.length > 0) {
+                    state.months[table].salary[accrualIndex].civilContract =
+                        isCivilContract;
+                }
+            }
+        }
+    },
+    prepare(payload: boolean, employeeId: string) {
+        return { payload, meta: { employeeId } };
+    },
+});
+
 // Изменение кода тарифа и пересчет страховых взносов
 export const setSalaryTaxRateReducer: CaseReducer<
     ISalaries,

@@ -7,14 +7,14 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React, { FC } from "react";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
-import { setDialogEmployeeDelete } from "@dialogstore/dialog-reducer";
+import { setIsDialogEmployeeDelete } from "@dialogstore/dialog-reducer";
 import { deleteEmployee } from "@salarystore/salary-reducer";
 
 // TODO: придумать как вызывать диалог с разными children
 const DeleteEmployeeDialog: FC = () => {
     const dispatch = useTypedDispatch();
     const { employee } = useTypedSelector((state) => state.salarySlice);
-    const { dialogDeleteEmployee } = useTypedSelector(
+    const { isDialogDeleteEmployee } = useTypedSelector(
         (state) => state.dialogSlice
     );
 
@@ -27,13 +27,13 @@ const DeleteEmployeeDialog: FC = () => {
                 message: "Сотрудник удаден",
             })
         );
-        dispatch(setDialogEmployeeDelete(false));
+        dispatch(setIsDialogEmployeeDelete(false));
     };
 
-    const handleCencel = () => dispatch(setDialogEmployeeDelete(false));
+    const handleCencel = () => dispatch(setIsDialogEmployeeDelete(false));
 
     return (
-        <Dialog open={dialogDeleteEmployee || false} fullWidth>
+        <Dialog open={isDialogDeleteEmployee || false} fullWidth>
             <DialogTitle>Удалить сотрудника?</DialogTitle>
             <DialogContent>
                 <DialogContentText>

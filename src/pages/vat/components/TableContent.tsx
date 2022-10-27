@@ -20,7 +20,7 @@ const TableContent: FC<{
 }> = ({ filtered, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
-    const VATSlice = useTypedSelector(state => state.invoiceSlice)
+    const VATSlice = useTypedSelector((state) => state.invoiceSlice);
     // number | string
     const getInputData = (
         value: string | number,
@@ -28,32 +28,37 @@ const TableContent: FC<{
         prop: string
     ) => {
         if (prop === "nds") {
-            const maxVAT = VATSlice[table][index].summ * 20 / 120;
-            if (+value > maxVAT) return dispatch(
+            const maxVAT = (VATSlice[table][index].summ * 20) / 120;
+            if (+value > maxVAT)
+                return dispatch(
+                    showSuccessSnackBar({
+                        open: true,
+                        severity: "warning",
+                        message: `НДС не может превышать 20% от суммы документа (${toRU.format(
+                            maxVAT
+                        )}})`,
+                    })
+                );
+        }
+        dispatch(updateInvoice(value, table, index.toString(), prop));
+    };
+    // date
+    const getDate = (date: number, index: number) => {
+        const Year = new Date().getFullYear();
+        const userYear = new Date(date).getFullYear();
+
+        if (userYear !== Year) {
+            return dispatch(
                 showSuccessSnackBar({
                     open: true,
                     severity: "warning",
-                    message: `НДС не может превышать 20% от суммы документа (${toRU.format(maxVAT)}})`,
+                    message: `Допустима дата в рамках текущего года - ${Year}`,
                 })
             );
-        } 
-        dispatch(updateInvoice(value, table, index.toString(), prop));    
-    }
-    // date
-    const getDate = (date: string, index: number) => {
-        const Year = new Date().getFullYear();
-        const userYear = new Date(Date.parse(date)).getFullYear();
-        // if (userYear !== Year) return dispatch(
-        //         showSuccessSnackBar({
-        //             open: true,
-        //             severity: "warning",
-        //             message: `Допустима дата в рамках текущего года - ${Year}`,
-        //         })
-        //     );
-        
-        
+        }
+
         dispatch(updateInvoice(date, table, index.toString(), "date"));
-    }
+    };
     // select
     const getSelectValue = (rate: string, index: number) =>
         dispatch(updateInvoice(rate, table, index.toString(), "rate"));
@@ -83,7 +88,7 @@ const TableContent: FC<{
                         >
                             {invoice.number}
                         </InputCell>
-                        <DateCell width={120} index={index} getDate={getDate}>
+                        <DateCell width={150} index={index} getDate={getDate}>
                             {invoice.date}
                         </DateCell>
                         <InputCell

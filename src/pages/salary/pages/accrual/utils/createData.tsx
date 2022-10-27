@@ -75,4 +75,5 @@ export const newEmployee: IEmployee = {
     surname: "",
     position: "",
     birth: 0,
+    civilContract: false,
 };

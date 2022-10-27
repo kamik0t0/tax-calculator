@@ -1,21 +1,21 @@
 import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { IDialog } from "./dialog-reducer";
 
-export const setDialogEmployeeRducer: CaseReducer<
+export const setIsDialogEmployeeRducer: CaseReducer<
     IDialog,
     PayloadAction<boolean>
 > = (state, action) => {
-    state.dialogEmployee = action.payload;
+    state.isDialogEmployee = action.payload;
 };
-export const setDialogEmployeeDeleteRducer: CaseReducer<
+export const setIsDialogEmployeeDeleteRducer: CaseReducer<
     IDialog,
     PayloadAction<boolean>
 > = (state, action) => {
-    state.dialogDeleteEmployee = action.payload;
+    state.isDialogDeleteEmployee = action.payload;
 };
-export const setDialogReportEmployeeRducer: CaseReducer<
+export const setIsDialogReportEmployeeRducer: CaseReducer<
     IDialog,
     PayloadAction<boolean>
 > = (state, action) => {
-    state.dialogReportEmployee = action.payload;
+    state.isDialogReportEmployee = action.payload;
 };

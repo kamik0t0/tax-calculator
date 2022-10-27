@@ -1,4 +1,4 @@
-import { setDialogReportEmployee } from "@dialogstore/dialog-reducer";
+import { setIsDialogReportEmployee } from "@dialogstore/dialog-reducer";
 import { timestampToNativeToLocaleString } from "@helpers/dateHelpers";
 import {
     Box,
@@ -44,10 +44,10 @@ const EmployeeReportDialog: FC = () => {
     const { employee, rateCode } = useTypedSelector(
         (state) => state.salarySlice
     );
-    const { dialogReportEmployee } = useTypedSelector(
+    const { isDialogReportEmployee } = useTypedSelector(
         (state) => state.dialogSlice
     );
-    const handleCencel = () => dispatch(setDialogReportEmployee(false));
+    const handleCencel = () => dispatch(setIsDialogReportEmployee(false));
 
     const [
         employeeSalaries,
@@ -75,7 +75,7 @@ const EmployeeReportDialog: FC = () => {
     const rates = useMemo(() => getInsuranceRates(rateCode), [rateCode]);
 
     return (
-        <Dialog open={dialogReportEmployee || false} fullWidth maxWidth="xl">
+        <Dialog open={isDialogReportEmployee || false} fullWidth maxWidth="xl">
             <DialogContent>
                 {employee.id && (
                     <Box
@@ -98,12 +98,7 @@ const EmployeeReportDialog: FC = () => {
                         >
                             <DialogContentText>
                                 Отчет по сотруднику:
-                                {" " +
-                                    employee.surname +
-                                    " " +
-                                    employee.name +
-                                    " " +
-                                    employee.patronymic}
+                                {" " + employee.surname + " " + employee.name}
                             </DialogContentText>
                             <Box
                                 sx={{

@@ -1,4 +1,4 @@
-import { setDialogEmployee } from "@dialogstore/dialog-reducer";
+import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
 import { Icon, IconButton } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import { setEmployeeById } from "@salarystore/salary-reducer";
@@ -15,7 +15,7 @@ const EmployeeButtons: React.FC<{
     const dispatch = useTypedDispatch();
     const openDialog = () => {
         dispatch(setEmployeeById(employee?.id || ""));
-        dispatch(setDialogEmployee(true));
+        dispatch(setIsDialogEmployee(true));
     };
 
     return (

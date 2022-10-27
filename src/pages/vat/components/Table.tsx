@@ -24,6 +24,7 @@ const InvoiceTable: FC<{
     const elevation = theme.palette.mode === "dark" ? 10 : 1;
     const dispatch = useTypedDispatch();
     const [filtered, setFiltered] = useState<IInvoice[]>(invoices || []);
+
     const setConteinerHeight = useScrollToLastRow("lastRow");
 
     const createInvoice = () => {

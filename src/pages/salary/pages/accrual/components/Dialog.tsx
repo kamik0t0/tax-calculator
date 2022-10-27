@@ -14,24 +14,31 @@ import { nanoid } from "@reduxjs/toolkit";
 import {
     addEmployee,
     setEmployee,
+    updateCivilContract,
     updateEmployee,
+    updateSalary,
 } from "@salarystore/salary-reducer";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import { IEmployee } from "../types/salary";
-import { setDialogEmployee } from "@dialogstore/dialog-reducer";
+import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
 import { timestampToNativeHTMLStringConverter } from "@helpers/dateHelpers";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Dayjs } from "dayjs";
 
 // TODO: придумать как вызывать диалог с разными children
 const FormDialog: FC = () => {
     const dispatch = useTypedDispatch();
     const { employee } = useTypedSelector((state) => state.salarySlice);
-    const [dialogValues, setDialogValues] = useState(employee);
-    const { dialogEmployee } = useTypedSelector((state) => state.dialogSlice);
+    console.log(employee);
+
+    const [dialogEmployee, setEmployeeValues] = useState<IEmployee>(employee);
+    const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
 
     const handleClose = () => {
-        if (dialogValues.id.length > 0) {
-            dispatch(updateEmployee(dialogValues));
+        if (dialogEmployee.id.length > 0) {
+            dispatch(updateEmployee(dialogEmployee));
             dispatch(
                 showSuccessSnackBar({
                     open: true,
@@ -39,12 +46,12 @@ const FormDialog: FC = () => {
                     message: "Данные сотрудника успешно обновлены!",
                 })
             );
-            dispatch(setDialogEmployee(false));
-            dispatch(setEmployee(dialogValues));
+            dispatch(setIsDialogEmployee(false));
+            dispatch(setEmployee(dialogEmployee));
         } else {
             if (
-                dialogValues.name.length === 0 ||
-                dialogValues.surname.length === 0
+                dialogEmployee.name.length === 0 ||
+                dialogEmployee.surname.length === 0
             )
                 return dispatch(
                     showSuccessSnackBar({
@@ -54,7 +61,7 @@ const FormDialog: FC = () => {
                     })
                 );
 
-            const employee = Object.assign({}, dialogValues, {
+            const employee = Object.assign({}, dialogEmployee, {
                 id: nanoid(6),
             });
 
@@ -66,35 +73,49 @@ const FormDialog: FC = () => {
                     message: "Сотрудник успешно добавлен!",
                 })
             );
-            dispatch(setDialogEmployee(false));
+            dispatch(setIsDialogEmployee(false));
         }
     };
 
-    const handleCencel = () => dispatch(setDialogEmployee(false));
+    const handleCencel = () => dispatch(setIsDialogEmployee(false));
     const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDialogValues({ ...dialogValues, name: event.target.value });
+        setEmployeeValues({ ...dialogEmployee, name: event.target.value });
     };
     const handleSurname = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDialogValues({ ...dialogValues, surname: event.target.value });
+        setEmployeeValues({ ...dialogEmployee, surname: event.target.value });
     };
     const handlePatronymic = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDialogValues({ ...dialogValues, patronymic: event.target.value });
-    };
-    const handlePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDialogValues({ ...dialogValues, position: event.target.value });
-    };
-    const handleBirthDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const HTMLDate = event.target.value;
-        setDialogValues({
-            ...dialogValues,
-            birth: Date.parse(HTMLDate),
+        setEmployeeValues({
+            ...dialogEmployee,
+            patronymic: event.target.value,
         });
     };
-    const handleSex = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDialogValues({ ...dialogValues, sex: event.target.value });
+    const handlePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmployeeValues({ ...dialogEmployee, position: event.target.value });
     };
+    const handleBirthDate = (date: Dayjs | null) => {
+        if (date) {
+            setEmployeeValues({
+                ...dialogEmployee,
+                birth: Date.parse(date.format()),
+            });
+        }
+    };
+    const handleSex = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmployeeValues({ ...dialogEmployee, sex: event.target.value });
+    };
+    const handleCivilContract = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setEmployeeValues({
+            ...dialogEmployee,
+            civilContract: event.target.checked,
+        });
+        dispatch(updateCivilContract(event.target.checked, dialogEmployee.id));
+    };
+
     return (
-        <Dialog open={dialogEmployee || false} fullWidth>
+        <Dialog open={isDialogEmployee || false} fullWidth>
             <DialogContent>
                 {employee.id ? (
                     <DialogContentText>
@@ -118,7 +139,7 @@ const FormDialog: FC = () => {
                             margin="dense"
                             id="name"
                             label="Фамилия"
-                            value={dialogValues?.surname}
+                            value={dialogEmployee?.surname}
                             type="text"
                             variant="standard"
                             size="small"
@@ -131,7 +152,7 @@ const FormDialog: FC = () => {
                             margin="dense"
                             id="name"
                             label="Имя"
-                            value={dialogValues?.name}
+                            value={dialogEmployee?.name}
                             type="text"
                             variant="standard"
                             size="small"
@@ -143,7 +164,7 @@ const FormDialog: FC = () => {
                             margin="dense"
                             id="name"
                             label="Отчество"
-                            value={dialogValues?.patronymic}
+                            value={dialogEmployee?.patronymic}
                             type="text"
                             variant="standard"
                             size="small"
@@ -151,13 +172,13 @@ const FormDialog: FC = () => {
                             sx={{ width: 170 }}
                         />
                     </Box>
-                    <Box 
+                    <Box
                         mb={2}
                         sx={{
                             display: "flex",
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            alignItems: "flex-end"
+                            alignItems: "flex-end",
                         }}
                     >
                         <TextField
@@ -165,15 +186,13 @@ const FormDialog: FC = () => {
                             margin="dense"
                             id="name"
                             label="Должность"
-                            value={dialogValues?.position}
+                            value={dialogEmployee?.position}
                             type="text"
                             variant="standard"
                             size="small"
                             onChange={handlePosition}
                             fullWidth
                         />
-
-         
                     </Box>
                     <Box
                         sx={{
@@ -184,44 +203,44 @@ const FormDialog: FC = () => {
                             mt: 2,
                         }}
                     >
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            type="date"
-                            label="Дата рождения"
-                            value={timestampToNativeHTMLStringConverter(
-                                dialogValues?.birth
-                            )}
-                            variant="standard"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            onChange={handleBirthDate}
-                            sx={{ width: 150 }}
-                        />
-                                                <Box                         
+                        <Box
                             sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
-                            
-                        }}>   
-                            <Typography>ГПХ</Typography>                    
+                                width: 150,
+                            }}
+                        >
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
+                                    inputFormat="DD.MM.YYYY"
+                                    value={timestampToNativeHTMLStringConverter(
+                                        dialogEmployee?.birth
+                                    )}
+                                    onChange={handleBirthDate}
+                                    renderInput={(params) => (
+                                        <TextField {...params} />
+                                    )}
+                                />
+                            </LocalizationProvider>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Typography>ГПХ</Typography>
                             <Checkbox
                                 size="small"
-                                // checked={employeeSalary.checked}
-                                // onChange={() =>
-                                //     dispatch(setCheckBox(index, table))
-                                // }
+                                checked={dialogEmployee.civilContract}
+                                onChange={handleCivilContract}
                             />
                         </Box>
                         <FormControl>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                 name="controlled-radio-buttons-group"
-                                value={dialogValues.sex}
+                                value={dialogEmployee.sex}
                                 onChange={handleSex}
                             >
                                 <Box

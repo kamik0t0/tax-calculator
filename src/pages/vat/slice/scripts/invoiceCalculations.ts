@@ -66,7 +66,7 @@ export const calcInvoice = (
             }
             break;
         case "date":
-            InvoiceToDispatch.date = Date.parse(value.toString());
+            InvoiceToDispatch.date = +value;
             break;
         case "nds":
             InvoiceToDispatch.nds = +value;

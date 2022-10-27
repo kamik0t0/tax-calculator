@@ -11,6 +11,9 @@ import {
 import { IInvoice } from "../exports/interfaces";
 import { filterColumns, summColumns } from "../exports/utils";
 import { useTypedDispatch } from "@reduxhooks/hooks";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 type FilterTyped = {
     invoices: IInvoice[];
@@ -95,15 +98,21 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
                         >
                             c:
                         </InputLabel>
-                        <TextField
-                            error={!isCorrect}
-                            size="small"
-                            sx={{ ml: 3 }}
-                            variant="standard"
-                            value={startDateDisplay}
-                            onChange={startDateHandler}
-                            type="date"
-                        />
+                        <Box sx={{ width: 150 }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
+                                    inputFormat="DD.MM.YYYY"
+                                    value={startDateDisplay}
+                                    onChange={startDateHandler}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={!isCorrect}
+                                        />
+                                    )}
+                                />
+                            </LocalizationProvider>
+                        </Box>
                         <InputLabel
                             sx={{
                                 ml: 2,
@@ -112,14 +121,21 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
                         >
                             по:
                         </InputLabel>
-                        <TextField
-                            size="small"
-                            sx={{ ml: 3 }}
-                            variant="standard"
-                            value={endDateDisplay}
-                            onChange={endDateHandler}
-                            type="date"
-                        />
+                        <Box sx={{ width: 150 }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
+                                    inputFormat="DD.MM.YYYY"
+                                    value={endDateDisplay}
+                                    onChange={endDateHandler}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={!isCorrect}
+                                        />
+                                    )}
+                                />
+                            </LocalizationProvider>
+                        </Box>
                     </>
                 ) : (
                     <TextField

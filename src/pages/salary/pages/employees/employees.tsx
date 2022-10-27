@@ -23,9 +23,9 @@ import {
 } from "@salarystore/salary-reducer";
 import React from "react";
 import {
-    setDialogEmployee,
-    setDialogEmployeeDelete,
-    setDialogReportEmployee,
+    setIsDialogEmployee,
+    setIsDialogEmployeeDelete,
+    setIsDialogReportEmployee,
 } from "@dialogstore/dialog-reducer";
 import DeleteEmployeeDialog from "./deleteEmployeeDialog";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
@@ -38,7 +38,7 @@ const Employees: React.FC = () => {
     const { employees, employee } = useTypedSelector(
         (state) => state.salarySlice
     );
-    const { dialogDeleteEmployee, dialogEmployee, dialogReportEmployee } =
+    const { isDialogDeleteEmployee, isDialogEmployee, isDialogReportEmployee } =
         useTypedSelector((state) => state.dialogSlice);
 
     const watchedEmployees = useLocalStorage(
@@ -55,11 +55,11 @@ const Employees: React.FC = () => {
 
     const openEmployee = () => {
         dispatch(setEmployeeById(""));
-        dispatch(setDialogEmployee(true));
+        dispatch(setIsDialogEmployee(true));
     };
     const editEmployee = () => {
         if (employee.id !== "") {
-            dispatch(setDialogEmployee(true));
+            dispatch(setIsDialogEmployee(true));
         } else {
             dispatch(
                 showSuccessSnackBar({
@@ -73,7 +73,7 @@ const Employees: React.FC = () => {
     };
     const deleteEmployeeHandler = () => {
         if (employee.id !== "") {
-            dispatch(setDialogEmployeeDelete(true));
+            dispatch(setIsDialogEmployeeDelete(true));
         } else {
             dispatch(
                 showSuccessSnackBar({
@@ -87,7 +87,7 @@ const Employees: React.FC = () => {
     };
     const reportEmployeeHandler = () => {
         if (employee.id !== "") {
-            dispatch(setDialogReportEmployee(true));
+            dispatch(setIsDialogReportEmployee(true));
         } else {
             dispatch(
                 showSuccessSnackBar({
@@ -146,9 +146,7 @@ const Employees: React.FC = () => {
                                         {" " +
                                             employee.surname +
                                             " " +
-                                            employee.name +
-                                            " " +
-                                            employee.patronymic}
+                                            employee.name}
                                     </TableCell>
                                     <TableCell align="center">
                                         {employee?.position}
@@ -195,9 +193,9 @@ const Employees: React.FC = () => {
                     </Button>
                 </Box>
             </Container>
-            {dialogDeleteEmployee && <DeleteEmployeeDialog />}
-            {dialogEmployee && <EmployeeDialog />}
-            {dialogReportEmployee && <EmployeeReportDialog />}
+            {isDialogDeleteEmployee && <DeleteEmployeeDialog />}
+            {isDialogEmployee && <EmployeeDialog />}
+            {isDialogReportEmployee && <EmployeeReportDialog />}
         </>
     );
 };
