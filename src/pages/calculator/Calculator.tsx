@@ -78,7 +78,11 @@ const Calculator: React.FC = (props) => {
     };
     const getAvailableData = () =>
         dispatch(
-            fillWithAvailableData(VATIncomeSumm, VATExpensesSumm, SalarySumm)
+            fillWithAvailableData(
+                VATIncomeSumm,
+                VATExpensesSumm + SalarySumm,
+                SalarySumm
+            )
         );
     return (
         <>
