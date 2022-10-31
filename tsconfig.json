@@ -143,6 +143,7 @@
             "@invoicesstore/*": ["pages/vat/slice/*"],
             "@uistore/*": ["redux/ui-slice/*"],
             "@dialogstore/*": ["redux/dialog-slice/*"],
+            "@calcstore/*": ["pages/calculator/slice/*"],
             "@themes/*": ["themes/*"],
             "@router/*": ["routers/*"],
             "@components/*": ["components/*"]

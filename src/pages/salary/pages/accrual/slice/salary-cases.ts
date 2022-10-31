@@ -1,7 +1,8 @@
 import { CaseReducer, PayloadAction, current } from "@reduxjs/toolkit";
 import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
 import { newEmployee } from "../exports/utils";
-import { calcPIT, calcTax } from "./scripts/calculateTaxes";
+import { calcPIT } from "./scripts/calculatePIT";
+import { calcTax } from "./scripts/calculateTaxes";
 import { fillByPrevMonth } from "./scripts/fillByPrevMonth";
 
 // Удаление начисления по сотруднику в конкретном месяце
@@ -144,7 +145,7 @@ export const setSalaryTaxRateReducer: CaseReducer<
                     social,
                     total,
                     overSocialLimit,
-                    employeeCumulativeTotal,
+                    employeeCumulativePerYear,
                     overRetirmentLimit,
                     insuranceRetirementBase,
                     insuranceSocialBase,
@@ -174,7 +175,7 @@ export const setSalaryTaxRateReducer: CaseReducer<
                 state.months[table].salary[index].insurance.social = +social;
                 state.months[table].salary[index].insuranceTotal = +total;
                 state.months[table].salary[index].cumulativeAccrual =
-                    employeeCumulativeTotal;
+                    employeeCumulativePerYear;
                 state.months[table].salary[index].overSocialLimit =
                     overSocialLimit;
                 state.months[table].salary[index].overRetirmentLimit =

@@ -1,7 +1,7 @@
 export const sideBarLinks = [
     { name: "Главная", path: "/" },
     { name: "НДС", path: "nds" },
-    // { name: "Зарплата", path: "salary" },
+    { name: "Калькулятор", path: "calculator" },
 ];
 
 export const salaryLinks = [

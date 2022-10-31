@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, Container, Stack, TextField } from "@mui/material";
 import Summary from "@sharedcomponents/Summary";
 import React, { useState } from "react";
 
@@ -32,7 +32,8 @@ const Dividends: React.FC = () => {
     };
 
     return (
-        <Box
+        <Container
+            maxWidth="xl"
             sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -90,7 +91,7 @@ const Dividends: React.FC = () => {
                     {dividendsByPay.summ}
                 </Summary>
             </Box>
-        </Box>
+        </Container>
     );
 };
 

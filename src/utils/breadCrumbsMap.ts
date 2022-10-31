@@ -7,4 +7,5 @@ export const breadcrumbNameMap: { [key: string]: string } = {
     "/accrual": "начисления",
     "/dividends": "дивиденды",
     "/employees": "сотрудники",
+    "/calculator": "калькулятор",
 };

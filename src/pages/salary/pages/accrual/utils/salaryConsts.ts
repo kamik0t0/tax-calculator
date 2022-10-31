@@ -43,3 +43,4 @@ export const MinimalSalary01012022 = 13890;
 export const MinimalSalary01062022 = 15279;
 export const RegionMinimalSalary01012022 = 15973;
 export const RegionMinimalSalary01062022 = 17570;
+export const SalaryInsuranceRate = 30.2;

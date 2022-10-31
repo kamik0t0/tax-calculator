@@ -38,6 +38,10 @@ const InputCell: FC<{
         }
     };
 
+    const onFocus = (
+        event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
+    ) => event.target.select();
+
     const formattedChildren = isMoney ? toRU.format(+children) : children;
 
     useEffect(() => {
@@ -53,7 +57,7 @@ const InputCell: FC<{
                         onChange={onChange}
                         onKeyDown={onKeyDown}
                         onBlur={handleSwitchInput}
-                        onFocus={(event) => event.target.select()}
+                        onFocus={onFocus}
                         value={children}
                         type={type}
                         inputProps={{ step: step || 0.01, min: 0 }}

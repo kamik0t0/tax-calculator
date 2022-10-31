@@ -49,7 +49,7 @@ module.exports = {
     output: {
         filename: filename("js"),
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/tax-calculator/",
+        publicPath: "/tax-calculator/",
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -106,6 +106,7 @@ module.exports = {
             "@uistore": path.resolve(__dirname, "src/redux/ui-slice"),
             "@dialogstore": path.resolve(__dirname, "src/redux/dialog-slice"),
             "@invoicesstore": path.resolve(__dirname, "src/pages/vat/slice"),
+            "@calcstore": path.resolve(__dirname, "src/pages/calculator/slice"),
             "@themes": path.resolve(__dirname, "src/themes"),
             "@router": path.resolve(__dirname, "src/routers"),
             "@components": path.resolve(__dirname, "src/components"),

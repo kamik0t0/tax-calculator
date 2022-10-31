@@ -64,14 +64,20 @@ export const useReport = (id: string) => {
                     +cumulRetirmentLimit.toFixed(2)
                 );
 
+                console.log(accrual.insurance.retirement.toFixed(2));
+
                 cumulRetirmentInsurance +=
                     +accrual.insurance.retirement.toFixed(2);
+                console.log(cumulRetirmentInsurance);
+
                 insuranceRetirement.push(
                     +accrual.insurance.retirement.toFixed(2)
                 );
+
                 insuranceCumulativeRetirement.push(
                     +cumulRetirmentInsurance.toFixed(2)
                 );
+                console.log(insuranceCumulativeRetirement);
 
                 cumulMedicalInsurance += +accrual.insurance.medical.toFixed(2);
                 insuranceMedical.push(+accrual.insurance.medical.toFixed(2));
@@ -127,13 +133,13 @@ export const useReport = (id: string) => {
             cumulativeOverRetirementLimit.push(cumulRetirmentLimit);
 
             insuranceRetirement.push(0);
-            insuranceCumulativeRetirement.push(cumulRetirmentLimit);
+            insuranceCumulativeRetirement.push(cumulRetirmentInsurance);
             insuranceMedical.push(0);
-            insuranceCumulativeMedical.push(cumulRetirmentLimit);
+            insuranceCumulativeMedical.push(cumulMedicalInsurance);
             insuranceSocial.push(0);
-            insuranceCumulativeSocial.push(cumulRetirmentLimit);
+            insuranceCumulativeSocial.push(cumulSocialInsurance);
             insuranceAccident.push(0);
-            insuranceCumulativeAccident.push(cumulRetirmentLimit);
+            insuranceCumulativeAccident.push(cumulAccidentInsurance);
 
             insuranceSocialBase.push(0);
             insuranceSocialCumulativeBase.push(cumulSocialInsuranceBase);
