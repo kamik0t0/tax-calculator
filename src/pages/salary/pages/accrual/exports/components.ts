@@ -11,3 +11,5 @@ export { default as EmployeeDialog } from "../components/Dialog";
 export { default as TabPanelWrapper } from "../components/TabPanelWrapper";
 export { default as MinimalSalaryInput } from "../components/MinimalSalaryInput";
 export { default as DistrictCoefficientInput } from "../components/DistrictCoefficientInput";
+export { default as CivilContractCheck } from "../components/CivilContractCheck";
+export { default as SelectEmployeeCell } from "../components/SelectEmployee/SelectEmployeeCell";

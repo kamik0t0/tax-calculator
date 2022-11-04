@@ -13,7 +13,7 @@ import { SelectTaxRate, TabPanelWrapper } from "./exports/components";
 import { salaryEmployeeUpdate } from "./exports/scripts";
 import { Months, MonthsDisplay } from "./exports/utils";
 import { salaryEmployeeDelete } from "./exports/scripts";
-import { ISalary } from "./types/salary";
+import { ISalary } from "./exports/interfaces";
 
 // const TabPanelWrapper = React.lazy(
 //     () => import("./components/TabPanelWrapper")

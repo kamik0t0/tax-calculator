@@ -8,10 +8,9 @@ import React, { FC, useMemo, useState } from "react";
 
 const DateCell: FC<{
     children: number;
-    width: number;
     index: number;
     getDate: (date: number, index: number) => any;
-}> = ({ children, width, index, getDate }) => {
+}> = ({ children, index, getDate }) => {
     const [input, setInput] = useState<boolean>(false);
     const [prevValue, setPrevValue] = useState<number>();
     const [error, setError] = useState<boolean>(false);
@@ -56,13 +55,8 @@ const DateCell: FC<{
     return (
         <>
             {input ? (
-                <TableCell align="center">
-                    <LocalizationProvider
-                        sx={{
-                            width: width,
-                        }}
-                        dateAdapter={AdapterDayjs}
-                    >
+                <TableCell variant="body" align="center">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             inputFormat="DD.MM.YYYY"
                             value={formattedDateValue}
@@ -80,11 +74,11 @@ const DateCell: FC<{
                 </TableCell>
             ) : (
                 <TableCell
+                    variant="body"
                     onClick={handleSwitchInput}
                     align="center"
                     sx={{
                         "&:hover": { cursor: "pointer" },
-                        width: width,
                     }}
                 >
                     <Typography>{formattedDateChildren}</Typography>

@@ -1,5 +1,3 @@
-import { ISummary } from "./summary";
-
 export interface IInvoice {
     number: string;
     date: number;
@@ -17,5 +15,19 @@ export interface IInvoices {
     issued: IInvoice[];
     recieved: IInvoice[];
     summary: ISummary;
+    [prop: string]: any;
+}
+
+type total = {
+    summ: number;
+    nds: number;
+};
+
+interface ISummary {
+    purches: total;
+    sales: total;
+    issued: total;
+    recieved: total;
+    nds: number;
     [prop: string]: any;
 }

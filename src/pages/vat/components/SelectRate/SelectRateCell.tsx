@@ -1,15 +1,13 @@
 import { formatDisplayedValue } from "@helpers/formatDisplayedValue";
 import { Box, SelectChangeEvent, TableCell } from "@mui/material";
 import React, { FC, useState } from "react";
-import SelectRate from "./SelectRate";
-import VatRateButtons from "./VatRateButtons";
+import { SelectRate, VatRateButtons } from "../../exports/components";
 
 const Cell: FC<{
     children: number;
     index: number;
-    width: number;
     getSelectValue: (rate: string, index: number) => void;
-}> = ({ children, index, width, getSelectValue }) => {
+}> = ({ children, index, getSelectValue }) => {
     const [select, setSelect] = useState<boolean>(false);
 
     const handleSwitchInput = () => setSelect(!select);
@@ -22,12 +20,7 @@ const Cell: FC<{
     return (
         <>
             {select ? (
-                <TableCell
-                    align="center"
-                    sx={{
-                        width: width,
-                    }}
-                >
+                <TableCell variant="body" align="center">
                     <Box
                         sx={{
                             display: "flex",
@@ -37,7 +30,7 @@ const Cell: FC<{
                     >
                         <SelectRate
                             value={children.toString()}
-                            width={width}
+                            width={30}
                             onChange={onChange}
                         />
                         <VatRateButtons
@@ -47,11 +40,11 @@ const Cell: FC<{
                 </TableCell>
             ) : (
                 <TableCell
+                    variant="body"
                     onClick={handleSwitchInput}
                     align="center"
                     sx={{
                         "&:hover": { cursor: "pointer" },
-                        width: width,
                     }}
                 >
                     {cellDisplayValue}

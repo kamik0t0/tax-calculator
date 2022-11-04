@@ -6,7 +6,7 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { useTypedDispatch } from "@reduxhooks/hooks";
 import {
     deleteRow as deleteTableRow,
     setCheckBox,
@@ -16,10 +16,9 @@ import InputCell from "@sharedcomponents/InputCell";
 import RemoveRow from "@sharedcomponents/RemoveRow";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import React, { FC } from "react";
+import { CivilContractCheck, SelectEmployeeCell } from "../exports/components";
 import { useEmployees } from "../exports/hooks";
 import { ISalary } from "../exports/interfaces";
-import CivilContractCheck from "./CivilContractCheck";
-import SelectEmployeeCell from "./SelectEmployee/SelectEmployeeCell";
 
 const TableContent: FC<{
     salary: ISalary[];
@@ -61,7 +60,7 @@ const TableContent: FC<{
             <TableBody>
                 {salary.map((employeeSalary: ISalary, index: number) => (
                     <TableRow key={employeeSalary.id}>
-                        <TableCell align="center">
+                        <TableCell variant="body" align="center">
                             <Checkbox
                                 size="small"
                                 checked={employeeSalary.checked}
@@ -70,13 +69,12 @@ const TableContent: FC<{
                                 }
                             />
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell variant="body" align="center">
                             <Typography>{index + 1}</Typography>
                         </TableCell>
                         <SelectEmployeeCell
                             employeeId={employeeSalary.employeeId}
                             index={index}
-                            width={350}
                             selectItems={filteredEmployees}
                             getSelectValue={getSelectValue}
                         >
@@ -88,7 +86,6 @@ const TableContent: FC<{
                             index={index}
                         ></CivilContractCheck>
                         <InputCell
-                            width={100}
                             index={index}
                             type="number"
                             prop="accrued"
@@ -97,13 +94,12 @@ const TableContent: FC<{
                         >
                             {employeeSalary.accrued}
                         </InputCell>
-                        <TableCell align="center">
+                        <TableCell variant="body" align="center">
                             <Typography>
                                 {toRU.format(employeeSalary.pay)}
                             </Typography>
                         </TableCell>
                         <InputCell
-                            width={60}
                             index={index}
                             type="number"
                             prop="childrenQtty"
@@ -112,17 +108,17 @@ const TableContent: FC<{
                         >
                             {employeeSalary.childrenQtty}
                         </InputCell>
-                        <TableCell align="center">
+                        <TableCell variant="body" align="center">
                             <Typography>
                                 {toRU.format(+employeeSalary.tax.toFixed())}
                             </Typography>
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell variant="body" align="center">
                             <Typography>
                                 {toRU.format(employeeSalary.insuranceTotal)}
                             </Typography>
                         </TableCell>
-                        <TableCell>
+                        <TableCell variant="body">
                             <RemoveRow action={deleteRow} index={index} />
                         </TableCell>
                     </TableRow>

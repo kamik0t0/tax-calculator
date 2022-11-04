@@ -7,7 +7,7 @@ import {
 import { IInvoices } from "../exports/interfaces";
 import * as InvoiceReducers from "./invoice-cases";
 import { initialState } from "./invoice-initial";
-import { calcSummary as calculateSummary } from "./scripts/invoiceCalculations";
+import { calcSummary as calculateSummary } from "../exports/scripts";
 
 const createGenericSlice = <Reducers extends SliceCaseReducers<IInvoices>>({
     name = "invoices",

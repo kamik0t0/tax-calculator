@@ -1,5 +1,5 @@
 import { ITax } from "../exports/types";
-import { FixInsuranceValues } from "../../../pages/salary/pages/accrual/exports/utils";
+import { FixInsuranceValues } from "../exports/utils";
 
 export const initialState: ITax = {
     income: 0,
@@ -59,4 +59,9 @@ export const initialState: ITax = {
         total: 0,
     },
     burdenBasicLLC: 0,
+    rates: {
+        incomeRate: 0.06,
+        expensesRate: 0.15,
+        LLCIncomeRate: 0.17,
+    },
 };

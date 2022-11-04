@@ -7,7 +7,7 @@ import {
 } from "@salarystore/salary-reducer";
 import React, { useEffect, useState } from "react";
 import { arrayComparsion } from "../exports/scripts";
-import { IEmployee } from "../types/salary";
+import { IEmployee } from "../exports/interfaces";
 
 export const useEmployees = (table: string) => {
     const dispatch = useTypedDispatch();

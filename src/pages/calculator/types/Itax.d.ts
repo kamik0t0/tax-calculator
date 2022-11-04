@@ -56,9 +56,15 @@ export interface ITax {
         total: number;
     };
     burdenBasicLLC: number;
+    rates: {
+        incomeRate: number;
+        expensesRate: number;
+        LLCIncomeRate: number;
+    };
 }
 
 interface calcData {
+    rate: number;
     income?: number;
     salary?: number;
     expenses?: number;

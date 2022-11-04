@@ -4,14 +4,13 @@ import { toRU } from "@helpers/currencyFormat";
 
 const InputCell: FC<{
     children: string | number;
-    width: number;
     index: number;
     type: string;
     prop: string;
     isMoney?: boolean;
     step?: number;
     getInputData: (value: string | number, index: number, prop: string) => any;
-}> = ({ children, width, index, type, prop, isMoney, step, getInputData }) => {
+}> = ({ children, index, type, prop, isMoney, step, getInputData }) => {
     const [input, setInput] = useState<boolean>(false);
     const [prevValue, setPrevValue] = useState<string | number>();
 
@@ -51,7 +50,7 @@ const InputCell: FC<{
     return (
         <>
             {input ? (
-                <TableCell align="center">
+                <TableCell variant="body" align="center">
                     <Input
                         autoFocus={input}
                         onChange={onChange}
@@ -61,18 +60,15 @@ const InputCell: FC<{
                         value={children}
                         type={type}
                         inputProps={{ step: step || 0.01, min: 0 }}
-                        sx={{
-                            width: width,
-                        }}
                     />
                 </TableCell>
             ) : (
                 <TableCell
+                    variant="body"
                     onClick={handleSwitchInput}
                     align="center"
                     sx={{
                         "&:hover": { cursor: "pointer" },
-                        width: width,
                     }}
                 >
                     <Typography>{formattedChildren}</Typography>

@@ -1,7 +1,7 @@
 import TabPanel from "@sharedcomponents/TabPanel";
 import React from "react";
 import { SalaryTable } from "../exports/components";
-import { ISalary, ISalarySummary } from "../types/salary";
+import { ISalary, ISalarySummary } from "../exports/interfaces";
 
 const TabPanelWrapper: React.FC<{
     value: number;

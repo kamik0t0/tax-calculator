@@ -28,7 +28,7 @@ const TableHeader: FC<{
     return (
         <TableHead>
             <TableRow>
-                <TableCell sx={{ width: 40 }}>
+                <TableCell variant="head" width={30}>
                     <Box sx={{ ml: 2 }}>
                         {sortOrder ? (
                             <ArrowDownwardSharpIcon sx={{ height: 15 }} />
@@ -39,34 +39,44 @@ const TableHeader: FC<{
                 </TableCell>
 
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 100 }}
+                    variant="head"
+                    width={100}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByString}
                     align="center"
                 >
                     {HeaderNames.number}
                 </TableCell>
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 130 }}
+                    variant="head"
+                    width={150}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByDate}
                     align="center"
                 >
                     {HeaderNames.date}
                 </TableCell>
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 230 }}
+                    variant="head"
+                    width={230}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByString}
                     align="center"
                 >
                     {clientType}
                 </TableCell>
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 140 }}
+                    variant="head"
+                    width={140}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByNumber}
                     align="center"
                 >
                     {HeaderNames.rate}
                 </TableCell>
                 <TableCell
+                    variant="head"
+                    width={100}
                     sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByNumber}
                     align="center"
@@ -74,13 +84,17 @@ const TableHeader: FC<{
                     {HeaderNames.nds}
                 </TableCell>
                 <TableCell
-                    sx={{ "&:hover": { cursor: "pointer" }, width: 110 }}
+                    variant="head"
+                    width={110}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByNumber}
                     align="center"
                 >
                     {HeaderNames.summ}
                 </TableCell>
-                <TableCell sx={{ width: 20 }}>Удалить</TableCell>
+                <TableCell variant="head" width={60}>
+                    Удалить
+                </TableCell>
             </TableRow>
         </TableHead>
     );

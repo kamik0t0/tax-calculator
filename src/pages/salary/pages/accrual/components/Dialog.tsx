@@ -1,3 +1,5 @@
+import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
+import { timestampToNativeHTMLStringConverter } from "@helpers/dateHelpers";
 import { Box, Checkbox, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -9,6 +11,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import { nanoid } from "@reduxjs/toolkit";
 import {
@@ -16,22 +20,16 @@ import {
     setEmployee,
     updateCivilContract,
     updateEmployee,
-    updateSalary,
 } from "@salarystore/salary-reducer";
-import React, { FC, useState } from "react";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
-import { IEmployee } from "../types/salary";
-import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
-import { timestampToNativeHTMLStringConverter } from "@helpers/dateHelpers";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
+import React, { FC, useState } from "react";
+import { IEmployee } from "../exports/interfaces";
 
 // TODO: придумать как вызывать диалог с разными children
 const FormDialog: FC = () => {
     const dispatch = useTypedDispatch();
     const { employee } = useTypedSelector((state) => state.salarySlice);
-    console.log(employee);
 
     const [dialogEmployee, setEmployeeValues] = useState<IEmployee>(employee);
     const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);

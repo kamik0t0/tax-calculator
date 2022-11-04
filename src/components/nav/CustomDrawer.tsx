@@ -20,14 +20,16 @@ import {
 import { useTheme } from "@mui/material/styles";
 import LinkRouter from "@router/LinkRouter";
 import { drawerWidth } from "@utils/drawerWidth";
-import { appBarLinks, salaryLinks, sideBarLinks } from "@utils/Links";
 import * as React from "react";
 import { FC } from "react";
-import { AppBar } from "./AppBar";
-import DrawerHeader from "./DrawerHeader";
-import { Main } from "./Main";
-import SnackSwitcher from "./SnackSwitcher";
-import ThemeSwitcher from "./ThemeSwitch";
+import {
+    AppBar,
+    DrawerHeader,
+    Main,
+    SnackSwitcher,
+    ThemeSwitcher,
+} from "./exports/components";
+import { appBarLinks, salaryLinks, sideBarLinks } from "./exports/utils";
 
 const CustomDrawer: FC = () => {
     const theme = useTheme();

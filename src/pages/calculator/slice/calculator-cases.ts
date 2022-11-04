@@ -1,20 +1,20 @@
 import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
-import { ITax } from "../types/Itax";
+import { ITax } from "../exports/types";
 import {
     BasicRates,
     StaticRates,
     SalaryInsuranceRate,
     FixInsuranceValues,
-} from "../../../pages/salary/pages/accrual/exports/utils";
+} from "../exports/utils";
 import {
+    TaxCalcIE,
     TaxCalcIEExpenses,
     TaxCalcLLCIncome,
     TaxCalcIEIncome,
     TaxCalcLLCExpenses,
     TaxCalcIEBasic,
     TaxCalcLLCBasic,
-} from "../scripts/tax-calc-class";
-import { TaxCalcIE } from "../scripts/calc-constructor";
+} from "../exports/classes";
 
 export const setTaxIncomeReducer: CaseReducer<ITax, PayloadAction<number>> = (
     state,
@@ -36,6 +36,27 @@ export const setTaxSalaryReducer: CaseReducer<ITax, PayloadAction<number>> = (
 ) => {
     const salary = action.payload;
     state.salary = salary;
+};
+export const setIncomeRateReducer: CaseReducer<ITax, PayloadAction<number>> = (
+    state,
+    action
+) => {
+    const incomeRate = action.payload;
+    state.rates.incomeRate = incomeRate;
+};
+export const setExpensesRateReducer: CaseReducer<
+    ITax,
+    PayloadAction<number>
+> = (state, action) => {
+    const expensesRate = action.payload;
+    state.rates.expensesRate = expensesRate;
+};
+export const setIncomeTaxRateReducer: CaseReducer<
+    ITax,
+    PayloadAction<number>
+> = (state, action) => {
+    const incomeTaxRate = action.payload;
+    state.rates.LLCIncomeRate = incomeTaxRate;
 };
 
 type AvailableDataType = {
@@ -82,6 +103,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     //  Всего налогов для ИП УСН доходы
     const [totalIEIncome, burdenIEIncome, USNIEIncome] =
         TaxCalcIEIncome.totalTax({
+            rate: state.rates.incomeRate,
             income,
             salary,
             salaryTaxRate: calcIncomeIE.salaryTaxRate,
@@ -101,6 +123,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
 
     const [totalLLCIncome, burdenLLCIncome, usnLLCIncome] =
         TaxCalcLLCIncome.totalTax({
+            rate: state.rates.incomeRate,
             income,
             salary,
             salaryTaxRate: calcIncomeLLC.salaryTaxRate,
@@ -121,6 +144,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
 
     const [totalIEExpenses, burdenIEExpenses, usnIEExpenses, minimalIE] =
         TaxCalcIEExpenses.totalTax({
+            rate: state.rates.expensesRate,
             income,
             salary,
             expenses,
@@ -143,6 +167,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
 
     const [totalLLCExpenses, burdenLLCExpenses, usnLLCExpenses, minimalLLC] =
         TaxCalcLLCExpenses.totalTax({
+            rate: state.rates.expensesRate,
             income,
             salary,
             expenses,
@@ -169,11 +194,12 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         vatRecoupmentCommonIE,
         vatFinalCommonIE,
         taxIncomeCommonIE,
-        taxRcoupmentCommonIE,
+        taxRecoupmentCommonIE,
         pitCommonIE,
         totalCommonIE,
         burdenCommonIE,
     } = TaxCalcIEBasic.totalTax({
+        rate: 0.13,
         income,
         salary,
         expenses,
@@ -182,11 +208,22 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         salaryTaxRate: calcCommonIE.salaryTaxRate,
     });
 
+    console.log(
+        vatAccruedCommonIE,
+        vatRecoupmentCommonIE,
+        vatFinalCommonIE,
+        taxIncomeCommonIE,
+        taxRecoupmentCommonIE,
+        pitCommonIE,
+        totalCommonIE,
+        burdenCommonIE
+    );
+
     state.taxBasicIE.VAT.accrualVAT = vatAccruedCommonIE;
     state.taxBasicIE.VAT.recoupmentVAT = vatRecoupmentCommonIE;
     state.taxBasicIE.VAT.vat = vatFinalCommonIE;
     state.taxBasicIE.PIT.taxableIncome = taxIncomeCommonIE;
-    state.taxBasicIE.PIT.recoupment = taxRcoupmentCommonIE;
+    state.taxBasicIE.PIT.recoupment = taxRecoupmentCommonIE;
     state.taxBasicIE.PIT.pit = pitCommonIE;
     state.taxBasicIE.total = totalCommonIE;
     state.burdenBasicIE = burdenCommonIE;
@@ -199,11 +236,12 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         vatRecoupmentCommonLLC,
         vatFinalCommonLLC,
         taxIncomeCommonLLC,
-        taxRcoupmentCommonLLC,
+        taxRecoupmentCommonLLC,
         pitCommonLLC,
         totalCommonLLC,
         burdenCommonLLC,
     } = TaxCalcLLCBasic.totalTax({
+        rate: state.rates.LLCIncomeRate,
         income,
         salary,
         expenses,
@@ -214,7 +252,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.taxBasicLLC.VAT.recoupmentVAT = vatRecoupmentCommonLLC;
     state.taxBasicLLC.VAT.vat = vatFinalCommonLLC;
     state.taxBasicLLC.incomeTax.taxableIncome = taxIncomeCommonLLC;
-    state.taxBasicLLC.incomeTax.recoupment = taxRcoupmentCommonLLC;
+    state.taxBasicLLC.incomeTax.recoupment = taxRecoupmentCommonLLC;
     state.taxBasicIE.PIT.pit = pitCommonLLC;
     state.taxBasicLLC.total = totalCommonLLC;
     state.burdenBasicLLC = burdenCommonLLC;

@@ -1,4 +1,12 @@
 import {
+    calculateTaxes,
+    fillWithAvailableData,
+    setTaxExpanses,
+    setTaxIncome,
+    setTaxSalary,
+} from "@calcstore/calculator-reducer";
+import { toRU } from "@helpers/currencyFormat";
+import {
     Box,
     Button,
     Container,
@@ -7,21 +15,16 @@ import {
     Typography,
     useTheme,
 } from "@mui/material";
-import NumberField from "./components/NumberField";
-import React from "react";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import {
-    setTaxIncome,
-    setTaxExpanses,
-    setTaxSalary,
-    calculateTaxes,
-    fillWithAvailableData,
-} from "@calcstore/calculator-reducer";
-import { toRU } from "@helpers/currencyFormat";
-import { totalSalarySelector } from "../../redux/selectors/salarySummSelector";
+import React, { useState } from "react";
+import { NumberField, RatesDialog } from "./exports/components";
+import { totalSalarySelector } from "./exports/selectors";
 
-const Calculator: React.FC = (props) => {
+// TODO: Декомпозиция
+
+const Calculator: React.FC = () => {
     const dispatch = useTypedDispatch();
+    const [isDialog, setIsDialog] = useState<boolean>(false);
     const {
         income,
         expenses,
@@ -84,6 +87,8 @@ const Calculator: React.FC = (props) => {
                 SalarySumm
             )
         );
+    const openDialog = () => setIsDialog(true);
+
     return (
         <>
             <br />
@@ -193,6 +198,7 @@ const Calculator: React.FC = (props) => {
                             <Button
                                 size="large"
                                 variant="outlined"
+                                onClick={openDialog}
                                 sx={{
                                     width: "150px",
                                 }}
@@ -417,6 +423,8 @@ const Calculator: React.FC = (props) => {
                     </Stack>
                 </Container>
             </Container>
+
+            <RatesDialog isDialog={isDialog} setIsDialog={setIsDialog} />
         </>
     );
 };

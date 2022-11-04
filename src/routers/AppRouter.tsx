@@ -4,7 +4,6 @@ import Layout from "../layout/Layout";
 import About from "../pages/about";
 import Contacts from "../pages/contacts";
 import Home from "../pages/home";
-// import Salary from "../pages/salary/pages/accrual";
 import Salary from "../pages/salary/pages/accrual/exports/components";
 import Nds from "../pages/vat/exports/components";
 import Calculator from "../pages/calculator/exports/components";

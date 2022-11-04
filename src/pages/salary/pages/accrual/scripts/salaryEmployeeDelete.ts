@@ -1,4 +1,4 @@
-import { IEmployee, ISalary } from "../types/salary";
+import { IEmployee, ISalary } from "../exports/interfaces";
 
 // В случае изменения данных сотрудника в стейте employees функция ищет такого сотрудника в таблицах начислений и, если находит, вносит соответствующие обновления
 export const salaryEmployeeDelete = (

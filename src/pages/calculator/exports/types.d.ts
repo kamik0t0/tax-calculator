@@ -1,1 +1,1 @@
-export type { ITax } from "../types/Itax";
+export type { calcData, ITax } from "../types/Itax";

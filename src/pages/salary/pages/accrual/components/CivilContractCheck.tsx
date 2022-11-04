@@ -1,13 +1,13 @@
 import { Checkbox, TableCell } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import { ISalary } from "../types/salary";
+import { ISalary } from "../exports/interfaces";
 
 const CivilContractCheck: React.FC<{
     employeeSalary: ISalary;
     table: string;
     index: number;
-}> = ({ employeeSalary, table, index }) => {
+}> = ({ employeeSalary }) => {
     const { employees } = useTypedSelector((state) => state.salarySlice);
 
     const employee = employees.find(
@@ -15,7 +15,7 @@ const CivilContractCheck: React.FC<{
     );
 
     return (
-        <TableCell align="center">
+        <TableCell variant="body" width={40} align="center">
             <Checkbox
                 size="small"
                 checked={employee?.civilContract || false}

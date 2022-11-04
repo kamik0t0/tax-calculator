@@ -1,17 +1,5 @@
-import { IDialog } from "@dialogstore/dialog-reducer";
 import { createSelector } from "@reduxjs/toolkit";
-import { ITax } from "pages/calculator/exports/types";
-import { ISalaries } from "pages/salary/pages/accrual/exports/interfaces";
-import { IInvoices } from "pages/vat/exports/interfaces";
-import { ISnackBar } from "types/snackBar";
-
-interface State {
-    invoiceSlice: IInvoices;
-    salarySlice: ISalaries;
-    snackBarSlice: ISnackBar;
-    dialogSlice: IDialog;
-    calcSlice: ITax;
-}
+import { State } from "types/state";
 
 const salaryTotalMonthSelector = (state: State) => {
     const months = state.salarySlice.months;

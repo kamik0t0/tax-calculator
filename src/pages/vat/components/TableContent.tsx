@@ -68,7 +68,7 @@ const TableContent: FC<{
             <TableBody>
                 {filtered.map((invoice: IInvoice, index: number) => (
                     <TableRow key={index}>
-                        <TableCell sx={{ width: 40 }}>
+                        <TableCell variant="body">
                             <Checkbox
                                 size="small"
                                 checked={invoice.checked}
@@ -78,21 +78,18 @@ const TableContent: FC<{
                                 sx={{ ml: 1 }}
                             />
                         </TableCell>
-
                         <InputCell
                             index={index}
-                            width={100}
                             type="string"
                             prop="number"
                             getInputData={getInputData}
                         >
                             {invoice.number}
                         </InputCell>
-                        <DateCell width={150} index={index} getDate={getDate}>
+                        <DateCell index={index} getDate={getDate}>
                             {invoice.date}
                         </DateCell>
                         <InputCell
-                            width={230}
                             index={index}
                             type="string"
                             prop="client"
@@ -102,13 +99,11 @@ const TableContent: FC<{
                         </InputCell>
                         <SelectRateCell
                             index={index}
-                            width={140}
                             getSelectValue={getSelectValue}
                         >
                             {invoice.rate}
                         </SelectRateCell>
                         <InputCell
-                            width={100}
                             index={index}
                             type="number"
                             prop="nds"
@@ -118,7 +113,6 @@ const TableContent: FC<{
                             {invoice.nds}
                         </InputCell>
                         <InputCell
-                            width={110}
                             index={index}
                             type="number"
                             prop="summ"
@@ -127,7 +121,7 @@ const TableContent: FC<{
                         >
                             {invoice.summ}
                         </InputCell>
-                        <TableCell>
+                        <TableCell variant="body">
                             <RemoveRow action={deleteRow} index={index} />
                         </TableCell>
                     </TableRow>

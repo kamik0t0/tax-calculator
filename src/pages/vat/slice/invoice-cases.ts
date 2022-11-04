@@ -1,6 +1,6 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
 import { IInvoice, IInvoices } from "../exports/interfaces";
-import { calcInvoice } from "./scripts/invoiceCalculations";
+import { calcInvoice } from "../exports/scripts";
 
 export const updateInvoicesReducer = () => ({
     reducer(

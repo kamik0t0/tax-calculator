@@ -1,12 +1,12 @@
-import { Box, TableCell, TableHead, TableRow } from "@mui/material";
-import React, { FC } from "react";
 import { useSort } from "@customhooks/useSort";
 import ArrowDownwardSharpIcon from "@mui/icons-material/ArrowDownwardSharp";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import { Box, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
+import { updateSalaries } from "@salarystore/salary-reducer";
+import React, { FC } from "react";
 import { ISalary } from "../exports/interfaces";
 import { SalarySortFields } from "../exports/utils";
-import { updateSalaries } from "@salarystore/salary-reducer";
 
 const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
     ({ salary, table }) => {
@@ -41,7 +41,7 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
         return (
             <TableHead>
                 <TableRow>
-                    <TableCell align="center" sx={{ width: 20 }}>
+                    <TableCell variant="head" align="center" width={60}>
                         <Box>
                             {sortOrder ? (
                                 <ArrowDownwardSharpIcon sx={{ height: 15 }} />
@@ -51,58 +51,76 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
                         </Box>
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" }, width: 20 }}
+                        variant="head"
+                        width={55}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                         onClick={sortByIndex}
                         align="center"
                     >
                         №
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" }, width: 300 }}
+                        variant="head"
+                        width={360}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                         onClick={sortByEmployee}
                         align="center"
                     >
                         Сотрудник
                     </TableCell>
-                    <TableCell sx={{ width: 30 }} align="center">
+                    <TableCell variant="head" width={72} align="center">
                         ГПХ
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" }, width: 100 }}
+                        variant="head"
+                        width={124}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                         onClick={sortByAccrued}
                         align="center"
                     >
                         Начислено
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" }, width: 90 }}
+                        variant="head"
+                        width={120}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                         onClick={sortByAccrued}
                         align="center"
                     >
                         К выплате
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" }, width: 60 }}
+                        width={85}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
                         onClick={sortByRecoupment}
                         align="center"
                     >
                         Дети
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" } }}
+                        width={108}
+                        sx={{
+                            "&:hover": { cursor: "pointer" },
+                        }}
                         onClick={sortByTax}
                         align="center"
                     >
                         НДФЛ
                     </TableCell>
                     <TableCell
-                        sx={{ "&:hover": { cursor: "pointer" } }}
+                        variant="head"
+                        width={111}
+                        sx={{
+                            "&:hover": { cursor: "pointer" },
+                        }}
                         onClick={sortByInsurance}
                         align="center"
                     >
                         Взносы
                     </TableCell>
-                    <TableCell sx={{ width: 20 }}>Удалить</TableCell>
+                    <TableCell width={95} variant="head">
+                        Удалить
+                    </TableCell>
                 </TableRow>
             </TableHead>
         );

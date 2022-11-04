@@ -1,5 +1,5 @@
 import { useTypedSelector } from "@reduxhooks/hooks";
-import { ISalary } from "../../accrual/types/salary";
+import { ISalary } from "../exports/types";
 
 export const useReport = (id: string) => {
     const { months } = useTypedSelector((state) => state.salarySlice);

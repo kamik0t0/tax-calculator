@@ -1,9 +1,7 @@
-import { CaseReducer, PayloadAction, current } from "@reduxjs/toolkit";
+import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
 import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
+import { calcPIT, calcTax, fillByPrevMonth } from "../exports/scripts";
 import { newEmployee } from "../exports/utils";
-import { calcPIT } from "./scripts/calculatePIT";
-import { calcTax } from "./scripts/calculateTaxes";
-import { fillByPrevMonth } from "./scripts/fillByPrevMonth";
 
 // Удаление начисления по сотруднику в конкретном месяце
 export const deleteRowsReducer: CaseReducer<

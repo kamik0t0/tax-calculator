@@ -17,13 +17,12 @@ import {
     setTaxStateRate as reCalculateAll,
 } from "@salarystore/salary-reducer";
 import LastRow from "@sharedcomponents/LastRow";
-import React, { FC, memo } from "react";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
+import React, { FC, memo } from "react";
 import { Summary, TableContent, TableHeader } from "../exports/components";
 import { ISalary, ISalarySummary } from "../exports/interfaces";
-import { newSalaryTableRow } from "../exports/utils";
-import { getPrevMonth } from "@salarystore/scripts/getPrevMonth";
-import { months } from "../exports/utils";
+import { getPrevMonth } from "../exports/scripts";
+import { months, newSalaryTableRow } from "../exports/utils";
 
 const SalaryTable: FC<{
     salary: ISalary[];

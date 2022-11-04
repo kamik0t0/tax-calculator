@@ -7,12 +7,11 @@ import SelectEmployee from "./SelectEmployee";
 const SelectEmployeeCell: FC<{
     children: string;
     index: number;
-    width: number;
     employeeId: string;
     selectItems: any[];
     getSelectValue: (employeeId: string, index: number) => void;
 }> = React.memo(
-    ({ children, index, width, employeeId, selectItems, getSelectValue }) => {
+    ({ children, index, employeeId, selectItems, getSelectValue }) => {
         const [select, setSelect] = useState<boolean>(false);
 
         const handleSwitchInput = () => setSelect(!select);
@@ -24,10 +23,10 @@ const SelectEmployeeCell: FC<{
             <>
                 {select ? (
                     <TableCell
+                        variant="body"
                         align="center"
                         sx={{
                             height: 31,
-                            width: width,
                         }}
                     >
                         <Box
@@ -41,7 +40,6 @@ const SelectEmployeeCell: FC<{
                                 children={children}
                                 employees={selectItems}
                                 employeeId={employeeId}
-                                width={width}
                                 onChange={onChange}
                             />
                             <EmployeeButtons
@@ -52,12 +50,12 @@ const SelectEmployeeCell: FC<{
                     </TableCell>
                 ) : (
                     <TableCell
+                        variant="body"
                         onClick={handleSwitchInput}
                         align="center"
                         sx={{
                             "&:hover": { cursor: "pointer" },
                             height: 31,
-                            width: width,
                         }}
                     >
                         <Typography>{children}</Typography>
