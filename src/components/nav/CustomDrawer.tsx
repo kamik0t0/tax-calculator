@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import LinkRouter from "@router/LinkRouter";
-import { drawerWidth } from "@utils/drawerWidth";
+import { drawerWidth } from "./exports/utils";
 import * as React from "react";
 import { FC } from "react";
 import {
