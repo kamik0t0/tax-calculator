@@ -51,5 +51,3 @@ const CustomizedSnackbar: FC = () => {
 };
 
 export default CustomizedSnackbar;
-
-/* "error" "warning" "info" "success"*/

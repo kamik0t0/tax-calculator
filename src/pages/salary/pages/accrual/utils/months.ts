@@ -41,3 +41,17 @@ export const months: string[] = [
     Months.nov,
     Months.dec,
 ];
+export const monthsRus: string[] = [
+    MonthsDisplay.jan,
+    MonthsDisplay.feb,
+    MonthsDisplay.march,
+    MonthsDisplay.april,
+    MonthsDisplay.may,
+    MonthsDisplay.june,
+    MonthsDisplay.july,
+    MonthsDisplay.aug,
+    MonthsDisplay.sep,
+    MonthsDisplay.oct,
+    MonthsDisplay.nov,
+    MonthsDisplay.dec,
+];

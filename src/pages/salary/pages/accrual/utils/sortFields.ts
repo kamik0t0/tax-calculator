@@ -1,5 +1,5 @@
 export enum SalarySortFields {
-    number = "number",
+    index = "index",
     employee = "name",
     accrued = "accrued",
     childrenQtty = "childrenQtty",

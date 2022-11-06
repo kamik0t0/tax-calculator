@@ -1,1 +1,2 @@
-export { useReport } from "../hooks/useReport";
+export { useEmployeeActions } from "../hooks/useEmployeeActions";
+export { useEmployeeDialog } from "../hooks/useEmployeeDialog";

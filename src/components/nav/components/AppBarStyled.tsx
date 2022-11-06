@@ -6,7 +6,7 @@ interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
 
-export const AppBar = styled(MuiAppBar, {
+export const AppBarStyled = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
     transition: theme.transitions.create(["margin", "width"], {

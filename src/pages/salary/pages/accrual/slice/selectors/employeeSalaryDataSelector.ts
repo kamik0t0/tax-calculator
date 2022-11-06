@@ -1,32 +1,34 @@
-import { useTypedSelector } from "@reduxhooks/hooks";
-import { ISalary } from "../exports/types";
+import { createSelector } from "@reduxjs/toolkit";
+import { State } from "types/state";
+import { ISalary } from "../../exports/interfaces";
 
-export const useReport = (id: string) => {
-    const { months } = useTypedSelector((state) => state.salarySlice);
+const employeeSalaryData = (state: State) => {
+    const { months } = state.salarySlice;
+    const { id } = state.salarySlice.employee;
 
     const employeeSalaries: number[] = [];
-    const cumulativeSalary: number[] = [];
+    const cumSalary: number[] = [];
     const overSocialLimit: number[] = [];
-    const cumulativeOverSocialLimit: number[] = [];
-    const cumulativeOverRetirementLimit: number[] = [];
+    const cumOverSocialLimit: number[] = [];
+    const cumOverRetirementLimit: number[] = [];
     const overRetirementLimit: number[] = [];
 
     const insuranceRetirement: number[] = [];
-    const insuranceCumulativeRetirement: number[] = [];
+    const insurancecumRetirement: number[] = [];
     const insuranceMedical: number[] = [];
-    const insuranceCumulativeMedical: number[] = [];
+    const insurancecumMedical: number[] = [];
     const insuranceSocial: number[] = [];
-    const insuranceCumulativeSocial: number[] = [];
+    const insurancecumSocial: number[] = [];
     const insuranceAccident: number[] = [];
-    const insuranceCumulativeAccident: number[] = [];
+    const insurancecumAccident: number[] = [];
 
     const insuranceRetirementBase: number[] = [];
-    const insuranceRetiremenCumulativetBase: number[] = [];
+    const insuranceRetiremencumtBase: number[] = [];
     const insuranceSocialBase: number[] = [];
-    const insuranceSocialCumulativeBase: number[] = [];
+    const insuranceSocialcumBase: number[] = [];
 
     const PIT: number[] = [];
-    const PITCumulativeArr: number[] = [];
+    const PITcumArr: number[] = [];
 
     let cumulSalaryLimit = 0;
     let cumulSocialLimit = 0;
@@ -40,7 +42,7 @@ export const useReport = (id: string) => {
     let cumulRetirmentInsuranceBase = 0;
     let cumulSocialInsuranceBase = 0;
 
-    let PITCumulative = 0;
+    let PITcum = 0;
 
     for (const month in months) {
         const salary: ISalary[] = months[month].salary;
@@ -50,60 +52,48 @@ export const useReport = (id: string) => {
             if (accrual.employeeId === id) {
                 cumulSalaryLimit += +accrual.accrued.toFixed(2);
                 employeeSalaries.push(+accrual.accrued.toFixed(2));
-                cumulativeSalary.push(+cumulSalaryLimit.toFixed(2));
+                cumSalary.push(+cumulSalaryLimit.toFixed(2));
 
                 cumulSocialLimit += +accrual.overSocialLimit.toFixed(2);
                 overSocialLimit.push(+accrual.overSocialLimit.toFixed(2));
-                cumulativeOverSocialLimit.push(+cumulSocialLimit.toFixed(2));
+                cumOverSocialLimit.push(+cumulSocialLimit.toFixed(2));
 
                 cumulRetirmentLimit += +accrual.overRetirmentLimit.toFixed(2);
                 overRetirementLimit.push(
                     +accrual.overRetirmentLimit.toFixed(2)
                 );
-                cumulativeOverRetirementLimit.push(
-                    +cumulRetirmentLimit.toFixed(2)
-                );
-
-                console.log(accrual.insurance.retirement.toFixed(2));
+                cumOverRetirementLimit.push(+cumulRetirmentLimit.toFixed(2));
 
                 cumulRetirmentInsurance +=
                     +accrual.insurance.retirement.toFixed(2);
-                console.log(cumulRetirmentInsurance);
 
                 insuranceRetirement.push(
                     +accrual.insurance.retirement.toFixed(2)
                 );
 
-                insuranceCumulativeRetirement.push(
+                insurancecumRetirement.push(
                     +cumulRetirmentInsurance.toFixed(2)
                 );
-                console.log(insuranceCumulativeRetirement);
 
                 cumulMedicalInsurance += +accrual.insurance.medical.toFixed(2);
                 insuranceMedical.push(+accrual.insurance.medical.toFixed(2));
-                insuranceCumulativeMedical.push(
-                    +cumulMedicalInsurance.toFixed(2)
-                );
+                insurancecumMedical.push(+cumulMedicalInsurance.toFixed(2));
 
                 cumulSocialInsurance += +accrual.insurance.social.toFixed(2);
                 insuranceSocial.push(+accrual.insurance.social.toFixed(2));
-                insuranceCumulativeSocial.push(
-                    +cumulSocialInsurance.toFixed(2)
-                );
+                insurancecumSocial.push(+cumulSocialInsurance.toFixed(2));
 
                 cumulAccidentInsurance +=
                     +accrual.insurance.accident.toFixed(2);
                 insuranceAccident.push(+accrual.insurance.accident.toFixed(2));
-                insuranceCumulativeAccident.push(
-                    +cumulAccidentInsurance.toFixed(2)
-                );
+                insurancecumAccident.push(+cumulAccidentInsurance.toFixed(2));
 
                 cumulRetirmentInsuranceBase +=
                     +accrual.insuranceRetirementBase.toFixed(2);
                 insuranceRetirementBase.push(
                     +accrual.insuranceRetirementBase.toFixed(2)
                 );
-                insuranceRetiremenCumulativetBase.push(
+                insuranceRetiremencumtBase.push(
                     +cumulRetirmentInsuranceBase.toFixed(2)
                 );
 
@@ -112,13 +102,13 @@ export const useReport = (id: string) => {
                 insuranceSocialBase.push(
                     +accrual.insuranceSocialBase.toFixed(2)
                 );
-                insuranceSocialCumulativeBase.push(
+                insuranceSocialcumBase.push(
                     +cumulSocialInsuranceBase.toFixed(2)
                 );
 
-                PITCumulative += +accrual.tax.toFixed(2);
+                PITcum += +accrual.tax.toFixed(2);
                 PIT.push(+accrual.tax.toFixed(2));
-                PITCumulativeArr.push(+PITCumulative.toFixed(2));
+                PITcumArr.push(+PITcum.toFixed(2));
 
                 isEmployeeAccrual = true;
             }
@@ -126,51 +116,55 @@ export const useReport = (id: string) => {
 
         if (!isEmployeeAccrual) {
             employeeSalaries.push(0);
-            cumulativeSalary.push(cumulSalaryLimit);
+            cumSalary.push(cumulSalaryLimit);
             overSocialLimit.push(0);
-            cumulativeOverSocialLimit.push(cumulSocialLimit);
+            cumOverSocialLimit.push(cumulSocialLimit);
             overRetirementLimit.push(0);
-            cumulativeOverRetirementLimit.push(cumulRetirmentLimit);
+            cumOverRetirementLimit.push(cumulRetirmentLimit);
 
             insuranceRetirement.push(0);
-            insuranceCumulativeRetirement.push(cumulRetirmentInsurance);
+            insurancecumRetirement.push(cumulRetirmentInsurance);
             insuranceMedical.push(0);
-            insuranceCumulativeMedical.push(cumulMedicalInsurance);
+            insurancecumMedical.push(cumulMedicalInsurance);
             insuranceSocial.push(0);
-            insuranceCumulativeSocial.push(cumulSocialInsurance);
+            insurancecumSocial.push(cumulSocialInsurance);
             insuranceAccident.push(0);
-            insuranceCumulativeAccident.push(cumulAccidentInsurance);
+            insurancecumAccident.push(cumulAccidentInsurance);
 
             insuranceSocialBase.push(0);
-            insuranceSocialCumulativeBase.push(cumulSocialInsuranceBase);
+            insuranceSocialcumBase.push(cumulSocialInsuranceBase);
             insuranceRetirementBase.push(0);
-            insuranceRetiremenCumulativetBase.push(cumulRetirmentInsuranceBase);
+            insuranceRetiremencumtBase.push(cumulRetirmentInsuranceBase);
 
             PIT.push(0);
-            PITCumulativeArr.push(PITCumulative);
+            PITcumArr.push(PITcum);
         }
     }
-
     return [
         employeeSalaries,
-        cumulativeSalary,
+        cumSalary,
         overSocialLimit,
-        cumulativeOverSocialLimit,
+        cumOverSocialLimit,
         overRetirementLimit,
-        cumulativeOverRetirementLimit,
+        cumOverRetirementLimit,
         insuranceRetirement,
-        insuranceCumulativeRetirement,
+        insurancecumRetirement,
         insuranceMedical,
-        insuranceCumulativeMedical,
+        insurancecumMedical,
         insuranceSocial,
-        insuranceCumulativeSocial,
+        insurancecumSocial,
         insuranceAccident,
-        insuranceCumulativeAccident,
+        insurancecumAccident,
         insuranceRetirementBase,
-        insuranceRetiremenCumulativetBase,
+        insuranceRetiremencumtBase,
         insuranceSocialBase,
-        insuranceSocialCumulativeBase,
+        insuranceSocialcumBase,
         PIT,
-        PITCumulativeArr,
-    ] as const;
+        PITcumArr,
+    ];
 };
+
+export const employeeSalaryDataSelector = createSelector(
+    employeeSalaryData,
+    (rates) => rates
+);

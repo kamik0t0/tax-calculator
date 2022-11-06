@@ -208,17 +208,6 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         salaryTaxRate: calcCommonIE.salaryTaxRate,
     });
 
-    console.log(
-        vatAccruedCommonIE,
-        vatRecoupmentCommonIE,
-        vatFinalCommonIE,
-        taxIncomeCommonIE,
-        taxRecoupmentCommonIE,
-        pitCommonIE,
-        totalCommonIE,
-        burdenCommonIE
-    );
-
     state.taxBasicIE.VAT.accrualVAT = vatAccruedCommonIE;
     state.taxBasicIE.VAT.recoupmentVAT = vatRecoupmentCommonIE;
     state.taxBasicIE.VAT.vat = vatFinalCommonIE;

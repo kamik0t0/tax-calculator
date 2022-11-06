@@ -1,42 +1,20 @@
-import { useSort } from "@customhooks/useSort";
 import ArrowDownwardSharpIcon from "@mui/icons-material/ArrowDownwardSharp";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { Box, TableCell, TableHead, TableRow } from "@mui/material";
-import { useTypedDispatch } from "@reduxhooks/hooks";
-import { updateSalaries } from "@salarystore/salary-reducer";
 import React, { FC } from "react";
-import { ISalary } from "../exports/interfaces";
-import { SalarySortFields } from "../exports/utils";
+import { useTableHeader } from "../../exports/hooks";
+import { ISalary } from "../../exports/interfaces";
 
 const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
     ({ salary, table }) => {
-        const dispatch = useTypedDispatch();
-        const { byNumber, byString, sortOrder } = useSort(salary);
-
-        const sortByEmployee = (
-            event: React.MouseEvent<HTMLTableCellElement>
-        ) =>
-            dispatch(
-                updateSalaries(byString(SalarySortFields.employee), table)
-            );
-        const sortByIndex = (event: React.MouseEvent<HTMLTableCellElement>) =>
-            dispatch(updateSalaries(byString(SalarySortFields.number), table));
-        const sortByTax = (event: React.MouseEvent<HTMLTableCellElement>) =>
-            dispatch(updateSalaries(byNumber(SalarySortFields.tax), table));
-        const sortByAccrued = (event: React.MouseEvent<HTMLTableCellElement>) =>
-            dispatch(updateSalaries(byNumber(SalarySortFields.accrued), table));
-        const sortByRecoupment = (
-            event: React.MouseEvent<HTMLTableCellElement>
-        ) =>
-            dispatch(
-                updateSalaries(byNumber(SalarySortFields.childrenQtty), table)
-            );
-        const sortByInsurance = (
-            event: React.MouseEvent<HTMLTableCellElement>
-        ) =>
-            dispatch(
-                updateSalaries(byNumber(SalarySortFields.insurance), table)
-            );
+        const {
+            sortByEmployee,
+            sortByTax,
+            sortByAccrued,
+            sortByRecoupment,
+            sortByInsurance,
+            sortOrder,
+        } = useTableHeader(salary, table);
 
         return (
             <TableHead>
@@ -50,13 +28,7 @@ const TableHeader: FC<{ salary: ISalary[]; table: string }> = React.memo(
                             )}
                         </Box>
                     </TableCell>
-                    <TableCell
-                        variant="head"
-                        width={55}
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                        onClick={sortByIndex}
-                        align="center"
-                    >
+                    <TableCell variant="head" width={55} align="center">
                         №
                     </TableCell>
                     <TableCell

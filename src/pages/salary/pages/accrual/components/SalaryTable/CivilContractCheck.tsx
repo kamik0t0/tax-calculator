@@ -1,7 +1,7 @@
 import { Checkbox, TableCell } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import { ISalary } from "../exports/interfaces";
+import { ISalary } from "../../exports/interfaces";
 
 const CivilContractCheck: React.FC<{
     employeeSalary: ISalary;

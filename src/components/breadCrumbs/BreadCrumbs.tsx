@@ -8,18 +8,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import LinkRouter from "@router/LinkRouter";
 import React, { FC } from "react";
 import { useLocation } from "react-router-dom";
-
-export const breadcrumbNameMap: { [key: string]: string } = {
-    "/home": "главная",
-    "/nds": "ндс",
-    "/salary": "зарплата",
-    "/about": "о сайте",
-    "/contacts": "контакты",
-    "/accrual": "начисления",
-    "/dividends": "дивиденды",
-    "/employees": "сотрудники",
-    "/calculator": "калькулятор",
-};
+import { breadcrumbNameMap } from "../nav/exports/utils";
 
 const Breadcrumbs: FC = () => {
     const { pathname } = useLocation();

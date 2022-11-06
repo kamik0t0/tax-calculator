@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeaderStyled = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
@@ -9,4 +9,4 @@ const DrawerHeader = styled("div")(({ theme }) => ({
     justifyContent: "flex-end",
 }));
 
-export default DrawerHeader;
+export default DrawerHeaderStyled;

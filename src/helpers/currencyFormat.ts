@@ -3,3 +3,6 @@ export const toRU = new Intl.NumberFormat("ru", {
     currency: "RUB",
     maximumFractionDigits: 2,
 });
+export const toPercentView = new Intl.NumberFormat("ru", {
+    style: "percent",
+});

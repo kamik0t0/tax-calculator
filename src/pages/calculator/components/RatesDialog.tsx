@@ -1,3 +1,5 @@
+import { toPercentRateSelector } from "../exports/selectors";
+import { useFontHeaders } from "@customhooks/useFontHeader";
 import {
     Box,
     Button,
@@ -6,59 +8,25 @@ import {
     DialogContent,
     DialogContentText,
     Divider,
-    TextField,
-    Typography,
-    useTheme,
 } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { toPercent, toFraction } from "@helpers/toPercent";
-import {
-    setIncomeRate,
-    setExpensesRate,
-    setIncomeTaxRate,
-} from "@calcstore/calculator-reducer";
-
-// TODO: Декомпозиция
+import { Rate, RateInfo } from "../exports/components";
+import { useRates } from "../exports/hooks";
 
 const RatesDialog: React.FC<{
-    setIsDialog: React.Dispatch<React.SetStateAction<boolean>>;
+    toggleDialog: () => void;
     isDialog: boolean;
-}> = ({ setIsDialog, isDialog }) => {
-    const dispatch = useTypedDispatch();
-    const handleClose = () => setIsDialog(false);
-    const handleCencel = () => setIsDialog(false);
-    const theme = useTheme();
-    const headersTextColor =
-        theme.palette.mode === "dark" ? { color: "snow" } : { color: "black" };
+}> = ({ toggleDialog, isDialog }) => {
+    const [headersTextColor] = useFontHeaders();
+    const {
+        handleIncomePercent,
+        handleExpensesPercent,
+        handleIncomeTaxPercent,
+    } = useRates();
 
-    const { incomeRate, expensesRate, LLCIncomeRate } = useTypedSelector(
-        (state) => state.calcSlice.rates
-    );
-
-    const incomeRatePercent = toPercent(incomeRate);
-    const expensesRatePercent = toPercent(expensesRate);
-    const LLCIncomeRatePercent = toPercent(LLCIncomeRate);
-
-    const handleIncomePercent = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const IncomePercent = toFraction(+event.target.value);
-        dispatch(setIncomeRate(IncomePercent));
-    };
-    const handleExpensesPercent = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const ExpensesPercent = toFraction(+event.target.value);
-        dispatch(setExpensesRate(ExpensesPercent));
-    };
-    const handleIncomeTaxPercent = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const LLCIncomeTaxPercent = toFraction(+event.target.value);
-        dispatch(setIncomeTaxRate(LLCIncomeTaxPercent));
-    };
+    const [incomeRatePercent, expensesRatePercent, LLCIncomeRatePercent] =
+        useTypedSelector(toPercentRateSelector);
 
     return (
         <Dialog open={isDialog} fullWidth>
@@ -73,97 +41,35 @@ const RatesDialog: React.FC<{
                         flexDirection: "column",
                     }}
                 >
-                    <Box
-                        mb={2}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
+                    <Rate
+                        value={incomeRatePercent}
+                        onChange={handleIncomePercent}
+                        inputProps={{ step: 1, min: 1, max: 6 }}
                     >
-                        <Typography>УСН (доходы)</Typography>
-                        <TextField
-                            margin="dense"
-                            label="Процент"
-                            value={incomeRatePercent}
-                            type="number"
-                            variant="outlined"
-                            size="small"
-                            onChange={handleIncomePercent}
-                            sx={{ width: 100 }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{ step: 1, min: 1, max: 6 }}
-                        />
-                    </Box>
-                    <Box
-                        mb={2}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
+                        УСН (доходы)
+                    </Rate>
+                    <Rate
+                        value={expensesRatePercent}
+                        onChange={handleExpensesPercent}
+                        inputProps={{ step: 1, min: 5, max: 15 }}
                     >
-                        <Typography>УСН (доходы-расходы)</Typography>
-                        <TextField
-                            margin="dense"
-                            label="Процент"
-                            value={expensesRatePercent}
-                            type="number"
-                            variant="outlined"
-                            size="small"
-                            onChange={handleExpensesPercent}
-                            sx={{ width: 100 }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{ step: 1, min: 5, max: 15 }}
-                        />
-                    </Box>
-                    <Box
-                        mb={2}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
+                        УСН (доходы-расходы)
+                    </Rate>
+                    <Rate
+                        value={LLCIncomeRatePercent}
+                        onChange={handleIncomeTaxPercent}
+                        inputProps={{ step: 0.1, min: 13.5, max: 17 }}
                     >
-                        <Typography>Налог на прибыль (региональный)</Typography>
-                        <TextField
-                            margin="dense"
-                            label="Процент"
-                            value={LLCIncomeRatePercent}
-                            type="number"
-                            variant="outlined"
-                            size="small"
-                            onChange={handleIncomeTaxPercent}
-                            sx={{ width: 100 }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{ step: 0.1, min: 13.5, max: 17 }}
-                        />
-                    </Box>
+                        Налог на прибыль (региональный)
+                    </Rate>
+
                     <br />
                     <Divider sx={{ mb: 1 }} />
-                    <Box sx={{ display: "flex", flexDirection: "row" }}>
-                        <InfoOutlinedIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#EA8543" }}
-                        />
-                        <Typography variant="body2" color="#EA8543">
-                            Ставки в регионах могут отличаться
-                        </Typography>
-                    </Box>
+                    <RateInfo />
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCencel}>Отмена</Button>
-                <Button onClick={handleClose}>Ok</Button>
+                <Button onClick={toggleDialog}>Ok</Button>
             </DialogActions>
         </Dialog>
     );

@@ -16,9 +16,12 @@ import InputCell from "@sharedcomponents/InputCell";
 import RemoveRow from "@sharedcomponents/RemoveRow";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import React, { FC } from "react";
-import { CivilContractCheck, SelectEmployeeCell } from "../exports/components";
-import { useEmployees } from "../exports/hooks";
-import { ISalary } from "../exports/interfaces";
+import {
+    CivilContractCheck,
+    SelectEmployeeCell,
+} from "../../exports/components";
+import { useEmployees } from "../../exports/hooks";
+import { ISalary } from "../../exports/interfaces";
 
 const TableContent: FC<{
     salary: ISalary[];
