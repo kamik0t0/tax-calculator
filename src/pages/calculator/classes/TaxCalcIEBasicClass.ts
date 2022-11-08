@@ -1,6 +1,6 @@
 import { TaxCalcIE } from "../exports/classes";
 import { calcData } from "../exports/types";
-import { BasicRates, StaticRates } from "../exports/utils";
+import { BasicRates, Limits, StaticRates } from "../exports/utils";
 
 export class TaxCalcIEBasic extends TaxCalcIE {
     constructor(
@@ -11,7 +11,7 @@ export class TaxCalcIEBasic extends TaxCalcIE {
         super(salaryTaxRate, medicalFixInsurance, retirementFixInsurance);
     }
     static burden(totalTax: number, income: number) {
-        return Math.round((totalTax / income!) * 100);
+        return totalTax / income!;
     }
     // НДС
     static vat(income: number, expenses: number, salary: number) {
@@ -50,10 +50,15 @@ export class TaxCalcIEBasic extends TaxCalcIE {
 
         const float = test / 101;
 
-        const floatFinal = float >= 0 ? float : 0;
+        let floatFinal = float >= 0 ? float : 0;
+
+        floatFinal =
+            floatFinal <= Limits.floatInsuranceLimit
+                ? floatFinal
+                : Limits.floatInsuranceLimit;
 
         const total = floatFinal + medicalFixInsurance + retirementFixInsurance;
-        return [total, salaryTax];
+        return [total, salaryTax, floatFinal];
     }
     // Подоходный налог
     static pit(
@@ -70,14 +75,15 @@ export class TaxCalcIEBasic extends TaxCalcIE {
             salary
         );
 
-        const [totalInsurance, salaryTax] = this.totalInsuranceIEBasic(
-            income!,
-            expenses,
-            salary,
-            retirementFixInsurance!,
-            medicalFixInsurance!,
-            vatTax!
-        );
+        const [totalInsurance, salaryTax, floatFinal] =
+            this.totalInsuranceIEBasic(
+                income!,
+                expenses,
+                salary,
+                retirementFixInsurance!,
+                medicalFixInsurance!,
+                vatTax!
+            );
 
         const taxIncome = income - vatAccrued;
         const taxRecoupment =
@@ -86,7 +92,15 @@ export class TaxCalcIEBasic extends TaxCalcIE {
             taxIncome - taxRecoupment > 0
                 ? Math.round(((taxIncome - taxRecoupment) * 13) / 100)
                 : 0;
-        return { taxIncome, taxRecoupment, pit, totalInsurance, salaryTax };
+
+        return {
+            taxIncome,
+            taxRecoupment,
+            pit,
+            totalInsurance,
+            salaryTax,
+            floatFinal,
+        };
     }
 
     // Итого налоги
@@ -102,18 +116,25 @@ export class TaxCalcIEBasic extends TaxCalcIE {
             expenses!,
             salary!
         );
-        const { taxIncome, taxRecoupment, pit, totalInsurance, salaryTax } =
-            this.pit(
-                income!,
-                expenses!,
-                salary!,
-                retirementFixInsurance!,
-                medicalFixInsurance!,
-                vatFinal!
-            );
+        const {
+            taxIncome,
+            taxRecoupment,
+            pit,
+            totalInsurance,
+            salaryTax,
+            floatFinal,
+        } = this.pit(
+            income!,
+            expenses!,
+            salary!,
+            retirementFixInsurance!,
+            medicalFixInsurance!,
+            vatFinal!
+        );
 
         const total = pit + vatFinal + totalInsurance + salaryTax;
         const burden = income! > 0 ? this.burden(total, income!) : 0;
+
         return {
             vatAccruedCommonIE: vatAccrued,
             vatRecoupmentCommonIE: vatRecoupment,
@@ -123,6 +144,7 @@ export class TaxCalcIEBasic extends TaxCalcIE {
             pitCommonIE: pit,
             totalCommonIE: total,
             burdenCommonIE: burden,
+            floatBasicTaxIE: floatFinal,
         };
     }
 }

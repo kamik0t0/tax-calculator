@@ -1,3 +1,4 @@
+import { Limits } from "../exports/utils";
 import { TaxCalc } from "../exports/classes";
 
 export class TaxCalcIE extends TaxCalc {
@@ -13,10 +14,13 @@ export class TaxCalcIE extends TaxCalc {
         this.retirementFixInsurance = retirementFixInsurance;
     }
 
-    // Страховые взносы 1% с доходов > 300 тыс. руб.
+    // Страховые взносы 1% с доходов > 300 тыс. руб. но не более 275560 руб.
     static floatInsurance(income: number) {
         if (income > 300000) {
-            return Math.round(((income - 300000) * 1) / 100);
+            const floatInsurance = Math.round(((income - 300000) * 1) / 100);
+            return floatInsurance <= Limits.floatInsuranceLimit
+                ? floatInsurance
+                : Limits.floatInsuranceLimit;
         } else {
             return 0;
         }

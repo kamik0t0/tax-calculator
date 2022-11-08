@@ -1,4 +1,4 @@
-import { toPercentRateSelector } from "../exports/selectors";
+import { toPercentRateSelector } from "@calcstore/selectors/ratesSelector";
 import { useFontHeaders } from "@customhooks/useFontHeader";
 import {
     Box,

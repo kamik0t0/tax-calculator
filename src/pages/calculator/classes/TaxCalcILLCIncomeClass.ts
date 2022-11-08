@@ -12,7 +12,7 @@ export class TaxCalcLLCIncome extends TaxCalc {
     }
     // Налоговая нагрузка
     static burden(income: number, salaryTax: number, usn: number) {
-        return Math.round(((salaryTax! + usn!) / income!) * 100);
+        return (salaryTax! + usn!) / income!;
     }
     // УСН к уплате 2
     static USN(
@@ -21,18 +21,25 @@ export class TaxCalcLLCIncome extends TaxCalc {
         salary: number,
         salaryTaxRate: number
     ) {
+        let usnFinal = 0;
+        let recoupment = 0;
         const salaryTax = this.salaryTax(salary!, salaryTaxRate!);
-
         if (salary! > 0) {
             let usn = Math.round(income! * rate);
             if (usn - salaryTax > (usn * 50) / 100) {
-                return Math.round(usn - salaryTax);
+                usnFinal = usn - salaryTax;
+                recoupment = salaryTax;
+                return [usnFinal, recoupment] as const;
             } else {
-                return Math.round((usn * 50) / 100);
+                usnFinal = usn / 2;
+                recoupment = usn / 2;
+                return [usnFinal, recoupment] as const;
             }
         } else {
             let checkZeroIncome = income! * rate;
-            return Math.round(checkZeroIncome > 0 ? checkZeroIncome : 0);
+            usnFinal = checkZeroIncome > 0 ? checkZeroIncome : 0;
+            recoupment = 0;
+            return [usnFinal, recoupment] as const;
         }
     }
     // Итого налоги
@@ -40,9 +47,12 @@ export class TaxCalcLLCIncome extends TaxCalc {
         let total = 0;
         let burden = 0;
         if (income === 0 && salary === 0) return [total, burden, 0];
-
-        const USN =
-            income === 0 ? 0 : this.USN(rate, income!, salary!, salaryTaxRate!);
+        const [USN, recoupment] = this.USN(
+            rate,
+            income!,
+            salary!,
+            salaryTaxRate!
+        );
 
         const salaryTax =
             salary === 0 ? 0 : this.salaryTax(salary!, salaryTaxRate!);
@@ -51,6 +61,6 @@ export class TaxCalcLLCIncome extends TaxCalc {
 
         if (income! > 0) burden = this.burden(income!, salaryTax, USN);
 
-        return [total, burden, USN];
+        return [total, burden, USN, recoupment];
     }
 }

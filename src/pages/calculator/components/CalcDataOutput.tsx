@@ -1,13 +1,60 @@
+import { CustomContext } from "@customhooks/customContext";
 import { useFontHeaders } from "@customhooks/useFontHeader";
+import { useToggle } from "@customhooks/useToggle";
 import { toPercentView, toRU } from "@helpers/currencyFormat";
-import { Container, Divider, Stack, Typography } from "@mui/material";
+import { Button, Container, Divider, Stack, Typography } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import { OutputHeaderWrapper, OutputInfoCol } from "../exports/components";
-import { LLCHeaders, IEHeaders } from "../exports/utils";
+import {
+    IncomeIEReport,
+    IncomeLLCReport,
+    OutputHeaderWrapper,
+    OutputInfoCol,
+    ExpensesIEReport,
+    ExpensesLLCReport,
+    BasicIEReport,
+    BasicLLCReport,
+    CalcDataReportButton,
+    Reports,
+} from "../exports/components";
+import { IEHeaders, LLCHeaders } from "../exports/utils";
 
-// TODO: переписать отображение/вычисление налоговой нагрузки в процентах
+export const [useCalcReports, CalcReportsProvider] = CustomContext<{
+    isIncomeIEDialog: boolean;
+    isIncomeLLCDialog: boolean;
+    isExpensesIEDialog: boolean;
+    isExpensesLLCDialog: boolean;
+    isBasicIEDialog: boolean;
+    isBasicLLCDialog: boolean;
+    toggleIncomeIEDialog: () => void;
+    toggleIncomeLLCDialog: () => void;
+    toggleExpensesIEDialog: () => void;
+    toggleExpensesLLCDialog: () => void;
+    toggleBasicIEDialog: () => void;
+    toggleBasicLLCDialog: () => void;
+}>();
+
 const CalcDataOutput: React.FC = () => {
+    const [isIncomeIEDialog, toggleIncomeIEDialog] = useToggle(false);
+    const [isIncomeLLCDialog, toggleIncomeLLCDialog] = useToggle(false);
+    const [isExpensesIEDialog, toggleExpensesIEDialog] = useToggle(false);
+    const [isExpensesLLCDialog, toggleExpensesLLCDialog] = useToggle(false);
+    const [isBasicIEDialog, toggleBasicIEDialog] = useToggle(false);
+    const [isBasicLLCDialog, toggleBasicLLCDialog] = useToggle(false);
+    const context = {
+        isIncomeIEDialog,
+        isIncomeLLCDialog,
+        isExpensesIEDialog,
+        isExpensesLLCDialog,
+        isBasicIEDialog,
+        isBasicLLCDialog,
+        toggleIncomeIEDialog,
+        toggleIncomeLLCDialog,
+        toggleExpensesIEDialog,
+        toggleExpensesLLCDialog,
+        toggleBasicIEDialog,
+        toggleBasicLLCDialog,
+    };
     const {
         burdenIncomeIE,
         burdenIncomeExpensesIE,
@@ -64,38 +111,39 @@ const CalcDataOutput: React.FC = () => {
             >
                 <OutputInfoCol />
                 <Stack
-                    spacing={4}
+                    spacing={2.85}
                     sx={{
                         display: "flex",
-                        alignContent: "space-between",
                         flexDirection: "column",
                     }}
                 >
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxIncomeIE)}
-                    </Typography>
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxIncomeExpensesIE)}
-                    </Typography>
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxBasicIE)}
-                    </Typography>
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleIncomeIEDialog}
+                        value={taxIncomeIE}
+                    />
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleExpensesIEDialog}
+                        value={taxIncomeExpensesIE}
+                    />
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleBasicIEDialog}
+                        value={taxBasicIE}
+                    />
                 </Stack>
                 <Stack
                     spacing={4}
                     sx={{
                         display: "flex",
-                        alignContent: "space-between",
                         flexDirection: "column",
                     }}
                 >
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenIncomeIE)}
                     </Typography>
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenIncomeExpensesIE)}
                     </Typography>
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenBasicIE)}
                     </Typography>
                 </Stack>
@@ -120,42 +168,70 @@ const CalcDataOutput: React.FC = () => {
             >
                 <OutputInfoCol />
                 <Stack
-                    spacing={4}
+                    spacing={2.85}
                     sx={{
                         display: "flex",
-                        alignContent: "space-between",
                         flexDirection: "column",
                     }}
                 >
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxIncomeLLC)}
-                    </Typography>
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxIncomeExpensesLLC)}
-                    </Typography>
-                    <Typography sx={valueTextColor}>
-                        {toRU.format(taxBasicLLC)}
-                    </Typography>
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleIncomeLLCDialog}
+                        value={taxIncomeLLC}
+                    />
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleExpensesLLCDialog}
+                        value={taxIncomeExpensesLLC}
+                    />
+                    <CalcDataReportButton
+                        toggleIncomeIEDialog={toggleBasicLLCDialog}
+                        value={taxBasicLLC}
+                    />
                 </Stack>
                 <Stack
                     spacing={4}
                     sx={{
                         display: "flex",
-                        alignContent: "space-between",
                         flexDirection: "column",
                     }}
                 >
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenIncomeLLC)}
                     </Typography>
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenIncomeExpensesLLC)}
                     </Typography>
-                    <Typography sx={valueTextColor}>
+                    <Typography align="right" sx={valueTextColor}>
                         {toPercentView.format(burdenBasicLLC)}
                     </Typography>
                 </Stack>
             </Stack>
+            <CalcReportsProvider value={context}>
+                <Reports />
+            </CalcReportsProvider>
+            {/* <IncomeIEReport
+                isIncomeDialog={isIncomeIEDialog}
+                toggleIncomeDialog={toggleIncomeIEDialog}
+            />
+            <IncomeLLCReport
+                isDialog={isIncomeLLCDialog}
+                toggleDialog={toggleIncomeLLCDialog}
+            />
+            <ExpensesIEReport
+                isDialog={isExpensesIEDialog}
+                toggleDialog={toggleExpensesIEDialog}
+            />
+            <ExpensesLLCReport
+                isDialog={isExpensesLLCDialog}
+                toggleDialog={toggleExpensesLLCDialog}
+            />
+            <BasicIEReport
+                isDialog={isBasicIEDialog}
+                toggleDialog={toggleBasicIEDialog}
+            />
+            <BasicLLCReport
+                isDialog={isBasicLLCDialog}
+                toggleDialog={toggleBasicLLCDialog}
+            /> */}
         </Container>
     );
 };

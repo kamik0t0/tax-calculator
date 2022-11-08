@@ -101,7 +101,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         FixInsuranceValues.retirement
     );
     //  Всего налогов для ИП УСН доходы
-    const [totalIEIncome, burdenIEIncome, USNIEIncome] =
+    const [totalIEIncome, burdenIEIncome, USNIEIncome, USNIERecoupment] =
         TaxCalcIEIncome.totalTax({
             rate: state.rates.incomeRate,
             income,
@@ -117,11 +117,13 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.burdenIncomeIE = burdenIEIncome;
     // УСН для ИП УСН доходы
     state.taxIncomeIE.tax = USNIEIncome;
+    // Вычет
+    state.taxIncomeIE.recoupment = USNIERecoupment;
 
     // Доходы ООО -------------------------------------------------------------
     const calcIncomeLLC = new TaxCalcLLCIncome(SalaryInsuranceRate);
 
-    const [totalLLCIncome, burdenLLCIncome, usnLLCIncome] =
+    const [totalLLCIncome, burdenLLCIncome, usnLLCIncome, USNLLCRecoupment] =
         TaxCalcLLCIncome.totalTax({
             rate: state.rates.incomeRate,
             income,
@@ -134,6 +136,8 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.burdenIncomeLLC = burdenLLCIncome;
     // УСН для ООО УСН доходы
     state.taxIncomeLLC.tax = usnLLCIncome;
+    // Вычет
+    state.taxIncomeIE.recoupment = USNLLCRecoupment;
 
     // Доходы минус расходы ИП ------------------------------------------------
     const calcIncomeExpensesIE = new TaxCalcIEExpenses(
@@ -142,18 +146,23 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         FixInsuranceValues.retirement
     );
 
-    const [totalIEExpenses, burdenIEExpenses, usnIEExpenses, minimalIE] =
-        TaxCalcIEExpenses.totalTax({
-            rate: state.rates.expensesRate,
-            income,
-            salary,
-            expenses,
-            retirementFixInsurance: calcIncomeExpensesIE.retirementFixInsurance,
-            medicalFixInsurance: calcIncomeExpensesIE.medicalFixInsurance,
-            salaryTaxRate: calcIncomeExpensesIE.salaryTaxRate,
-        });
+    const [
+        totalIEExpenses,
+        burdenIEExpenses,
+        usnIEExpenses,
+        minimalIE,
+        totalCostIE,
+    ] = TaxCalcIEExpenses.totalTax({
+        rate: state.rates.expensesRate,
+        income,
+        salary,
+        expenses,
+        retirementFixInsurance: calcIncomeExpensesIE.retirementFixInsurance,
+        medicalFixInsurance: calcIncomeExpensesIE.medicalFixInsurance,
+        salaryTaxRate: calcIncomeExpensesIE.salaryTaxRate,
+    });
 
-    //  Всего налогов для ИП УСН доходы-расходы
+    // Всего налогов для ИП УСН доходы-расходы
     state.taxIncomeExpensesIE.total = totalIEExpenses;
     // Налоговая нагрузка
     state.burdenIncomeExpensesIE = burdenIEExpenses;
@@ -161,18 +170,25 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.taxIncomeExpensesIE.tax = usnIEExpenses;
     // УСН минимальный 1%
     state.taxIncomeExpensesIE.minimal = minimalIE;
+    // Всего расходов
+    state.taxIncomeExpensesIE.totalCost = totalCostIE;
 
     // Доходы минус расходы ООО -----------------------------------------------
     const calcIncomeExpensesLLC = new TaxCalcLLCExpenses(SalaryInsuranceRate);
 
-    const [totalLLCExpenses, burdenLLCExpenses, usnLLCExpenses, minimalLLC] =
-        TaxCalcLLCExpenses.totalTax({
-            rate: state.rates.expensesRate,
-            income,
-            salary,
-            expenses,
-            salaryTaxRate: calcIncomeExpensesLLC.salaryTaxRate,
-        });
+    const [
+        totalLLCExpenses,
+        burdenLLCExpenses,
+        usnLLCExpenses,
+        minimalLLC,
+        totalCostLLC,
+    ] = TaxCalcLLCExpenses.totalTax({
+        rate: state.rates.expensesRate,
+        income,
+        salary,
+        expenses,
+        salaryTaxRate: calcIncomeExpensesLLC.salaryTaxRate,
+    });
     //  Всего налогов для ИП УСН доходы-расходы
     state.taxIncomeExpensesLLC.total = totalLLCExpenses;
     // Налоговая нагрузка
@@ -181,6 +197,8 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.taxIncomeExpensesLLC.tax = usnLLCExpenses;
     // УСН минимальный 1%
     state.taxIncomeExpensesLLC.minimal = minimalLLC;
+    // Всего расходов
+    state.taxIncomeExpensesLLC.totalCost = totalCostLLC;
 
     // Общий ИП ---------------------------------------------------------------
     const calcCommonIE = new TaxCalcIEBasic(
@@ -198,6 +216,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         pitCommonIE,
         totalCommonIE,
         burdenCommonIE,
+        floatBasicTaxIE,
     } = TaxCalcIEBasic.totalTax({
         rate: 0.13,
         income,
@@ -216,6 +235,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.taxBasicIE.PIT.pit = pitCommonIE;
     state.taxBasicIE.total = totalCommonIE;
     state.burdenBasicIE = burdenCommonIE;
+    state.insuranceIE.floatInsuranceBasicTax = floatBasicTaxIE;
 
     // Общий ООО --------------------------------------------------------------
     const calcCommonLLC = new TaxCalcLLCBasic(SalaryInsuranceRate);
@@ -226,7 +246,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         vatFinalCommonLLC,
         taxIncomeCommonLLC,
         taxRecoupmentCommonLLC,
-        pitCommonLLC,
+        IncomeTaxCommonLLC,
         totalCommonLLC,
         burdenCommonLLC,
     } = TaxCalcLLCBasic.totalTax({
@@ -242,7 +262,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     state.taxBasicLLC.VAT.vat = vatFinalCommonLLC;
     state.taxBasicLLC.incomeTax.taxableIncome = taxIncomeCommonLLC;
     state.taxBasicLLC.incomeTax.recoupment = taxRecoupmentCommonLLC;
-    state.taxBasicIE.PIT.pit = pitCommonLLC;
+    state.taxBasicLLC.incomeTax.incomeTax = IncomeTaxCommonLLC;
     state.taxBasicLLC.total = totalCommonLLC;
     state.burdenBasicLLC = burdenCommonLLC;
 };

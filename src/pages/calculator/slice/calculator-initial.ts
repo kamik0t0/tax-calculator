@@ -16,18 +16,19 @@ export const initialState: ITax = {
         fixMedical: FixInsuranceValues.medical,
         fixRetirement: FixInsuranceValues.retirement,
         floatInsurance: 0,
+        floatInsuranceBasicTax: 0,
     },
 
-    taxIncomeIE: { tax: 0, total: 0 },
+    taxIncomeIE: { tax: 0, total: 0, recoupment: 0 },
     burdenIncomeIE: 0,
 
-    taxIncomeLLC: { tax: 0, total: 0 },
+    taxIncomeLLC: { tax: 0, total: 0, recoupment: 0 },
     burdenIncomeLLC: 0,
 
-    taxIncomeExpensesIE: { tax: 0, total: 0, minimal: 0 },
+    taxIncomeExpensesIE: { tax: 0, total: 0, minimal: 0, totalCost: 0 },
     burdenIncomeExpensesIE: 0,
 
-    taxIncomeExpensesLLC: { tax: 0, total: 0, minimal: 0 },
+    taxIncomeExpensesLLC: { tax: 0, total: 0, minimal: 0, totalCost: 0 },
     burdenIncomeExpensesLLC: 0,
 
     taxBasicIE: {

@@ -30,6 +30,7 @@ export enum BusinessRates {
 export enum Limits {
     social = 1032000,
     retirement = 1565000,
+    floatInsuranceLimit = 275560,
 }
 
 export enum FixInsuranceValues {

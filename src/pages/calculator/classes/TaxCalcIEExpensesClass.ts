@@ -53,7 +53,7 @@ export class TaxCalcIEExpenses extends TaxCalcIE {
         const usn = Math.round((income! - totalCost!) * rate);
         const minimal = this.usnMinimal(income!);
         const usnFinal = usn > minimal ? usn : minimal;
-        return [usnFinal, minimal];
+        return [usnFinal, minimal, totalCost];
     }
 
     // Итого налоги
@@ -77,7 +77,7 @@ export class TaxCalcIEExpenses extends TaxCalcIE {
 
         if (income === 0 && salary === 0) return [totalInsurance, burden, 0, 0];
 
-        const [USN, minimal] = this.USN({
+        const [USN, minimal, totalCost] = this.USN({
             rate,
             income,
             salary,
@@ -92,10 +92,8 @@ export class TaxCalcIEExpenses extends TaxCalcIE {
         total = Math.round(totalInsurance + USN + salaryTax);
 
         if (income! > 0) {
-            burden = Math.round(
-                ((salaryTax + USN + totalInsurance) / income!) * 100
-            );
+            burden = (salaryTax + USN + totalInsurance) / income!;
         }
-        return [total, burden, USN, minimal];
+        return [total, burden, USN, minimal, totalCost];
     }
 }

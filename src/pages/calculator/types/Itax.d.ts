@@ -13,18 +13,29 @@ export interface ITax {
         fixMedical: number;
         fixRetirement: number;
         floatInsurance: number;
+        floatInsuranceBasicTax: number;
     };
 
-    taxIncomeIE: { tax: number; total: number };
+    taxIncomeIE: { tax: number; total: number; recoupment: number };
     burdenIncomeIE: number;
 
-    taxIncomeLLC: { tax: number; total: number };
+    taxIncomeLLC: { tax: number; total: number; recoupment: number };
     burdenIncomeLLC: number;
 
-    taxIncomeExpensesIE: { tax: number; total: number; minimal: number };
+    taxIncomeExpensesIE: {
+        tax: number;
+        total: number;
+        minimal: number;
+        totalCost: number;
+    };
     burdenIncomeExpensesIE: number;
 
-    taxIncomeExpensesLLC: { tax: number; total: number; minimal: number };
+    taxIncomeExpensesLLC: {
+        tax: number;
+        total: number;
+        minimal: number;
+        totalCost: number;
+    };
     burdenIncomeExpensesLLC: number;
 
     taxBasicIE: {

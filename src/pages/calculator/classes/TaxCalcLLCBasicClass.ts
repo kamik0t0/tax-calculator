@@ -6,7 +6,7 @@ export class TaxCalcLLCBasic extends TaxCalc {
         super(salaryTaxRate);
     }
     static burden(totalTax: number, income: number) {
-        return Math.round((totalTax / income!) * 100);
+        return totalTax / income!;
     }
     // НДС
     static vat(income: number, expenses: number, salary: number) {
@@ -72,7 +72,7 @@ export class TaxCalcLLCBasic extends TaxCalc {
             vatFinalCommonLLC: vatFinal,
             taxIncomeCommonLLC: taxIncome,
             taxRecoupmentCommonLLC: taxRecoupment,
-            pitCommonLLC: LLCIncomeTax,
+            IncomeTaxCommonLLC: LLCIncomeTax,
             totalCommonLLC: total,
             burdenCommonLLC: burden,
         };

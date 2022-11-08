@@ -5,4 +5,6 @@ export const toRU = new Intl.NumberFormat("ru", {
 });
 export const toPercentView = new Intl.NumberFormat("ru", {
     style: "percent",
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
 });

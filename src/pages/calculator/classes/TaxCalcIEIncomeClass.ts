@@ -28,7 +28,7 @@ export class TaxCalcIEIncome extends TaxCalcIE {
     }
     // УСН начислен
     static usnAccrued(rate: number, income: number) {
-        return Math.round(income! * rate);
+        return income! * rate;
     }
     // УСН
     static USN({
@@ -39,6 +39,8 @@ export class TaxCalcIEIncome extends TaxCalcIE {
         retirementFixInsurance,
         medicalFixInsurance,
     }: calcData) {
+        let usnFinal = 0;
+        let recoupment = 0;
         const totalCost = this.totalCost(
             income!,
             salary!,
@@ -49,20 +51,26 @@ export class TaxCalcIEIncome extends TaxCalcIE {
         const floatInsurance = this.floatInsurance(income!);
         if (salary! > 0) {
             const usn = this.usnAccrued(rate, income!);
-            if (usn - totalCost > usn / 2) return Math.round(usn - totalCost);
-            else return Math.round(usn / 2);
+            if (usn - totalCost > usn / 2) {
+                usnFinal = usn - totalCost;
+                recoupment = totalCost;
+                return [usnFinal, recoupment];
+            } else {
+                usnFinal = usn / 2;
+                recoupment = usn / 2;
+                return [usnFinal, recoupment];
+            }
         } else {
-            let check =
-                income! * rate -
-                retirementFixInsurance! -
-                medicalFixInsurance! -
-                floatInsurance;
-            return Math.round(check > 0 ? check : 0);
+            recoupment =
+                retirementFixInsurance! + medicalFixInsurance! + floatInsurance;
+            let usn = income! * rate - recoupment;
+            usnFinal = usn > 0 ? usn : 0;
+            return [usnFinal, recoupment];
         }
     }
     // Налоговая нагрузка
     static burden(total: number, income: number) {
-        return Math.round((total / income!) * 100);
+        return total / income!;
     }
     // Итого налоги
     static totalTax({
@@ -83,7 +91,7 @@ export class TaxCalcIEIncome extends TaxCalcIE {
 
         if (income === 0 && salary === 0) return [totalInsurance, burden, 0];
 
-        const USN = this.USN({
+        const [USN, recoupment] = this.USN({
             rate,
             income,
             salary,
@@ -104,6 +112,6 @@ export class TaxCalcIEIncome extends TaxCalcIE {
             burden = 100;
         }
 
-        return [total, burden, USN];
+        return [total, burden, USN, recoupment];
     }
 }

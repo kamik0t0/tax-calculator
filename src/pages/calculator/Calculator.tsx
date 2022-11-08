@@ -22,7 +22,7 @@ const Calculator: React.FC = () => {
                     justifyContent: "space-around",
                 }}
             >
-                <UserInputData openDialog={toggleDialog} />
+                <UserInputData toggleDialog={toggleDialog} />
                 <Divider
                     orientation="vertical"
                     variant="fullWidth"

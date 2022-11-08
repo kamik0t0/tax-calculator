@@ -21,11 +21,11 @@ export class TaxCalcLLCExpenses extends TaxCalc {
         const usn = Math.round((income! - totalCost!) * rate);
         const minimal = this.usnMinimal(income!);
         const usnFinal = usn > minimal ? usn : minimal;
-        return [usnFinal, minimal];
+        return [usnFinal, minimal, totalCost];
     }
     // Налоговая нагрузка
     static burden(income: number, salaryTax: number, usn: number) {
-        return Math.round(((salaryTax! + usn!) / income!) * 100);
+        return (salaryTax! + usn!) / income!;
     }
     // Итого налоги
     static totalTax({
@@ -39,7 +39,7 @@ export class TaxCalcLLCExpenses extends TaxCalc {
         let burden = 0;
         if (income === 0 && salary === 0) return [total, burden, 0, 0];
 
-        const [USN, minimal] = this.USN({
+        const [USN, minimal, totalCost] = this.USN({
             rate,
             income,
             salary,
@@ -54,6 +54,6 @@ export class TaxCalcLLCExpenses extends TaxCalc {
 
         if (income! > 0) burden = this.burden(income!, salaryTax, USN);
 
-        return [total, burden, USN, minimal];
+        return [total, burden, USN, minimal, totalCost];
     }
 }
