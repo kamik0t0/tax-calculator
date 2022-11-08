@@ -2,6 +2,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Box, IconButton, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import { AppBarStyled } from "../exports/components";
+import { HeaderLinks } from "../exports/components";
 
 const Header: React.FC<{
     open: boolean;
@@ -37,6 +38,7 @@ const Header: React.FC<{
                         Калькулятор налогов
                     </Typography>
                 </Toolbar>
+                <HeaderLinks />
             </Box>
         </AppBarStyled>
     );

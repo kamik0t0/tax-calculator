@@ -6,4 +6,4 @@ export { default as DrawerHeaderStyled } from "../components/DrawerHeader";
 export { default as Header } from "../components/Header";
 export { default as SideMenu } from "../components/SideMenu";
 export { default as SideMenuLInks } from "../components/SideMenuLinks";
-export { default as HeaderLInks } from "../components/HeaderLinks";
+export { default as HeaderLinks } from "../components/HeaderLinks";
