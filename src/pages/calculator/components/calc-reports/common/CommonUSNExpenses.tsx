@@ -1,3 +1,4 @@
+import { toPercentRateSelector } from "@calcstore/selectors/ratesSelector";
 import { toRU } from "@helpers/currencyFormat";
 import {
     TableHead,
@@ -6,6 +7,7 @@ import {
     TableBody,
     Table,
 } from "@mui/material";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 
 const CommonUSNExpenses: React.FC<{
@@ -14,6 +16,7 @@ const CommonUSNExpenses: React.FC<{
     costs: number;
     minimal: number;
 }> = ({ tax, income, costs, minimal }) => {
+    const [_, expensesRatePercent] = useTypedSelector(toPercentRateSelector);
     return (
         <Table size="small" aria-label="a dense table" stickyHeader>
             <TableHead>
@@ -22,7 +25,7 @@ const CommonUSNExpenses: React.FC<{
                         2. Налог УСН:
                     </TableCell>
                     <TableCell width={300} align="center">
-                        (2.2) - (2.3) * 15% или (2.3)
+                        (2.1) - (2.2) * {expensesRatePercent}% или (2.3)
                     </TableCell>
                     <TableCell width={250} align="right">
                         {toRU.format(tax)}

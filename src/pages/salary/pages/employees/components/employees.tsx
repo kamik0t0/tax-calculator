@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import {
@@ -28,6 +28,12 @@ const Employees: React.FC = () => {
             >
                 <EmployeesList />
                 <ShowEmployee />
+                <Divider
+                    orientation="horizontal"
+                    variant="fullWidth"
+                    flexItem
+                    light={true}
+                />
                 <EmployeeActionButtons />
             </Container>
             {isDialogDeleteEmployee && <DeleteEmployeeDialog />}

@@ -1,3 +1,4 @@
+import { toPercentRateSelector } from "@calcstore/selectors/ratesSelector";
 import { useFontHeaders } from "@customhooks/useFontHeader";
 import { toPercentView, toRU } from "@helpers/currencyFormat";
 import {
@@ -36,11 +37,11 @@ const IncomeLLCReport: React.FC = () => {
     );
     const calcData = useTypedSelector((state) => state.calcSlice);
     const { isIncomeLLCDialog, toggleIncomeLLCDialog } = useCalcReports();
-
+    const [incomeRatePercent] = useTypedSelector(toPercentRateSelector);
     return (
         <Dialog open={isIncomeLLCDialog} fullWidth maxWidth="md">
             <DialogContent>
-                <DialogTitle sx={sx}>УСН (доходы - расходы)</DialogTitle>
+                <DialogTitle sx={sx}>УСН (доходы) ООО</DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>
                     <CommonData calcData={calcData} />
@@ -52,7 +53,7 @@ const IncomeLLCReport: React.FC = () => {
                                     2. Налог УСН:
                                 </TableCell>
                                 <TableCell width={300} align="center">
-                                    [(2.2) - (2.3)] * 15% или (2)
+                                    (2.2) - (2.3)
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(calcData.taxIncomeIE.tax)}
@@ -76,10 +77,13 @@ const IncomeLLCReport: React.FC = () => {
                                     2.2. Налога начислено
                                 </TableCell>
                                 <TableCell width={300} align="center">
-                                    (Д) * 6%
+                                    (Д) * {incomeRatePercent}%
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format((calcData.income * 6) / 100)}
+                                    {toRU.format(
+                                        (calcData.income * incomeRatePercent) /
+                                            100
+                                    )}
                                 </TableCell>
                             </TableRow>
                             <TableRow>

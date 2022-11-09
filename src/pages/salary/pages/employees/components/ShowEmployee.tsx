@@ -14,7 +14,16 @@ const ShowEmployee: React.FC = () => {
             : "Женский"
         : "";
     return (
-        <Box sx={{ minWidth: 650, height: 60 }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                minWidth: 650,
+                height: 30,
+                mt: 2,
+            }}
+        >
             {employee && (
                 <>
                     <Typography align="center">

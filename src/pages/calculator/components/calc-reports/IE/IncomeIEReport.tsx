@@ -1,3 +1,4 @@
+import { toPercentRateSelector } from "@calcstore/selectors/ratesSelector";
 import { useFontHeaders } from "@customhooks/useFontHeader";
 import { toPercentView, toRU } from "@helpers/currencyFormat";
 import {
@@ -36,11 +37,12 @@ const IncomeIEReport: React.FC = () => {
     );
     const calcData = useTypedSelector((state) => state.calcSlice);
     const { isIncomeIEDialog, toggleIncomeIEDialog } = useCalcReports();
+    const [incomeRatePercent] = useTypedSelector(toPercentRateSelector);
 
     return (
         <Dialog open={isIncomeIEDialog} fullWidth maxWidth="md">
             <DialogContent>
-                <DialogTitle sx={sx}>УСН (доходы)</DialogTitle>
+                <DialogTitle sx={sx}>УСН (доходы) ИП</DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>
                     <CommonData calcData={calcData} />
@@ -76,7 +78,7 @@ const IncomeIEReport: React.FC = () => {
                                     2.2. Налога начислено
                                 </TableCell>
                                 <TableCell width={300} align="center">
-                                    (Д) * 6%
+                                    (Д) * {incomeRatePercent}%
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format((calcData.income * 6) / 100)}

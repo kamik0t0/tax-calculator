@@ -39,7 +39,7 @@ const BasicIEReport: React.FC = () => {
         <Dialog open={isBasicIEDialog} fullWidth maxWidth="md">
             <DialogContent>
                 <DialogTitle sx={sx}>
-                    Общий режим налогообложения (ОСНО)
+                    Общий режим налогообложения (ОСНО) ИП
                 </DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>

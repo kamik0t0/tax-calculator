@@ -36,7 +36,7 @@ const ExpensesIEReport: React.FC = () => {
     return (
         <Dialog open={isExpensesIEDialog} fullWidth maxWidth="md">
             <DialogContent>
-                <DialogTitle sx={sx}>УСН (доходы - расходы)</DialogTitle>
+                <DialogTitle sx={sx}>УСН (доходы - расходы) ИП</DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>
                     <CommonData calcData={calcData} />

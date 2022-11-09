@@ -36,7 +36,7 @@ const ExpensesLLCReport: React.FC = () => {
     return (
         <Dialog open={isExpensesLLCDialog} fullWidth maxWidth="md">
             <DialogContent>
-                <DialogTitle sx={sx}>УСН (доходы - расходы)</DialogTitle>
+                <DialogTitle sx={sx}>УСН (доходы - расходы) ООО</DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>
                     <CommonData calcData={calcData} />

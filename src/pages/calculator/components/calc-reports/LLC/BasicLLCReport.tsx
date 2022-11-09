@@ -1,3 +1,4 @@
+import { toPercentRateSelector } from "@calcstore/selectors/ratesSelector";
 import { useFontHeaders } from "@customhooks/useFontHeader";
 import { toPercentView, toRU } from "@helpers/currencyFormat";
 import {
@@ -36,12 +37,14 @@ const BasicLLCReport: React.FC = () => {
     );
     const calcData = useTypedSelector((state) => state.calcSlice);
     const { isBasicLLCDialog, toggleBasicLLCDialog } = useCalcReports();
-
+    const [_, __, LLCIncomeRatePercent] = useTypedSelector(
+        toPercentRateSelector
+    );
     return (
         <Dialog open={isBasicLLCDialog} fullWidth maxWidth="md">
             <DialogContent>
                 <DialogTitle sx={sx}>
-                    Общий режим налогообложения (ОСНО)
+                    Общий режим налогообложения (ОСНО) ООО
                 </DialogTitle>
                 <CommonHeader />
                 <TableContainer component={Paper}>
@@ -97,7 +100,8 @@ const BasicLLCReport: React.FC = () => {
                                     3. Налог на прибыль:
                                 </TableCell>
                                 <TableCell width={300} align="center">
-                                    [(3.1) - (3.2)] * 20%
+                                    [(3.1) - (3.2)] * {LLCIncomeRatePercent + 3}
+                                    %
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
