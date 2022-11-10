@@ -60,7 +60,7 @@ const BasicLLCReport: React.FC = () => {
                                     (2.1) - (2.2)
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format(calcData.taxBasicLLC.VAT.vat)}
+                                    {toRU.format(calcData.taxBasicLLC.NDS.tax)}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -74,7 +74,7 @@ const BasicLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicLLC.VAT.accrualVAT
+                                        calcData.taxBasicLLC.NDS.accrualNDS
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -87,7 +87,7 @@ const BasicLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicLLC.VAT.recoupmentVAT
+                                        calcData.taxBasicLLC.NDS.recoupmentNDS
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -105,7 +105,7 @@ const BasicLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicLLC.incomeTax.incomeTax
+                                        calcData.taxBasicLLC.profitTax.tax
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -120,7 +120,7 @@ const BasicLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicLLC.incomeTax
+                                        calcData.taxBasicLLC.profitTax
                                             .taxableIncome
                                     )}
                                 </TableCell>
@@ -134,7 +134,7 @@ const BasicLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicLLC.incomeTax
+                                        calcData.taxBasicLLC.profitTax
                                             .recoupment
                                     )}
                                 </TableCell>

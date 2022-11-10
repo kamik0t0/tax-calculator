@@ -19,7 +19,7 @@ export const initialState: ITax = {
         floatInsuranceBasicTax: 0,
     },
 
-    taxIncomeIE: { tax: 0, total: 0, rec: 0 },
+    taxIncomeIE: { tax: 0, total: 0, recoupment: 0 },
     burdenIncomeIE: 0,
 
     taxIncomeLLC: { tax: 0, total: 0, recoupment: 0 },
@@ -32,30 +32,30 @@ export const initialState: ITax = {
     burdenIncomeExpensesLLC: 0,
 
     taxBasicIE: {
-        VAT: {
-            accrualVAT: 0,
-            recoupmentVAT: 0,
-            vat: 0,
+        NDS: {
+            accrualNDS: 0,
+            recoupmentNDS: 0,
+            tax: 0,
         },
-        PIT: {
+        NDFL: {
             taxableIncome: 0,
             recoupment: 0,
-            pit: 0,
+            tax: 0,
         },
         total: 0,
     },
     burdenBasicIE: 0,
 
     taxBasicLLC: {
-        VAT: {
-            accrualVAT: 0,
-            recoupmentVAT: 0,
-            vat: 0,
+        NDS: {
+            accrualNDS: 0,
+            recoupmentNDS: 0,
+            tax: 0,
         },
-        incomeTax: {
+        profitTax: {
             taxableIncome: 0,
             recoupment: 0,
-            incomeTax: 0,
+            tax: 0,
         },
         total: 0,
     },

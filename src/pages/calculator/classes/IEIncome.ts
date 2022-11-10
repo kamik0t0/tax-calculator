@@ -12,19 +12,12 @@ export class IEIncome extends IE {
         super(income, expenses, salary);
         this.taxRate = taxRate;
     }
-
-    // Итого налоги
-    get totalTax() {
-        return Math.round(this.usn + this.totalInsurance);
-    }
-
     // УСН начислен
-    get usnAccrued() {
+    get usnAccrued(): number {
         return Math.round(this.income * this.taxRate);
     }
-
     // Налоговый вычет
-    get recoupment() {
+    get recoupment(): number {
         if (this.income > 0) {
             if (this.salary > 0) {
                 if (
@@ -50,10 +43,12 @@ export class IEIncome extends IE {
             return 0;
         }
     }
+    // Итого налоги
+    get totalTax(): number {
+        return Math.round(this.usn + this.totalInsurance);
+    }
     // УСН
-    get usn() {
-        // if (this.usnAccrued - this.recoupment > 0)
+    get usn(): number {
         return this.usnAccrued - this.recoupment;
-        // return 0;
     }
 }

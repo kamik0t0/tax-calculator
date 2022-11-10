@@ -16,7 +16,7 @@ export interface ITax {
         floatInsuranceBasicTax: number;
     };
 
-    taxIncomeIE: { tax: number; total: number; rec: number };
+    taxIncomeIE: { tax: number; total: number; recoupment: number };
     burdenIncomeIE: number;
 
     taxIncomeLLC: { tax: number; total: number; recoupment: number };
@@ -39,30 +39,30 @@ export interface ITax {
     burdenIncomeExpensesLLC: number;
 
     taxBasicIE: {
-        VAT: {
-            accrualVAT: number;
-            recoupmentVAT: number;
-            vat: number;
+        NDS: {
+            accrualNDS: number;
+            recoupmentNDS: number;
+            tax: number;
         };
-        PIT: {
+        NDFL: {
             taxableIncome: number;
             recoupment: number;
-            pit: number;
+            tax: number;
         };
         total: number;
     };
     burdenBasicIE: number;
 
     taxBasicLLC: {
-        VAT: {
-            accrualVAT: number;
-            recoupmentVAT: number;
-            vat: number;
+        NDS: {
+            accrualNDS: number;
+            recoupmentNDS: number;
+            tax: number;
         };
-        incomeTax: {
+        profitTax: {
             taxableIncome: number;
             recoupment: number;
-            incomeTax: number;
+            tax: number;
         };
         total: number;
     };

@@ -1,6 +1,7 @@
-import { TaxCalc } from "../exports/classes";
+import { TaxCalc, NDS } from "../exports/classes";
 
 export class LLCBasic extends TaxCalc {
+    public NDS: NDS;
     public taxRate: number;
     constructor(
         income: number,
@@ -10,32 +11,19 @@ export class LLCBasic extends TaxCalc {
     ) {
         super(income, expenses, salary);
         this.taxRate = taxRate;
+        // агрегация
+        this.NDS = new NDS(income, expenses, salary);
     }
-    // НДС с доходов
-    get vatAccrued() {
-        return Math.round((this.income * 20) / 120);
-    }
-    // НДС вычет
-    get vatRecoupment() {
-        return Math.round(((this.expenses - this.salary) * 20) / 120);
-    }
-    // НДС к уплате
-    get vat() {
-        const vat = this.vatAccrued - this.vatRecoupment;
-        return vat >= 0 ? vat : 0;
-    }
-
     // База по НП
-    get LLCIncome() {
-        return this.income - this.vatAccrued;
+    get LLCIncome(): number {
+        return this.income - this.NDS.NDSAccrued;
     }
     // Расходы уменьшающие НП
-    get LLCRecoupment() {
-        return this.expenses - this.vatRecoupment + this.salaryTax;
+    get LLCRecoupment(): number {
+        return this.expenses - this.NDS.NDSRecoupment + this.salaryTax;
     }
-
     // Налог на прибыль
-    get LLCIncomeTax() {
+    get LLCIncomeTax(): number {
         const FedLLCTaxRate = 0.03;
         const TotalLLCTaxRate = FedLLCTaxRate + this.taxRate;
 
@@ -44,7 +32,7 @@ export class LLCBasic extends TaxCalc {
         );
     }
     // Итого налоги
-    get totalTax() {
-        return this.LLCIncomeTax + this.vat + this.salaryTax;
+    get totalTax(): number {
+        return this.LLCIncomeTax + this.NDS.tax + this.salaryTax;
     }
 }

@@ -14,7 +14,7 @@ export class IE extends TaxCalc {
     }
 
     // Страховые взносы 1% с доходов > 300 тыс. руб. но не более 275560 руб.
-    get floatInsurance() {
+    get floatInsurance(): number {
         if (this.income > 300000) {
             const floatInsurance = Math.round(
                 ((this.income - 300000) * 1) / 100
@@ -28,7 +28,7 @@ export class IE extends TaxCalc {
     }
 
     // Страховые взносы ИП
-    get totalInsurance() {
+    get totalInsurance(): number {
         return Math.round(
             this._retirementFixInsurance +
                 this._medicalFixInsurance +
@@ -37,15 +37,15 @@ export class IE extends TaxCalc {
         );
     }
 
-    get floatInsuranceLimit() {
+    get floatInsuranceLimit(): number {
         return this._floatInsuranceLimit;
     }
 
-    get medicalFixInsurance() {
+    get medicalFixInsurance(): number {
         return this._medicalFixInsurance;
     }
 
-    get retirementFixInsurance() {
+    get retirementFixInsurance(): number {
         return this._retirementFixInsurance;
     }
 }

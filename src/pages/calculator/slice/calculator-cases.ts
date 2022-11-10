@@ -1,20 +1,10 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
-import { ITax } from "../exports/types";
-import { SalaryInsuranceRate, FixInsuranceValues } from "../exports/utils";
-import {
-    TaxCalc,
-    IE,
-    IEExpenses,
-    IEIncome,
-    // IEBasic,
-    // LLCExpenses,
-    // LLCBasic,
-    // LLCIncome,
-} from "../exports/classes";
 import { IEBasic } from "../classes/IEBasic";
-import { LLCIncome } from "../classes/LLCIncome";
-import { LLCExpenses } from "../classes/LLCExpenses";
 import { LLCBasic } from "../classes/LLCBasic";
+import { LLCExpenses } from "../classes/LLCExpenses";
+import { LLCIncome } from "../classes/LLCIncome";
+import { IEExpenses, IEIncome, TaxCalc } from "../exports/classes";
+import { ITax } from "../exports/types";
 
 export const setTaxIncomeReducer: CaseReducer<ITax, PayloadAction<number>> = (
     state,
@@ -86,7 +76,6 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     const income = state.income;
     const expenses = state.expenses;
     const salary = state.salary;
-
     const salaryCommonTaxes = new TaxCalc(income, expenses, salary);
     // Страховые взносы с ФОТ
     state.insurance.social = salaryCommonTaxes.social;
@@ -110,7 +99,7 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     // УСН для ИП УСН доходы
     state.taxIncomeIE.tax = calcIEData.usn;
     // Вычет
-    state.taxIncomeIE.rec = calcIEData.recoupment;
+    state.taxIncomeIE.recoupment = calcIEData.recoupment;
 
     // Доходы ООО -------------------------------------------------------------
     const calcIncomeLLC = new LLCIncome(
@@ -119,7 +108,6 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         salary,
         state.rates.incomeRate
     );
-
     // Итого налоги
     state.taxIncomeLLC.total = calcIncomeLLC.totalTax;
     // Доля налогов в доходах для ООО УСН доходы
@@ -137,17 +125,18 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         state.rates.expensesRate
     );
     // Всего налогов для ИП УСН доходы-расходы
-    state.taxIncomeExpensesIE.total = calcExpensesIE.totalTax;
+    state.taxIncomeExpensesIE.total = calcExpensesIE.ieExpensesData.totalTax;
     // Налоговая нагрузка
     state.burdenIncomeExpensesIE = calcExpensesIE.burden(
-        calcExpensesIE.totalTax
+        calcExpensesIE.ieExpensesData.totalTax
     );
     // УСН для ИП УСН доходы-расходы
-    state.taxIncomeExpensesIE.tax = calcExpensesIE.usn;
+    state.taxIncomeExpensesIE.tax = calcExpensesIE.ieExpensesData.usn;
     // УСН минимальный 1%
-    state.taxIncomeExpensesIE.minimal = calcExpensesIE.minimal;
+    state.taxIncomeExpensesIE.minimal = calcExpensesIE.ieExpensesData.minimal;
     // Всего расходов
-    state.taxIncomeExpensesIE.totalCost = calcExpensesIE.totalCost;
+    state.taxIncomeExpensesIE.totalCost =
+        calcExpensesIE.ieExpensesData.totalCost;
 
     // Доходы минус расходы ООО -----------------------------------------------
     const calcExpensesLLC = new LLCExpenses(
@@ -156,34 +145,35 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         salary,
         state.rates.expensesRate
     );
-
     //  Всего налогов для ИП УСН доходы-расходы
-    state.taxIncomeExpensesLLC.total = calcExpensesLLC.totalTax;
+    state.taxIncomeExpensesLLC.total = calcExpensesLLC.llcExpensesData.totalTax;
     // Налоговая нагрузка
     state.burdenIncomeExpensesLLC = calcExpensesLLC.burden(
-        calcExpensesLLC.totalTax
+        calcExpensesLLC.llcExpensesData.totalTax
     );
     // УСН для ИП УСН доходы-расходы
-    state.taxIncomeExpensesLLC.tax = calcExpensesLLC.usn;
+    state.taxIncomeExpensesLLC.tax = calcExpensesLLC.llcExpensesData.usn;
     // УСН минимальный 1%
-    state.taxIncomeExpensesLLC.minimal = calcExpensesLLC.minimal;
+    state.taxIncomeExpensesLLC.minimal =
+        calcExpensesLLC.llcExpensesData.minimal;
     // Всего расходов
-    state.taxIncomeExpensesLLC.totalCost = calcExpensesLLC.totalCost;
+    state.taxIncomeExpensesLLC.totalCost =
+        calcExpensesLLC.llcExpensesData.totalCost;
 
     // Общий ИП ---------------------------------------------------------------
     const calcCommonIE = new IEBasic(income, expenses, salary);
     // НДС с продаж
-    state.taxBasicIE.VAT.accrualVAT = calcCommonIE.vatAccrued;
+    state.taxBasicIE.NDS.accrualNDS = calcCommonIE.NDS.NDSAccrued;
     // НДС с покупок
-    state.taxBasicIE.VAT.recoupmentVAT = calcCommonIE.vatRecoupment;
+    state.taxBasicIE.NDS.recoupmentNDS = calcCommonIE.NDS.NDSRecoupment;
     // НДС к уплате
-    state.taxBasicIE.VAT.vat = calcCommonIE.vat;
+    state.taxBasicIE.NDS.tax = calcCommonIE.NDS.tax;
     // База по НП
-    state.taxBasicIE.PIT.taxableIncome = calcCommonIE.pitIncome;
+    state.taxBasicIE.NDFL.taxableIncome = calcCommonIE.NDFLIncome;
     // Расходы уменьшающие базу по НП
-    state.taxBasicIE.PIT.recoupment = calcCommonIE.pitRecoupment;
+    state.taxBasicIE.NDFL.recoupment = calcCommonIE.NDFLRecoupment;
     // Налог на прибыль
-    state.taxBasicIE.PIT.pit = calcCommonIE.pit;
+    state.taxBasicIE.NDFL.tax = calcCommonIE.NDFL;
     // Итого налогов
     state.taxBasicIE.total = calcCommonIE.totalTax;
     // Налоговая нагрузка
@@ -198,19 +188,18 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
         salary,
         state.rates.LLCIncomeRate
     );
-
     // НДС с продаж
-    state.taxBasicLLC.VAT.accrualVAT = calcCommonLLC.vatAccrued;
+    state.taxBasicLLC.NDS.accrualNDS = calcCommonLLC.NDS.NDSAccrued;
     // НДС с покупок
-    state.taxBasicLLC.VAT.recoupmentVAT = calcCommonLLC.vatRecoupment;
+    state.taxBasicLLC.NDS.recoupmentNDS = calcCommonLLC.NDS.NDSRecoupment;
     // НДС к уплате
-    state.taxBasicLLC.VAT.vat = calcCommonLLC.vat;
+    state.taxBasicLLC.NDS.tax = calcCommonLLC.NDS.tax;
     // База по НП
-    state.taxBasicLLC.incomeTax.taxableIncome = calcCommonLLC.LLCIncome;
+    state.taxBasicLLC.profitTax.taxableIncome = calcCommonLLC.LLCIncome;
     // Расходы уменьшающие базу по НП
-    state.taxBasicLLC.incomeTax.recoupment = calcCommonLLC.LLCRecoupment;
+    state.taxBasicLLC.profitTax.recoupment = calcCommonLLC.LLCRecoupment;
     // Налог на прибыль
-    state.taxBasicLLC.incomeTax.incomeTax = calcCommonLLC.LLCIncomeTax;
+    state.taxBasicLLC.profitTax.tax = calcCommonLLC.LLCIncomeTax;
     // Итого налогов
     state.taxBasicLLC.total = calcCommonLLC.totalTax;
     // Налоговая нагрузка

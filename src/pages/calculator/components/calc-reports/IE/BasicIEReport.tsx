@@ -155,7 +155,7 @@ const BasicIEReport: React.FC = () => {
                                     (2.1) - (2.2)
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format(calcData.taxBasicIE.VAT.vat)}
+                                    {toRU.format(calcData.taxBasicIE.NDS.tax)}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -169,7 +169,7 @@ const BasicIEReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicIE.VAT.accrualVAT
+                                        calcData.taxBasicIE.NDS.accrualNDS
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -182,7 +182,7 @@ const BasicIEReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicIE.VAT.recoupmentVAT
+                                        calcData.taxBasicIE.NDS.recoupmentNDS
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -198,7 +198,7 @@ const BasicIEReport: React.FC = () => {
                                     [(3.1) - (3.2)] * 13%
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format(calcData.taxBasicIE.PIT.pit)}
+                                    {toRU.format(calcData.taxBasicIE.NDFL.tax)}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -212,7 +212,7 @@ const BasicIEReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicIE.PIT.taxableIncome
+                                        calcData.taxBasicIE.NDFL.taxableIncome
                                     )}
                                 </TableCell>
                             </TableRow>
@@ -225,7 +225,7 @@ const BasicIEReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxBasicIE.PIT.recoupment
+                                        calcData.taxBasicIE.NDFL.recoupment
                                     )}
                                 </TableCell>
                             </TableRow>

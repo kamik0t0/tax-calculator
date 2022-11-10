@@ -1,6 +1,9 @@
+import { IncomeExpenses } from "../exports/classes";
 import { LLCIncome } from "./LLCIncome";
 
 export class LLCExpenses extends LLCIncome {
+    protected _incomeExpenses: IncomeExpenses;
+
     constructor(
         income: number,
         expenses: number,
@@ -8,19 +11,15 @@ export class LLCExpenses extends LLCIncome {
         taxRate: number
     ) {
         super(income, expenses, salary, taxRate);
+        this._incomeExpenses = new IncomeExpenses(
+            income,
+            expenses,
+            salary,
+            taxRate,
+            this.salaryTax
+        );
     }
-
-    // минимальный налог
-    get minimal() {
-        return this.income * 0.01;
-    }
-    // Расходы
-    get totalCost() {
-        return this.expenses + this.salaryTax;
-    }
-    // УСН начислен 2.1
-    get usn() {
-        const usn = Math.round((this.income - this.totalCost) * this.taxRate);
-        return usn > this.minimal ? usn : this.minimal;
+    get llcExpensesData() {
+        return this._incomeExpenses;
     }
 }

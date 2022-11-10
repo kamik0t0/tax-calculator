@@ -1,6 +1,9 @@
+import { IncomeExpenses } from "./IncomeExpenses";
 import { IEIncome } from "./IEIncome";
 
 export class IEExpenses extends IEIncome {
+    protected _incomeExpenses: IncomeExpenses;
+
     constructor(
         income: number,
         expenses: number,
@@ -8,18 +11,15 @@ export class IEExpenses extends IEIncome {
         taxRate: number
     ) {
         super(income, expenses, salary, taxRate);
+        this._incomeExpenses = new IncomeExpenses(
+            income,
+            expenses,
+            salary,
+            taxRate,
+            this.totalInsurance
+        );
     }
-    // Расходы
-    get totalCost() {
-        return this.expenses + this.totalInsurance;
-    }
-    // минимальный налог
-    get minimal() {
-        return this.income * 0.01;
-    }
-    // УСН
-    get usn() {
-        const usn = Math.round((this.income - this.totalCost) * this.taxRate);
-        return usn > this.minimal ? usn : this.minimal;
+    get ieExpensesData() {
+        return this._incomeExpenses;
     }
 }

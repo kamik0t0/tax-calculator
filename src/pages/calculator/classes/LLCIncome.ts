@@ -13,12 +13,11 @@ export class LLCIncome extends TaxCalc {
         this.taxRate = taxRate;
     }
     // УСН начислен 2.1
-    get usnAccrued() {
+    get usnAccrued(): number {
         return Math.round(this.income * this.taxRate);
     }
-
     // Вычет по УСН
-    get recoupment() {
+    get recoupment(): number {
         if (this.income > 0) {
             if (this.salary > 0) {
                 if (this.usnAccrued - this.salaryTax > this.usnAccrued / 2) {
@@ -37,12 +36,12 @@ export class LLCIncome extends TaxCalc {
             return 0;
         }
     }
-    // УСН к уплате 2
-    get usn() {
-        return this.usnAccrued - this.recoupment;
-    }
     // Итого налоги
-    get totalTax() {
-        return Math.round(this.usn + this.salaryTax);
+    get totalTax(): number {
+        return this.usn + this.salaryTax;
+    }
+    // УСН к уплате 2
+    get usn(): number {
+        return this.usnAccrued - this.recoupment;
     }
 }
