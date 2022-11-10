@@ -19,7 +19,7 @@ export const initialState: ITax = {
         floatInsuranceBasicTax: 0,
     },
 
-    taxIncomeIE: { tax: 0, total: 0, recoupment: 0 },
+    taxIncomeIE: { tax: 0, total: 0, rec: 0 },
     burdenIncomeIE: 0,
 
     taxIncomeLLC: { tax: 0, total: 0, recoupment: 0 },

@@ -92,9 +92,7 @@ const IncomeIEReport: React.FC = () => {
                                     (1), но не более 50% от (2.2)
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format(
-                                        calcData.taxIncomeIE.recoupment
-                                    )}
+                                    {toRU.format(calcData.taxIncomeIE.rec)}
                                 </TableCell>
                             </TableRow>
                         </TableBody>

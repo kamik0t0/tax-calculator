@@ -56,7 +56,7 @@ const IncomeLLCReport: React.FC = () => {
                                     (2.2) - (2.3)
                                 </TableCell>
                                 <TableCell width={250} align="right">
-                                    {toRU.format(calcData.taxIncomeIE.tax)}
+                                    {toRU.format(calcData.taxIncomeLLC.tax)}
                                 </TableCell>
                             </TableRow>
                         </TableHead>
@@ -95,7 +95,7 @@ const IncomeLLCReport: React.FC = () => {
                                 </TableCell>
                                 <TableCell width={250} align="right">
                                     {toRU.format(
-                                        calcData.taxIncomeIE.recoupment
+                                        calcData.taxIncomeLLC.recoupment
                                     )}
                                 </TableCell>
                             </TableRow>

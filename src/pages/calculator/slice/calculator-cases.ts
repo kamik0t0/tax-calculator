@@ -1,20 +1,20 @@
-import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
+import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
 import { ITax } from "../exports/types";
+import { SalaryInsuranceRate, FixInsuranceValues } from "../exports/utils";
 import {
-    BasicRates,
-    StaticRates,
-    SalaryInsuranceRate,
-    FixInsuranceValues,
-} from "../exports/utils";
-import {
-    TaxCalcIE,
-    TaxCalcIEExpenses,
-    TaxCalcLLCIncome,
-    TaxCalcIEIncome,
-    TaxCalcLLCExpenses,
-    TaxCalcIEBasic,
-    TaxCalcLLCBasic,
+    TaxCalc,
+    IE,
+    IEExpenses,
+    IEIncome,
+    // IEBasic,
+    // LLCExpenses,
+    // LLCBasic,
+    // LLCIncome,
 } from "../exports/classes";
+import { IEBasic } from "../classes/IEBasic";
+import { LLCIncome } from "../classes/LLCIncome";
+import { LLCExpenses } from "../classes/LLCExpenses";
+import { LLCBasic } from "../classes/LLCBasic";
 
 export const setTaxIncomeReducer: CaseReducer<ITax, PayloadAction<number>> = (
     state,
@@ -86,183 +86,133 @@ export const calculateTaxesReducer: CaseReducer<ITax> = (state) => {
     const income = state.income;
     const expenses = state.expenses;
     const salary = state.salary;
+
+    const salaryCommonTaxes = new TaxCalc(income, expenses, salary);
     // Страховые взносы с ФОТ
-    state.insurance.social = salary * BasicRates.social;
-    state.insurance.medical = salary * BasicRates.medical;
-    state.insurance.retirement = salary * BasicRates.retirement;
-    state.insurance.accident = salary * StaticRates.accident;
-    // Расчет взносов 1% свыше 300 тыс с суммы дохода для ИП УСН доходы
-    state.insuranceIE.floatInsurance = TaxCalcIE.floatInsurance(income);
+    state.insurance.social = salaryCommonTaxes.social;
+    state.insurance.medical = salaryCommonTaxes.medical;
+    state.insurance.retirement = salaryCommonTaxes.retirement;
+    state.insurance.accident = salaryCommonTaxes.accident;
 
     // Доходы ИП --------------------------------------------------------------
-    const calcIncomeIE = new TaxCalcIEIncome(
-        SalaryInsuranceRate,
-        FixInsuranceValues.medical,
-        FixInsuranceValues.retirement
+    const calcIEData = new IEIncome(
+        income,
+        expenses,
+        salary,
+        state.rates.incomeRate
     );
-    //  Всего налогов для ИП УСН доходы
-    const [totalIEIncome, burdenIEIncome, USNIEIncome, USNIERecoupment] =
-        TaxCalcIEIncome.totalTax({
-            rate: state.rates.incomeRate,
-            income,
-            salary,
-            salaryTaxRate: calcIncomeIE.salaryTaxRate,
-            medicalFixInsurance: calcIncomeIE.medicalFixInsurance,
-            retirementFixInsurance: calcIncomeIE.retirementFixInsurance,
-        });
-
+    // Расчет взносов 1% свыше 300 тыс с суммы дохода для ИП УСН доходы
+    state.insuranceIE.floatInsurance = calcIEData.floatInsurance;
     // Итого налогов
-    state.taxIncomeIE.total = totalIEIncome;
+    state.taxIncomeIE.total = calcIEData.totalTax;
     // Доля налогов в доходах для ИП УСН доходы
-    state.burdenIncomeIE = burdenIEIncome;
+    state.burdenIncomeIE = calcIEData.burden(calcIEData.totalTax);
     // УСН для ИП УСН доходы
-    state.taxIncomeIE.tax = USNIEIncome;
+    state.taxIncomeIE.tax = calcIEData.usn;
     // Вычет
-    state.taxIncomeIE.recoupment = USNIERecoupment;
+    state.taxIncomeIE.rec = calcIEData.recoupment;
 
     // Доходы ООО -------------------------------------------------------------
-    const calcIncomeLLC = new TaxCalcLLCIncome(SalaryInsuranceRate);
+    const calcIncomeLLC = new LLCIncome(
+        income,
+        expenses,
+        salary,
+        state.rates.incomeRate
+    );
 
-    const [totalLLCIncome, burdenLLCIncome, usnLLCIncome, USNLLCRecoupment] =
-        TaxCalcLLCIncome.totalTax({
-            rate: state.rates.incomeRate,
-            income,
-            salary,
-            salaryTaxRate: calcIncomeLLC.salaryTaxRate,
-        });
     // Итого налоги
-    state.taxIncomeLLC.total = totalLLCIncome;
+    state.taxIncomeLLC.total = calcIncomeLLC.totalTax;
     // Доля налогов в доходах для ООО УСН доходы
-    state.burdenIncomeLLC = burdenLLCIncome;
+    state.burdenIncomeLLC = calcIncomeLLC.burden(calcIncomeLLC.totalTax);
     // УСН для ООО УСН доходы
-    state.taxIncomeLLC.tax = usnLLCIncome;
+    state.taxIncomeLLC.tax = calcIncomeLLC.usn;
     // Вычет
-    state.taxIncomeIE.recoupment = USNLLCRecoupment;
+    state.taxIncomeLLC.recoupment = calcIncomeLLC.recoupment;
 
     // Доходы минус расходы ИП ------------------------------------------------
-    const calcIncomeExpensesIE = new TaxCalcIEExpenses(
-        SalaryInsuranceRate,
-        FixInsuranceValues.medical,
-        FixInsuranceValues.retirement
-    );
-
-    const [
-        totalIEExpenses,
-        burdenIEExpenses,
-        usnIEExpenses,
-        minimalIE,
-        totalCostIE,
-    ] = TaxCalcIEExpenses.totalTax({
-        rate: state.rates.expensesRate,
+    const calcExpensesIE = new IEExpenses(
         income,
-        salary,
         expenses,
-        retirementFixInsurance: calcIncomeExpensesIE.retirementFixInsurance,
-        medicalFixInsurance: calcIncomeExpensesIE.medicalFixInsurance,
-        salaryTaxRate: calcIncomeExpensesIE.salaryTaxRate,
-    });
-
+        salary,
+        state.rates.expensesRate
+    );
     // Всего налогов для ИП УСН доходы-расходы
-    state.taxIncomeExpensesIE.total = totalIEExpenses;
+    state.taxIncomeExpensesIE.total = calcExpensesIE.totalTax;
     // Налоговая нагрузка
-    state.burdenIncomeExpensesIE = burdenIEExpenses;
+    state.burdenIncomeExpensesIE = calcExpensesIE.burden(
+        calcExpensesIE.totalTax
+    );
     // УСН для ИП УСН доходы-расходы
-    state.taxIncomeExpensesIE.tax = usnIEExpenses;
+    state.taxIncomeExpensesIE.tax = calcExpensesIE.usn;
     // УСН минимальный 1%
-    state.taxIncomeExpensesIE.minimal = minimalIE;
+    state.taxIncomeExpensesIE.minimal = calcExpensesIE.minimal;
     // Всего расходов
-    state.taxIncomeExpensesIE.totalCost = totalCostIE;
+    state.taxIncomeExpensesIE.totalCost = calcExpensesIE.totalCost;
 
     // Доходы минус расходы ООО -----------------------------------------------
-    const calcIncomeExpensesLLC = new TaxCalcLLCExpenses(SalaryInsuranceRate);
-
-    const [
-        totalLLCExpenses,
-        burdenLLCExpenses,
-        usnLLCExpenses,
-        minimalLLC,
-        totalCostLLC,
-    ] = TaxCalcLLCExpenses.totalTax({
-        rate: state.rates.expensesRate,
+    const calcExpensesLLC = new LLCExpenses(
         income,
-        salary,
         expenses,
-        salaryTaxRate: calcIncomeExpensesLLC.salaryTaxRate,
-    });
-    //  Всего налогов для ИП УСН доходы-расходы
-    state.taxIncomeExpensesLLC.total = totalLLCExpenses;
-    // Налоговая нагрузка
-    state.burdenIncomeExpensesLLC = burdenLLCExpenses;
-    // УСН для ИП УСН доходы-расходы
-    state.taxIncomeExpensesLLC.tax = usnLLCExpenses;
-    // УСН минимальный 1%
-    state.taxIncomeExpensesLLC.minimal = minimalLLC;
-    // Всего расходов
-    state.taxIncomeExpensesLLC.totalCost = totalCostLLC;
-
-    // Общий ИП ---------------------------------------------------------------
-    const calcCommonIE = new TaxCalcIEBasic(
-        SalaryInsuranceRate,
-        FixInsuranceValues.medical,
-        FixInsuranceValues.retirement
+        salary,
+        state.rates.expensesRate
     );
 
-    const {
-        vatAccruedCommonIE,
-        vatRecoupmentCommonIE,
-        vatFinalCommonIE,
-        taxIncomeCommonIE,
-        taxRecoupmentCommonIE,
-        pitCommonIE,
-        totalCommonIE,
-        burdenCommonIE,
-        floatBasicTaxIE,
-    } = TaxCalcIEBasic.totalTax({
-        rate: 0.13,
-        income,
-        salary,
-        expenses,
-        retirementFixInsurance: calcCommonIE.retirementFixInsurance,
-        medicalFixInsurance: calcCommonIE.medicalFixInsurance,
-        salaryTaxRate: calcCommonIE.salaryTaxRate,
-    });
+    //  Всего налогов для ИП УСН доходы-расходы
+    state.taxIncomeExpensesLLC.total = calcExpensesLLC.totalTax;
+    // Налоговая нагрузка
+    state.burdenIncomeExpensesLLC = calcExpensesLLC.burden(
+        calcExpensesLLC.totalTax
+    );
+    // УСН для ИП УСН доходы-расходы
+    state.taxIncomeExpensesLLC.tax = calcExpensesLLC.usn;
+    // УСН минимальный 1%
+    state.taxIncomeExpensesLLC.minimal = calcExpensesLLC.minimal;
+    // Всего расходов
+    state.taxIncomeExpensesLLC.totalCost = calcExpensesLLC.totalCost;
 
-    state.taxBasicIE.VAT.accrualVAT = vatAccruedCommonIE;
-    state.taxBasicIE.VAT.recoupmentVAT = vatRecoupmentCommonIE;
-    state.taxBasicIE.VAT.vat = vatFinalCommonIE;
-    state.taxBasicIE.PIT.taxableIncome = taxIncomeCommonIE;
-    state.taxBasicIE.PIT.recoupment = taxRecoupmentCommonIE;
-    state.taxBasicIE.PIT.pit = pitCommonIE;
-    state.taxBasicIE.total = totalCommonIE;
-    state.burdenBasicIE = burdenCommonIE;
-    state.insuranceIE.floatInsuranceBasicTax = floatBasicTaxIE;
+    // Общий ИП ---------------------------------------------------------------
+    const calcCommonIE = new IEBasic(income, expenses, salary);
+    // НДС с продаж
+    state.taxBasicIE.VAT.accrualVAT = calcCommonIE.vatAccrued;
+    // НДС с покупок
+    state.taxBasicIE.VAT.recoupmentVAT = calcCommonIE.vatRecoupment;
+    // НДС к уплате
+    state.taxBasicIE.VAT.vat = calcCommonIE.vat;
+    // База по НП
+    state.taxBasicIE.PIT.taxableIncome = calcCommonIE.pitIncome;
+    // Расходы уменьшающие базу по НП
+    state.taxBasicIE.PIT.recoupment = calcCommonIE.pitRecoupment;
+    // Налог на прибыль
+    state.taxBasicIE.PIT.pit = calcCommonIE.pit;
+    // Итого налогов
+    state.taxBasicIE.total = calcCommonIE.totalTax;
+    // Налоговая нагрузка
+    state.burdenBasicIE = calcCommonIE.burden(calcCommonIE.totalTax);
+    // Взносы с доходов
+    state.insuranceIE.floatInsuranceBasicTax = calcCommonIE.floatInsurance;
 
     // Общий ООО --------------------------------------------------------------
-    const calcCommonLLC = new TaxCalcLLCBasic(SalaryInsuranceRate);
-
-    const {
-        vatAccruedCommonLLC,
-        vatRecoupmentCommonLLC,
-        vatFinalCommonLLC,
-        taxIncomeCommonLLC,
-        taxRecoupmentCommonLLC,
-        IncomeTaxCommonLLC,
-        totalCommonLLC,
-        burdenCommonLLC,
-    } = TaxCalcLLCBasic.totalTax({
-        rate: state.rates.LLCIncomeRate,
+    const calcCommonLLC = new LLCBasic(
         income,
-        salary,
         expenses,
-        salaryTaxRate: calcCommonLLC.salaryTaxRate,
-    });
+        salary,
+        state.rates.LLCIncomeRate
+    );
 
-    state.taxBasicLLC.VAT.accrualVAT = vatAccruedCommonLLC;
-    state.taxBasicLLC.VAT.recoupmentVAT = vatRecoupmentCommonLLC;
-    state.taxBasicLLC.VAT.vat = vatFinalCommonLLC;
-    state.taxBasicLLC.incomeTax.taxableIncome = taxIncomeCommonLLC;
-    state.taxBasicLLC.incomeTax.recoupment = taxRecoupmentCommonLLC;
-    state.taxBasicLLC.incomeTax.incomeTax = IncomeTaxCommonLLC;
-    state.taxBasicLLC.total = totalCommonLLC;
-    state.burdenBasicLLC = burdenCommonLLC;
+    // НДС с продаж
+    state.taxBasicLLC.VAT.accrualVAT = calcCommonLLC.vatAccrued;
+    // НДС с покупок
+    state.taxBasicLLC.VAT.recoupmentVAT = calcCommonLLC.vatRecoupment;
+    // НДС к уплате
+    state.taxBasicLLC.VAT.vat = calcCommonLLC.vat;
+    // База по НП
+    state.taxBasicLLC.incomeTax.taxableIncome = calcCommonLLC.LLCIncome;
+    // Расходы уменьшающие базу по НП
+    state.taxBasicLLC.incomeTax.recoupment = calcCommonLLC.LLCRecoupment;
+    // Налог на прибыль
+    state.taxBasicLLC.incomeTax.incomeTax = calcCommonLLC.LLCIncomeTax;
+    // Итого налогов
+    state.taxBasicLLC.total = calcCommonLLC.totalTax;
+    // Налоговая нагрузка
+    state.burdenBasicLLC = calcCommonLLC.burden(calcCommonLLC.totalTax);
 };

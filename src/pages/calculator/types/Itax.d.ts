@@ -16,7 +16,7 @@ export interface ITax {
         floatInsuranceBasicTax: number;
     };
 
-    taxIncomeIE: { tax: number; total: number; recoupment: number };
+    taxIncomeIE: { tax: number; total: number; rec: number };
     burdenIncomeIE: number;
 
     taxIncomeLLC: { tax: number; total: number; recoupment: number };
