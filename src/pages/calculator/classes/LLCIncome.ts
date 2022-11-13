@@ -1,25 +1,20 @@
 import { TaxCalc } from "../exports/classes";
 
 export class LLCIncome extends TaxCalc {
-    public taxRate: number;
+    private readonly _taxRate: number;
 
-    constructor(
-        income: number,
-        expenses: number,
-        salary: number,
-        taxRate: number
-    ) {
-        super(income, expenses, salary);
-        this.taxRate = taxRate;
+    constructor(income: number, salary: number, taxRate: number) {
+        super(income, salary);
+        this._taxRate = taxRate;
     }
     // УСН начислен 2.1
-    get usnAccrued(): number {
-        return Math.round(this.income * this.taxRate);
+    private get usnAccrued(): number {
+        return Math.round(this._income * this._taxRate);
     }
     // Вычет по УСН
-    get recoupment(): number {
-        if (this.income > 0) {
-            if (this.salary > 0) {
+    public get recoupment(): number {
+        if (this._income > 0) {
+            if (this._salary > 0) {
                 if (this.usnAccrued - this.salaryTax > this.usnAccrued / 2) {
                     return this.salaryTax;
                 } else {
@@ -37,11 +32,17 @@ export class LLCIncome extends TaxCalc {
         }
     }
     // Итого налоги
-    get totalTax(): number {
+    public get totalTax(): number {
         return this.usn + this.salaryTax;
     }
     // УСН к уплате 2
-    get usn(): number {
+    public get usn(): number {
         return this.usnAccrued - this.recoupment;
     }
 }
+
+const income = new LLCIncome(500000, 150000, 0.06);
+const totalTax = income.totalTax;
+const burden = income.burden(totalTax);
+console.log(totalTax);
+console.log(burden * 100);

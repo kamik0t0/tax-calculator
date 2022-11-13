@@ -1,11 +1,11 @@
-import { ISalaries } from "../exports/interfaces";
+import { ISalaries } from "../../exports/interfaces";
+import { calcEmployeeCumulative } from "./calculateEmployeeCumulative";
 import {
-    calcEmployeeCumulative,
     calcRetirementInsurance,
     calcSocialInsurance,
-    setIsCivilContract,
-} from "../exports/scripts";
-import { itRates, Limits, StaticRates } from "../exports/utils";
+} from "./insurancesCalculations";
+import { itRates, Limits, StaticRates } from "../../exports/utils";
+import { setIsCivilContract } from "../setIsCivilContract";
 
 // Расчет страховых взносов для АйТи компаний. Код 06
 export const calcITtax = (
@@ -32,7 +32,10 @@ export const calcITtax = (
     }: { employeeCumulativePerYear: number; currentCumulativeAccrual: number } =
         calcEmployeeCumulative(table, state, employeeId, value);
 
-    const isCivilContract: boolean = setIsCivilContract(state, employeeId);
+    const isCivilContract: boolean = setIsCivilContract(
+        state.employees,
+        employeeId
+    );
     // начисления ЗП с учетом начисления за текущий месяц
     const { overRetirmentLimit, retirement, insuranceRetirementBase } =
         calcRetirementInsurance(

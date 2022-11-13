@@ -1,7 +1,7 @@
-import { ISalaries, IEmployee } from "../exports/interfaces";
+import { IEmployee } from "../exports/interfaces";
 
-export function setIsCivilContract(state: ISalaries, employeeId: string) {
-    const employee: IEmployee | undefined = state.employees.find(
+export function setIsCivilContract(employees: IEmployee[], employeeId: string) {
+    const employee: IEmployee | undefined = employees.find(
         (employee) => employee.id === employeeId
     );
 

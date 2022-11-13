@@ -1,5 +1,5 @@
-import { ISalaries, ISalary } from "../exports/interfaces";
-import { months } from "../exports/utils";
+import { ISalaries, ISalary } from "../../exports/interfaces";
+import { months } from "../../exports/utils";
 
 export function calcEmployeeCumulative(
     table: string,
@@ -50,5 +50,6 @@ export function makeEmployeeSalaryArr(
         }
         monthCounter++;
     }
+
     return employeeAccrualsPerYear;
 }

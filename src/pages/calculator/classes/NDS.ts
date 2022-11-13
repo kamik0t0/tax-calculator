@@ -1,7 +1,7 @@
 export class NDS {
-    protected _income: number;
-    protected _expenses: number;
-    protected _salary: number;
+    private readonly _income: number;
+    private readonly _expenses: number;
+    private readonly _salary: number;
 
     constructor(income: number, expenses: number, salary: number) {
         this._income = income;
@@ -9,15 +9,15 @@ export class NDS {
         this._salary = salary;
     }
     // НДС с доходов
-    get NDSAccrued(): number {
+    public get NDSAccrued(): number {
         return Math.round((this._income * 20) / 120);
     }
     // НДС вычет
-    get NDSRecoupment(): number {
+    public get NDSRecoupment(): number {
         return Math.round(((this._expenses - this._salary) * 20) / 120);
     }
     // НДС к уплате
-    get tax(): number {
+    public get tax(): number {
         const NDS = this.NDSAccrued - this.NDSRecoupment;
         return NDS >= 0 ? NDS : 0;
     }

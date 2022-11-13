@@ -1,25 +1,20 @@
 import { IE } from "../exports/classes";
 
 export class IEIncome extends IE {
-    public taxRate: number;
+    protected readonly _taxRate: number;
 
-    constructor(
-        income: number,
-        expenses: number,
-        salary: number,
-        taxRate: number
-    ) {
-        super(income, expenses, salary);
-        this.taxRate = taxRate;
+    constructor(income: number, salary: number, taxRate: number) {
+        super(income, salary);
+        this._taxRate = taxRate;
     }
     // УСН начислен
-    get usnAccrued(): number {
-        return Math.round(this.income * this.taxRate);
+    private get usnAccrued(): number {
+        return Math.round(this._income * this._taxRate);
     }
     // Налоговый вычет
-    get recoupment(): number {
-        if (this.income > 0) {
-            if (this.salary > 0) {
+    public get recoupment(): number {
+        if (this._income > 0) {
+            if (this._salary > 0) {
                 if (
                     this.usnAccrued - this.totalInsurance >
                     this.usnAccrued / 2
@@ -44,11 +39,17 @@ export class IEIncome extends IE {
         }
     }
     // Итого налоги
-    get totalTax(): number {
+    public get totalTax(): number {
         return Math.round(this.usn + this.totalInsurance);
     }
     // УСН
-    get usn(): number {
+    public get usn(): number {
         return this.usnAccrued - this.recoupment;
     }
 }
+
+const income = new IEIncome(500000, 150000, 0.06);
+const totalTax = income.totalTax;
+const burden = income.burden(totalTax);
+console.log(totalTax);
+console.log(burden * 100);

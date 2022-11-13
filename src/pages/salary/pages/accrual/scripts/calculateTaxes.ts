@@ -1,5 +1,9 @@
 import { ISalaries } from "../exports/interfaces";
-import { calcBasicTax, calcBusinessTax, calcITtax } from "../exports/scripts";
+import {
+    SalaryBusinessTax,
+    SalaryItTax,
+    SalaryBasicTax,
+} from "../exports/classes";
 
 export const calcTax = (
     state: ISalaries,
@@ -7,24 +11,13 @@ export const calcTax = (
     table: string,
     index: number,
     rateCode: string
-): {
-    accident: number;
-    medical: number;
-    retirement: number;
-    social: number;
-    total: number;
-    employeeCumulativePerYear: number;
-    overSocialLimit: number;
-    overRetirmentLimit: number;
-    insuranceRetirementBase: number;
-    insuranceSocialBase: number;
-} => {
+) => {
     switch (rateCode) {
         case "06":
-            return calcITtax(state, value, table, index);
+            return new SalaryItTax(state, value, table, index);
         case "20":
-            return calcBusinessTax(state, value, table, index);
+            return new SalaryBusinessTax(state, value, table, index);
         default:
-            return calcBasicTax(state, value, table, index);
+            return new SalaryBasicTax(state, value, table, index);
     }
 };

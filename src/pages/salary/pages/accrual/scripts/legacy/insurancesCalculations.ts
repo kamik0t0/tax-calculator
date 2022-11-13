@@ -3,7 +3,7 @@ import {
     BusinessRates,
     Limits,
     StaticRates,
-} from "../exports/utils";
+} from "../../exports/utils";
 
 export function calcSocialMoreThenMinimal(
     isCivilContract: boolean,
@@ -19,6 +19,7 @@ export function calcSocialMoreThenMinimal(
     let insuranceSocialBase = 0;
     if (!isCivilContract) {
         accident = minimalSalary * StaticRates.accident;
+        // _________________________в отдельную функцию
         if (employeeCumulativePerYear < Limits.social) {
             // Если лимит с учетом начислений текущего месяца (currentCumulativeAccrual) превышен, то
             if (currentCumulativeAccrual > Limits.social) {
@@ -47,12 +48,11 @@ export function calcSocialMoreThenMinimal(
             overSocialLimit = value;
         }
     }
+    // __________________
     return {
         social,
         overSocialLimit,
         insuranceSocialBase,
-        accident,
-        minSocial,
     };
 }
 
@@ -62,15 +62,17 @@ export function calcRetirementMoreThenMinimal(
     value: number,
     minimalSalary: number
 ) {
-    let minRetirement = 0;
-    let minSocial = 0;
     let overRetirmentLimit = 0;
     let retirement = 0;
     let insuranceRetirementBase = 0;
+    let minRetirement = 0;
+
+    // ________________в отдельную функцию
     if (employeeCumulativePerYear < Limits.retirement) {
         // Если лимит с учетом начислений текущего месяца (currentCumulativeAccrual) превышен, то
         if (currentCumulativeAccrual > Limits.retirement) {
             overRetirmentLimit = currentCumulativeAccrual - Limits.retirement;
+            // TODO: добавить разбивку по ставкам
             insuranceRetirementBase = value - overRetirmentLimit;
             // Остаток до превышения выше мрот:
             // МРОТ * BasicRate, Остальное * BusinessRate,
@@ -82,6 +84,7 @@ export function calcRetirementMoreThenMinimal(
                 // Остаток до превышения ниже мрот:
             } else {
                 retirement = minimalSalary * BasicRates.retirement;
+                insuranceRetirementBase = value;
             }
             // Если лимит с учетом начислений текущего месяца НЕ превышен, то:
         } else {
@@ -92,9 +95,8 @@ export function calcRetirementMoreThenMinimal(
     } else {
         overRetirmentLimit = value;
     }
+    // _______________________
     return {
-        minSocial,
-        minRetirement,
         retirement,
         overRetirmentLimit,
         insuranceRetirementBase,

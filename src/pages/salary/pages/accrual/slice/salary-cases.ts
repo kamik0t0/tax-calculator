@@ -136,18 +136,7 @@ export const setSalaryTaxRateReducer: CaseReducer<
         // пересчет взносов в месяце
         if (salary.length > 0) {
             salary.forEach((employee, index) => {
-                const {
-                    accident,
-                    medical,
-                    retirement,
-                    social,
-                    total,
-                    overSocialLimit,
-                    employeeCumulativePerYear,
-                    overRetirmentLimit,
-                    insuranceRetirementBase,
-                    insuranceSocialBase,
-                } = calcTax(
+                const insuranceData = calcTax(
                     state,
                     employee.accrued,
                     table,
@@ -162,26 +151,37 @@ export const setSalaryTaxRateReducer: CaseReducer<
                     index
                 );
 
+                const { retire, retireBase, exceedRetireLimit } =
+                    insuranceData.calcRetireInsurance();
+                const { social, socialBase, exceedSocialLimit } =
+                    insuranceData.calcSocialInsurance();
+                const accident = insuranceData.calcAccidentInsurance();
+                const medical = insuranceData.calcMedicalInsurance();
+
                 state.months[table].salary[index].tax = +PIT;
                 state.months[table].salary[index].pay = +payment;
 
                 state.months[table].salary[index].insurance.accident =
                     +accident;
                 state.months[table].salary[index].insurance.medical = +medical;
+
                 state.months[table].salary[index].insurance.retirement =
-                    +retirement;
-                state.months[table].salary[index].insurance.social = +social;
-                state.months[table].salary[index].insuranceTotal = +total;
-                state.months[table].salary[index].cumulativeAccrual =
-                    employeeCumulativePerYear;
-                state.months[table].salary[index].overSocialLimit =
-                    overSocialLimit;
+                    +retire;
                 state.months[table].salary[index].overRetirmentLimit =
-                    overRetirmentLimit;
+                    exceedRetireLimit;
                 state.months[table].salary[index].insuranceRetirementBase =
-                    insuranceRetirementBase;
+                    retireBase;
+
+                state.months[table].salary[index].insurance.social = +social;
+                state.months[table].salary[index].overSocialLimit =
+                    exceedSocialLimit;
                 state.months[table].salary[index].insuranceSocialBase =
-                    insuranceSocialBase;
+                    socialBase;
+
+                state.months[table].salary[index].cumulativeAccrual =
+                    insuranceData.totalSalary.currentMonth;
+                state.months[table].salary[index].insuranceTotal =
+                    social + retire + accident + medical;
             });
         }
     }

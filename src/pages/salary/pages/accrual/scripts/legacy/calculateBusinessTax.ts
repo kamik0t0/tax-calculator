@@ -1,19 +1,18 @@
-import { ISalaries } from "../exports/interfaces";
+import { ISalaries } from "../../exports/interfaces";
+import { getMinimalSalary, setIsCivilContract } from "../../exports/scripts";
 import {
-    calcEmployeeCumulative,
     calcRetirementInsurance,
     calcRetirementMoreThenMinimal,
     calcSocialInsurance,
     calcSocialMoreThenMinimal,
-    getMinimalSalary,
-    setIsCivilContract,
-} from "../exports/scripts";
+} from "./insurancesCalculations";
+import { calcEmployeeCumulative } from "./calculateEmployeeCumulative";
 import {
     BasicRates,
     BusinessRates,
     Limits,
     StaticRates,
-} from "../exports/utils";
+} from "../../exports/utils";
 
 // Расчет страховых взносов для Малого и среднего бизнеса. Код 20
 export const calcBusinessTax = (
@@ -44,7 +43,10 @@ export const calcBusinessTax = (
     }: { employeeCumulativePerYear: number; currentCumulativeAccrual: number } =
         calcEmployeeCumulative(table, state, employeeId, value);
     // Если начислено меньше МРОТ, то ставка налога в любом случае будет BasicRates
-    const isCivilContract: boolean = setIsCivilContract(state, employeeId);
+    const isCivilContract: boolean = setIsCivilContract(
+        state.employees,
+        employeeId
+    );
 
     const accident = 0;
 

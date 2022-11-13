@@ -1,11 +1,11 @@
-import { ISalaries } from "../exports/interfaces";
+import { ISalaries } from "../../exports/interfaces";
+import { calcEmployeeCumulative } from "./calculateEmployeeCumulative";
 import {
-    calcEmployeeCumulative,
     calcRetirementInsurance,
     calcSocialInsurance,
-    setIsCivilContract,
-} from "../exports/scripts";
-import { BasicRates, Limits, StaticRates } from "../exports/utils";
+} from "./insurancesCalculations";
+import { BasicRates, Limits, StaticRates } from "../../exports/utils";
+import { setIsCivilContract } from "../setIsCivilContract";
 
 // Расчет страховых взносов по базовой ставке. Код 01
 export const calcBasicTax = (
@@ -32,7 +32,10 @@ export const calcBasicTax = (
     }: { employeeCumulativePerYear: number; currentCumulativeAccrual: number } =
         calcEmployeeCumulative(table, state, employeeId, value);
 
-    const isCivilContract: boolean = setIsCivilContract(state, employeeId);
+    const isCivilContract: boolean = setIsCivilContract(
+        state.employees,
+        employeeId
+    );
     // начисления ЗП с учетом начисления за текущий месяц
     const { overRetirmentLimit, retirement, insuranceRetirementBase } =
         calcRetirementInsurance(

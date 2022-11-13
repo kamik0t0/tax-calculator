@@ -32,7 +32,7 @@ export const calcBasicPIT = (
     const payment = value - PIT;
     return { PIT, payment };
 };
-
+// TODO: все числовые значения в переменные
 const calcRecoupment = (childrenQtty: number) => {
     if (childrenQtty <= 2) return childrenQtty * 1400;
     else return (childrenQtty - 2) * 3000 + 2800;
