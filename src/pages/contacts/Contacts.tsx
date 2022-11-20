@@ -4,11 +4,13 @@ import {
     ListItemIcon,
     Typography,
     useTheme,
+    Link,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import CakeIcon from "@mui/icons-material/Cake";
 import EmailIcon from "@mui/icons-material/Email";
 import HomeIcon from "@mui/icons-material/Home";
+import FacebookIcon from "@mui/icons-material/Facebook";
 import { Container } from "@mui/material";
 import React from "react";
 
@@ -52,6 +54,21 @@ const Contacts: React.FC = (props) => {
                         <HomeIcon />
                     </ListItemIcon>
                     <Typography>Россия, город Уфа</Typography>
+                </ListItem>
+            </List>
+            <List>
+                <ListItem>
+                    <ListItemIcon>
+                        <FacebookIcon />
+                    </ListItemIcon>
+
+                    <Link
+                        href="https://vk.com/id2858083"
+                        color="primary"
+                        target="_blank"
+                    >
+                        <Typography>Вконтакте</Typography>
+                    </Link>
                 </ListItem>
             </List>
         </Container>

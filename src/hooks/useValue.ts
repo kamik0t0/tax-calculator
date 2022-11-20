@@ -7,7 +7,8 @@ export function useValue(initialValue: string | number) {
     function valueHandler<
         T extends HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >(event: ChangeEvent<T> | SelectChangeEvent<string | number>): void {
-        setValue(event.target.value);
+        const value = event.target.value;
+        setValue(value);
     }
 
     return [value, valueHandler] as const;

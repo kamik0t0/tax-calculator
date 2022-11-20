@@ -1,30 +1,11 @@
 import { SelectChangeEvent } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { useValue } from "@customhooks/useValue";
 
-export const useSelectValue = (): {
-    column: string;
-    summCriterion: typeof summCriterion;
-    handleChangeColumn: (
-        event:
-            | ChangeEvent<
-                  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-              >
-            | SelectChangeEvent<string | number>
-    ) => void;
-    handleChangeCriterion: (
-        event:
-            | ChangeEvent<
-                  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-              >
-            | SelectChangeEvent<string | number>
-    ) => void;
-    inputType: string;
-} => {
-    const [summCriterion, handleChangeCriterion] = useValue("more");
+export const useFilterCriterion = () => {
     const [column, setColumn] = useState<string>("client");
     const [inputType, setInputType] = useState<string>("string");
-    // изменить стейт колонки фильтрации
+
+    // в зависимости от типа фильтрации меняется тип ввода и интерфейс
     function handleChangeColumn<
         T extends HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >(event: ChangeEvent<T> | SelectChangeEvent<string | number>) {
@@ -35,11 +16,5 @@ export const useSelectValue = (): {
         if (choosenColumn === "client") setInputType("string");
     }
 
-    return {
-        column,
-        summCriterion,
-        handleChangeColumn,
-        handleChangeCriterion,
-        inputType,
-    } as const;
+    return [column, handleChangeColumn, inputType] as const;
 };

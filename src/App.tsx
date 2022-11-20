@@ -6,8 +6,7 @@ import AppRouter from "@router/AppRouter";
 import { getDesignTokens } from "@themes/themes";
 import React, { useMemo, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { CustomDrawer, SnackBars } from "./components/index";
-import EmployeeDialog from "./pages/salary/pages/employees/components/EmployeeDialog/EmployeeDialog";
+import { CustomDrawer, SnackBars, EmployeeDialog } from "./components/index";
 
 export const [useColorModeContext, ColorProvider] = CustomContext<{
     toggleColorMode: () => void;

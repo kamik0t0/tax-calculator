@@ -1,4 +1,3 @@
-import { toPercent } from "@helpers/toPercent";
 import { createSelector } from "@reduxjs/toolkit";
 import { State } from "types/state";
 

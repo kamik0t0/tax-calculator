@@ -1,53 +1,44 @@
+import { useToggle } from "@customhooks/useToggle";
+import { useValue } from "@customhooks/useValue";
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
-import React, { Dispatch, FC, SetStateAction } from "react";
+import { useTypedDispatch } from "@reduxhooks/hooks";
+import { filterByString, filterBySumm } from "@scripts/filters";
 import { showSuccessSnackBar } from "@uistore/ui-reducer";
-import { FilterSelect } from "../exports/components";
-import {
-    useFilter,
-    useInputDateValue,
-    useSelectColumn,
-    useSelectValue,
-} from "../exports/hooks";
+import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import { FilterDate, FilterSelect } from "../exports/components";
+import { useFilterCriterion } from "../exports/hooks";
 import { IInvoice } from "../exports/interfaces";
 import { filterColumns, summColumns } from "../exports/utils";
-import { useTypedDispatch } from "@reduxhooks/hooks";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 type FilterTyped = {
     invoices: IInvoice[];
     setFiltered: Dispatch<SetStateAction<IInvoice[]>>;
 };
-
 const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
     const dispatch = useTypedDispatch();
-    // хук "раскрыть/закрыть" колонки фильтрации
-    const [handleSelectColumn, handleSelectSummCriterion] = useSelectColumn();
+    // стейт выбора колонки фильтрации
+    const [, handleSelectColumn] = useToggle(false);
+    // стейт выбора критерия фильтрации
+    const [, handleSelectSummCriterion] = useToggle(false);
+    // критерий фильтра по сумме
+    const [summCriterion, handleChangeCriterion] = useValue("more");
     // хук значений фильтрации
-    const {
-        column,
-        summCriterion,
-        handleChangeColumn,
-        handleChangeCriterion,
-        inputType,
-    } = useSelectValue();
-    // хук фильтрации
-    const filter = useFilter(
-        invoices,
-        setFiltered,
-        summCriterion as string,
-        column
-    );
-    // хук по работе с датой
-    const [
-        isCorrect,
-        startDateHandler,
-        endDateHandler,
-        startDateDisplay,
-        endDateDisplay,
-    ] = useInputDateValue(invoices, setFiltered);
+    const [column, handleChangeColumn, inputType] = useFilterCriterion();
 
+    const filterNumHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+        const summ = +event.target.value;
+        setFiltered(filterBySumm(summ, invoices, summCriterion as string));
+    };
+
+    const filterStrHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+        const value = event.target.value;
+        setFiltered(filterByString(value, invoices, column));
+    };
+
+    // выбор фильтра в зависимости от типа вводимых значений
+    const filter = inputType === "string" ? filterStrHandler : filterNumHandler;
+
+    // сброс фильтра
     const reset = () => {
         dispatch(
             showSuccessSnackBar({
@@ -89,54 +80,7 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
                     />
                 )}
                 {column === "date" ? (
-                    <>
-                        <InputLabel
-                            sx={{
-                                ml: 2,
-                                color: "#2477CC",
-                            }}
-                        >
-                            c:
-                        </InputLabel>
-                        <Box sx={{ width: 150 }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DesktopDatePicker
-                                    inputFormat="DD.MM.YYYY"
-                                    value={startDateDisplay}
-                                    onChange={startDateHandler}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            error={!isCorrect}
-                                        />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </Box>
-                        <InputLabel
-                            sx={{
-                                ml: 2,
-                                color: "#2477CC",
-                            }}
-                        >
-                            по:
-                        </InputLabel>
-                        <Box sx={{ width: 150 }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DesktopDatePicker
-                                    inputFormat="DD.MM.YYYY"
-                                    value={endDateDisplay}
-                                    onChange={endDateHandler}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            error={!isCorrect}
-                                        />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </Box>
-                    </>
+                    <FilterDate invoices={invoices} setFiltered={setFiltered} />
                 ) : (
                     <TextField
                         size="small"

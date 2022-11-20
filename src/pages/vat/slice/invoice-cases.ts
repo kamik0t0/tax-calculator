@@ -26,6 +26,7 @@ export const updateInvoiceReducer = () => ({
     ) {
         const { index, table, prop } = action.meta;
         const value = action.payload;
+
         const invoices = state[table];
         const invoice = calcInvoice(value, prop, invoices, +index);
         state[table][+index] = invoice;

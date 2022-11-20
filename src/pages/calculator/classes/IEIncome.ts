@@ -47,9 +47,3 @@ export class IEIncome extends IE {
         return this.usnAccrued - this.recoupment;
     }
 }
-
-const income = new IEIncome(500000, 150000, 0.06);
-const totalTax = income.totalTax;
-const burden = income.burden(totalTax);
-console.log(totalTax);
-console.log(burden * 100);

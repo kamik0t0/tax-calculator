@@ -1,16 +1,20 @@
 export const sideBarLinks = [
-    { name: "Главная", path: "/" },
-    { name: "НДС", path: "nds" },
-    { name: "Калькулятор", path: "calculator" },
+    { name: "Главная", path: "/tax-calculator" },
+    { name: "НДС", path: "/tax-calculator/nds" },
 ];
 
 export const salaryLinks = [
-    { name: "Начисления", path: "accrual" },
-    { name: "Дивиденды", path: "dividends" },
-    { name: "Сотрудники", path: "employees" },
+    { name: "Начисления", path: "/tax-calculator/accrual" },
+    { name: "Дивиденды", path: "/tax-calculator/dividends" },
+    { name: "Сотрудники", path: "/tax-calculator/employees" },
+];
+
+export const calcLinks = [
+    { name: "Налоги", path: "/tax-calculator/calculator" },
+    { name: "Пени", path: "/tax-calculator/fines" },
 ];
 
 export const appBarLinks = [
-    { name: "О сайте", path: "about" },
-    { name: "Контакты", path: "contacts" },
+    { name: "О сайте", path: "/tax-calculator/about" },
+    { name: "Контакты", path: "/tax-calculator/contacts" },
 ];

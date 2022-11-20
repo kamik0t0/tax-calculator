@@ -1,6 +1,7 @@
 import { Input, TableCell, Typography } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { toRU } from "@helpers/currencyFormat";
+import { roundNumber } from "@helpers/roundNumber";
 
 const InputCell: FC<{
     children: string | number;
@@ -19,16 +20,19 @@ const InputCell: FC<{
         setInput(!input);
     };
 
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-        getInputData(event.target.value, index, prop);
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const numValue = roundNumber(event.target.value, 2);
+        getInputData(numValue, index, prop);
+    };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.code === "Enter" || event.code === "NumpadEnter") {
             const ChangeEvent =
                 event as unknown as React.ChangeEvent<HTMLInputElement>;
+            const numValue = roundNumber(ChangeEvent.target.value, 2);
             setInput(false);
-            setPrevValue(ChangeEvent.target.value);
-            getInputData(ChangeEvent.target.value, index, prop);
+            setPrevValue(numValue);
+            getInputData(numValue, index, prop);
         }
         // возврат текущего значения
         if (event.code === "Escape") {

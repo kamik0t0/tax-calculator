@@ -30,9 +30,12 @@ export class LLCBasic extends TaxCalc {
     // Налог на прибыль
     public get LLCIncomeTax(): number {
         const TotalLLCTaxRate = this._FedLLCProfitRate + this._taxRate;
-        return Math.round(
-            (this.LLCIncome - this.LLCRecoupment) * TotalLLCTaxRate
-        );
+        const base = this.LLCIncome - this.LLCRecoupment;
+        return base >= 0
+            ? Math.round(
+                  (this.LLCIncome - this.LLCRecoupment) * TotalLLCTaxRate
+              )
+            : 0;
     }
     // Итого налоги
     public get totalTax(): number {

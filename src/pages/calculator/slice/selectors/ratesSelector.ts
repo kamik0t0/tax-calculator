@@ -4,9 +4,9 @@ import { State } from "types/state";
 
 const ratesToPercent = (state: State) => {
     const { incomeRate, expensesRate, LLCIncomeRate } = state.calcSlice.rates;
-    const incomeRatePercent = toPercent(incomeRate);
-    const expensesRatePercent = toPercent(expensesRate);
-    const LLCIncomeRatePercent = toPercent(LLCIncomeRate);
+    const incomeRatePercent = toPercent(incomeRate, 2);
+    const expensesRatePercent = toPercent(expensesRate, 2);
+    const LLCIncomeRatePercent = toPercent(LLCIncomeRate, 3);
 
     return [incomeRatePercent, expensesRatePercent, LLCIncomeRatePercent];
 };

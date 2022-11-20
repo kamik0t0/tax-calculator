@@ -1,5 +1,5 @@
 export const breadcrumbNameMap: { [key: string]: string } = {
-    "/home": "главная",
+    "/tax-calculator/": "главная",
     "/nds": "ндс",
     "/salary": "зарплата",
     "/about": "о сайте",
@@ -7,5 +7,6 @@ export const breadcrumbNameMap: { [key: string]: string } = {
     "/accrual": "начисления",
     "/dividends": "дивиденды",
     "/employees": "сотрудники",
-    "/calculator": "калькулятор",
+    "/calculator": "калькулятор налогов",
+    "/fines": "калькулятор пеней",
 };

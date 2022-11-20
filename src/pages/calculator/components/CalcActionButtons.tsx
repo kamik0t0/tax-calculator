@@ -26,7 +26,7 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
             )
         );
     const dispatch = useTypedDispatch();
-    const calcTaxex = () => dispatch(calculateTaxes());
+    const calcTaxes = () => dispatch(calculateTaxes());
     return (
         <>
             <br />
@@ -65,7 +65,7 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
             <Button
                 size="large"
                 variant="contained"
-                onClick={calcTaxex}
+                onClick={calcTaxes}
                 sx={{
                     width: "200px",
                     alignSelf: "center",

@@ -139,11 +139,12 @@
             "@scripts/*": ["scripts/*"],
             "@utils/*": ["utils/*"],
             "@reduxhooks/*": ["redux/hooks/*"],
-            "@salarystore/*": ["pages/salary/pages/accrual/slice/*"],
+            "@salarystore/*": ["pages/accrual/slice/*"],
             "@invoicesstore/*": ["pages/vat/slice/*"],
             "@uistore/*": ["redux/ui-slice/*"],
             "@dialogstore/*": ["redux/dialog-slice/*"],
             "@calcstore/*": ["pages/calculator/slice/*"],
+            "@finestore/*": ["pages/fines/slice/*"],
             "@themes/*": ["themes/*"],
             "@router/*": ["routers/*"],
             "@components/*": ["components/*"]

@@ -4,6 +4,7 @@ import { reducer as salarySlice } from "@salarystore/salary-reducer";
 import { reducer as snackBarSlice } from "./ui-slice/ui-reducer";
 import { reducer as dialogSlice } from "./dialog-slice/dialog-reducer";
 import { reducer as calcSlice } from "@calcstore/calculator-reducer";
+import { reducer as fineSlice } from "@finestore/fines-reducer";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         snackBarSlice: snackBarSlice,
         dialogSlice: dialogSlice,
         calcSlice: calcSlice,
+        fineSlice: fineSlice,
     },
 });
 

@@ -40,9 +40,3 @@ export class LLCIncome extends TaxCalc {
         return this.usnAccrued - this.recoupment;
     }
 }
-
-const income = new LLCIncome(500000, 150000, 0.06);
-const totalTax = income.totalTax;
-const burden = income.burden(totalTax);
-console.log(totalTax);
-console.log(burden * 100);

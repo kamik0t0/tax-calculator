@@ -12,12 +12,13 @@ import { breadcrumbNameMap } from "../nav/exports/utils";
 
 const Breadcrumbs: FC = () => {
     const { pathname } = useLocation();
-    const pathnames = pathname.split("/").filter((x) => x);
+    const pathnames = pathname.split("/").filter((x, index) => index > 1 && x);
+    console.log(pathnames);
 
     return (
         <MUIBreadcrumbs aria-label="breadcrumb" sx={{ ml: 2 }}>
             {pathnames.length > 0 ? (
-                <LinkRouter key={nanoid(3)} path="/">
+                <LinkRouter key={nanoid(3)} path="/tax-calculator/">
                     <ListItemButton sx={{ color: "#fff" }}>
                         <Typography>главная</Typography>
                     </ListItemButton>
@@ -31,7 +32,7 @@ const Breadcrumbs: FC = () => {
                         marginY: 0,
                     }}
                 >
-                    <Typography>главная</Typography>
+                    <Typography>Каллькулятор</Typography>
                 </ListItemText>
             )}
             {pathnames.map((name, index) => {

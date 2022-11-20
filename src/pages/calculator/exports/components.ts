@@ -1,9 +1,9 @@
 // outer world component
 export { default } from "../Calculator";
 // related components
-export { default as NumberField } from "../components/NumberField";
+export { default as NumberField } from "../../../shared/components/NumberField";
 export { default as Rate } from "../components/Rate";
-export { default as RateInfo } from "../components/RateInfo";
+export { default as Info } from "@sharedcomponents/Info";
 export { default as RatesDialog } from "../components/RatesDialog";
 export { default as UserInputData } from "../components/UserInputData";
 export { default as CalcDataOutput } from "../components/CalcDataOutput";

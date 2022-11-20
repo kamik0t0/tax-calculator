@@ -83,6 +83,7 @@ const CalcDataOutput: React.FC = () => {
             sx={{
                 display: "flex",
                 flexDirection: "column",
+                justifyContent: "space-evenly",
             }}
         >
             <OutputHeaderWrapper headers={LLCHeaders} />
@@ -100,7 +101,7 @@ const CalcDataOutput: React.FC = () => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    mb: 15,
+                    mb: 8,
                 }}
             >
                 <OutputInfoCol />
@@ -202,30 +203,6 @@ const CalcDataOutput: React.FC = () => {
             <CalcReportsProvider value={context}>
                 <Reports />
             </CalcReportsProvider>
-            {/* <IncomeIEReport
-                isIncomeDialog={isIncomeIEDialog}
-                toggleIncomeDialog={toggleIncomeIEDialog}
-            />
-            <IncomeLLCReport
-                isDialog={isIncomeLLCDialog}
-                toggleDialog={toggleIncomeLLCDialog}
-            />
-            <ExpensesIEReport
-                isDialog={isExpensesIEDialog}
-                toggleDialog={toggleExpensesIEDialog}
-            />
-            <ExpensesLLCReport
-                isDialog={isExpensesLLCDialog}
-                toggleDialog={toggleExpensesLLCDialog}
-            />
-            <BasicIEReport
-                isDialog={isBasicIEDialog}
-                toggleDialog={toggleBasicIEDialog}
-            />
-            <BasicLLCReport
-                isDialog={isBasicLLCDialog}
-                toggleDialog={toggleBasicLLCDialog}
-            /> */}
         </Container>
     );
 };

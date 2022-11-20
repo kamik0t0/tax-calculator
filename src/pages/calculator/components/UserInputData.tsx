@@ -41,7 +41,7 @@ const UserInputData: React.FC<{ toggleDialog: () => void }> = ({
             }}
         >
             <Stack direction="column">
-                <Typography variant="h5" sx={headersTextColor}>
+                <Typography variant="h5">
                     Планируемые показатели за год
                 </Typography>
                 <br />

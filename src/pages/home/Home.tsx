@@ -49,9 +49,9 @@ export default function SimpleAccordion() {
                     </Typography>
                     <br />
                     <Typography sx={{ textIndent: 30 }}>
-                        Иные разделы, такие как "Дивиденды", не сохраняют
-                        информацию и просто производят рассчет отталкиваясь от
-                        здесь и сейчас введенных значений.
+                        Иные разделы, такие как "Дивиденды", "Пени", "Налоги",
+                        не сохраняют информацию и просто производят рассчет
+                        отталкиваясь от введенных значений.
                     </Typography>
                     <br />
                     <Typography sx={{ textIndent: 30 }}>
@@ -224,7 +224,7 @@ export default function SimpleAccordion() {
                     id="panel2a-header"
                 >
                     <Typography variant="h6" sx={headersTextColor}>
-                        Страница Сотрудники
+                        Сотрудники
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -232,6 +232,103 @@ export default function SimpleAccordion() {
                         Позволяет вывести информацию о сотруднике, добавить,
                         изменить, удалить. Также на странице доступен подробный
                         годовой отчет по начислениям сотрудника.
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2a-content"
+                    id="panel2a-header"
+                >
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Сравнение режимов налогообложения (калькулятор)
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography sx={{ textIndent: 30 }}>
+                        Калькулятор налогов в первую очередь предназначен для
+                        сравнения налоговой нагрузки при применении разных
+                        режимов налогообложения исходя из одинаковых входных
+                        данных. Экономические субъекты могут заниматься
+                        деятельностью которая предполагает уплату дополнительных
+                        налогов таких как акцизы, налог на добычу полезных
+                        ископаемых и многое другое из того что калькулятор не
+                        учитывает. Поэтому не стоит полагаться на расчеты
+                        выдаваемые калькулятором как точно соответствующие тем
+                        условиям в которых хозяйствующий субъект осуществляете
+                        свою деятельность.
+                        <br />
+                        <br />
+                        Для расчета нужно заполнить соответствующие поля, нажать
+                        кнопку "РАССЧИТАТЬ". В таблице справа можно сформировть
+                        отчет кликнув по сумме. Также можно поменять ставки
+                        налогов нажав на кнопку "СТАВКИ". Кнопка "ЗАПОЛНИТЬ"
+                        автоматически подставит значения из разделов НДС и
+                        Зарплата.
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel2a-content"
+                    id="panel2a-header"
+                >
+                    <Typography variant="h6" sx={headersTextColor}>
+                        Калькулятор пеней
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography>
+                        Расчет пеней осуществляется по правилам, установленным{" "}
+                        <Link
+                            href="https://nkrfkod.ru/statja-75/"
+                            color="primary"
+                            target="_blank"
+                        >
+                            статьей 75 Налогового кодекса
+                        </Link>{" "}
+                        по формуле:
+                        <br />
+                        ПЕНИ = СУММА х ДНИ х СТАВКА / 300
+                        <br />
+                        С 01.10.2017 для юридических лиц с просрочкой более 30
+                        дней, расчёт по формуле:
+                        <br />
+                        ПЕНИ = СУММА х 30 х СТАВКА / 300 + СУММА х (ДНИ - 30) х
+                        СТАВКА/150
+                        <br />
+                        СУММА — сумма задолженности;
+                        <br />
+                        ДНИ — количество дней просрочки;
+                        <br />
+                        СТАВКА —{" "}
+                        <Link
+                            href="https://normativ.kontur.ru/rates/refinance?from=peni"
+                            color="primary"
+                            target="_blank"
+                        >
+                            процентная ставка рефинансирования ЦБ РФ
+                        </Link>
+                        , действующая в период просрочки (c 01.01.2016
+                        приравнена к значению{" "}
+                        <Link
+                            href="https://normativ.kontur.ru/rates/cbrkey?from=peni"
+                            color="primary"
+                            target="_blank"
+                        >
+                            ключевой ставки
+                        </Link>{" "}
+                        ЦБ РФ)
+                        <br />
+                        <Link
+                            href="https://normativ.kontur.ru/document?moduleId=51&documentId=4885&from=peni"
+                            color="primary"
+                            target="_blank"
+                        >
+                            Как рассчитать пени по налогам, сборам и взносам
+                        </Link>
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -263,36 +360,23 @@ export default function SimpleAccordion() {
                         цифрового ввода. Запрет ввода отрицательных значений и
                         др.
                     </Typography>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                >
-                    <Typography variant="h6" sx={headersTextColor}>
-                        Технические ограничения
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
+                    <br />
                     <Typography sx={{ textIndent: 30 }}>
-                        Обязательно запускайте приложение со стартовой страницы
-                        по{" "}
+                        Вы можете заходить на интересующую вас странцу по прямой
+                        ссылке, например{" "}
                         <Link
-                            href="https://kamik0t0.github.io/tax-calculator/"
+                            href="https://kamik0t0.github.io/tax-calculator/calculator"
                             color="primary"
                             target="_blank"
                         >
-                            ссылке.
-                        </Link>{" "}
-                        Если вы попытаетесь стартануть с конкретной страницы
-                        (например, https://kamik0t0.github.io/nds), то возникнет
-                        ошибка.
+                            https://kamik0t0.github.io/tax-calculator/calculator
+                        </Link>
+                        . Это важно поскольку существуют некоторые ограничения
+                        при хостинге приложений реализующих конецепциею SPA
+                        (Single Page Application).
                     </Typography>
                 </AccordionDetails>
             </Accordion>
-
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

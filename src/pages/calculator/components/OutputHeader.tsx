@@ -3,12 +3,9 @@ import { Stack, Typography } from "@mui/material";
 import React from "react";
 
 const OutputHeader: React.FC<{ children: string }> = ({ children }) => {
-    const [headersTextColor] = useFontHeaders();
     return (
         <Stack direction="column">
-            <Typography variant="h6" sx={headersTextColor}>
-                {children}
-            </Typography>
+            <Typography variant="h6">{children}</Typography>
         </Stack>
     );
 };

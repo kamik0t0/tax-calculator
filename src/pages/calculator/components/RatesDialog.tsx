@@ -7,11 +7,10 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    Divider,
 } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import { Rate, RateInfo } from "../exports/components";
+import { Info, Rate } from "../exports/components";
 import { useRates } from "../exports/hooks";
 
 const RatesDialog: React.FC<{
@@ -62,10 +61,7 @@ const RatesDialog: React.FC<{
                     >
                         Налог на прибыль (региональный)
                     </Rate>
-
-                    <br />
-                    <Divider sx={{ mb: 1 }} />
-                    <RateInfo />
+                    <Info>Ставки в регионах могут отличаться</Info>
                 </Box>
             </DialogContent>
             <DialogActions>
