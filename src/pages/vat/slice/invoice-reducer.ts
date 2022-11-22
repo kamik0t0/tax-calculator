@@ -1,5 +1,6 @@
 import {
     createSlice,
+    current,
     PayloadAction,
     SliceCaseReducers,
     ValidateSliceCaseReducers,
@@ -28,6 +29,14 @@ const createGenericSlice = <Reducers extends SliceCaseReducers<IInvoices>>({
             updateInvoices: InvoiceReducers.updateInvoicesReducer(),
             updateInvoice: InvoiceReducers.updateInvoiceReducer(),
             deleteRows: InvoiceReducers.deleteRowsReducer,
+            setLocalStorage(state: IInvoices, action: PayloadAction<string>) {
+                const { payload: table } = action;
+                localStorage.setItem(table, JSON.stringify(state[table]));
+            },
+            calcSummary(state: IInvoices, action: PayloadAction<string>) {
+                const { payload: table } = action;
+                calculateSummary(state, state.summary[table], state[table]);
+            },
             ...reducers,
         },
     });

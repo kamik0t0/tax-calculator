@@ -28,7 +28,7 @@ const InvoiceTable: FC<{
     const setConteinerHeight = useScrollToLastRow("lastRow");
 
     const createInvoice = () => {
-        setConteinerHeight(1);
+        setConteinerHeight(Math.random());
         dispatch(addRow(newInvoice, table));
     };
     const deleteInvoices = () => dispatch(deleteRows(table));

@@ -26,6 +26,6 @@ export class TaxCalc {
     // Налоговая нагрузка
     public burden(totalTax: number) {
         if (this._income > 0) return totalTax / this._income;
-        return 100;
+        return 0;
     }
 }

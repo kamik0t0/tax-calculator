@@ -5,6 +5,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Container, Link, useTheme } from "@mui/material";
+import PolyButton from "@sharedcomponents/PolyButton";
 
 export default function SimpleAccordion() {
     const theme = useTheme();
@@ -282,13 +283,14 @@ export default function SimpleAccordion() {
                 <AccordionDetails>
                     <Typography>
                         Расчет пеней осуществляется по правилам, установленным{" "}
-                        <Link
+                        <PolyButton
                             href="https://nkrfkod.ru/statja-75/"
                             color="primary"
                             target="_blank"
+                            as={Link}
                         >
                             статьей 75 Налогового кодекса
-                        </Link>{" "}
+                        </PolyButton>{" "}
                         по формуле:
                         <br />
                         ПЕНИ = СУММА х ДНИ х СТАВКА / 300
@@ -304,31 +306,34 @@ export default function SimpleAccordion() {
                         ДНИ — количество дней просрочки;
                         <br />
                         СТАВКА —{" "}
-                        <Link
+                        <PolyButton
                             href="https://normativ.kontur.ru/rates/refinance?from=peni"
                             color="primary"
                             target="_blank"
+                            as={Link}
                         >
                             процентная ставка рефинансирования ЦБ РФ
-                        </Link>
+                        </PolyButton>
                         , действующая в период просрочки (c 01.01.2016
                         приравнена к значению{" "}
-                        <Link
+                        <PolyButton
                             href="https://normativ.kontur.ru/rates/cbrkey?from=peni"
                             color="primary"
                             target="_blank"
+                            as={Link}
                         >
                             ключевой ставки
-                        </Link>{" "}
+                        </PolyButton>{" "}
                         ЦБ РФ)
                         <br />
-                        <Link
+                        <PolyButton
                             href="https://normativ.kontur.ru/document?moduleId=51&documentId=4885&from=peni"
                             color="primary"
                             target="_blank"
+                            as={Link}
                         >
                             Как рассчитать пени по налогам, сборам и взносам
-                        </Link>
+                        </PolyButton>
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -364,13 +369,14 @@ export default function SimpleAccordion() {
                     <Typography sx={{ textIndent: 30 }}>
                         Вы можете заходить на интересующую вас странцу по прямой
                         ссылке, например{" "}
-                        <Link
+                        <PolyButton
                             href="https://kamik0t0.github.io/tax-calculator/calculator"
                             color="primary"
                             target="_blank"
+                            as={Link}
                         >
                             https://kamik0t0.github.io/tax-calculator/calculator
-                        </Link>
+                        </PolyButton>
                         . Это важно поскольку существуют некоторые ограничения
                         при хостинге приложений реализующих конецепциею SPA
                         (Single Page Application).

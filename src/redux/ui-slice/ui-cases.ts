@@ -17,9 +17,9 @@ export const shouldShowTipsReducer: CaseReducer<
 > = (state, action) => {
     state.shouldShow = action.payload;
 };
-export const setDialogRducer: CaseReducer<ISnackBar, PayloadAction<boolean>> = (
-    state,
-    action
-) => {
+export const setDialogReducer: CaseReducer<
+    ISnackBar,
+    PayloadAction<boolean>
+> = (state, action) => {
     state.dialog = action.payload;
 };

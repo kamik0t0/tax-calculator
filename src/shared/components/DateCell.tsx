@@ -1,8 +1,6 @@
 import { defaultDateToLocalRU, makeDefaultDate } from "@helpers/dateHelpers";
-import { TableCell, TextField, Typography } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TableCell, Typography } from "@mui/material";
+import DatePicker from "@sharedcomponents/DatePicker";
 import { Dayjs } from "dayjs";
 import React, { FC, useMemo, useState } from "react";
 
@@ -56,21 +54,13 @@ const DateCell: FC<{
         <>
             {input ? (
                 <TableCell variant="body" align="center">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                            inputFormat="DD.MM.YYYY"
-                            value={formattedDateValue}
-                            onChange={onChange}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    autoFocus={input}
-                                    onKeyDown={onKeyDown}
-                                    error={error}
-                                />
-                            )}
-                        />
-                    </LocalizationProvider>
+                    <DatePicker
+                        value={formattedDateValue}
+                        onChange={onChange}
+                        error={error}
+                        focus={input}
+                        onKeyDown={onKeyDown}
+                    />
                 </TableCell>
             ) : (
                 <TableCell

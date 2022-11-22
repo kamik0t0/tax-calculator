@@ -1,135 +1,37 @@
-import { useLocalStorage } from "@customhooks/useLocalStorage";
 import { Box, Container, Tab, Tabs as MaterialTabs } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import {
-    calcSummary,
-    setSalariesToStorage,
-    updateSalaries,
-    updateSalary,
-} from "@salarystore/salary-reducer";
+import { updateSalaries, updateSalary } from "@salarystore/salary-reducer";
 import { a11yProps } from "@utils/a11yProps";
 import React, { FC, useEffect } from "react";
 import { SelectTaxRate, TabPanelWrapper } from "./exports/components";
 import { salaryEmployeeUpdate } from "./exports/scripts";
 import { Months, MonthsDisplay } from "./exports/utils";
 import { salaryEmployeeDelete } from "./exports/scripts";
-import { ISalary } from "./exports/interfaces";
-
-// const TabPanelWrapper = React.lazy(
-//     () => import("./components/TabPanelWrapper")
-// );
+import { useSalaryStorageSelector } from "../../App";
+import { ISalaryStorage } from "./exports/interfaces";
 
 const Salary: FC = () => {
     const dispatch = useTypedDispatch();
-    const { months, employees } = useTypedSelector(
-        (state) => state.salarySlice
-    );
-    const Jan = useLocalStorage(
-        Months.jan,
-        months.jan.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Feb = useLocalStorage(
-        Months.feb,
-        months.feb.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const March = useLocalStorage(
-        Months.march,
-        months.march.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const April = useLocalStorage(
-        Months.april,
-        months.april.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const May = useLocalStorage(
-        Months.may,
-        months.may.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const June = useLocalStorage(
-        Months.june,
-        months.june.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const July = useLocalStorage(
-        Months.july,
-        months.july.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Aug = useLocalStorage(
-        Months.aug,
-        months.aug.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Sep = useLocalStorage(
-        Months.sep,
-        months.sep.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Oct = useLocalStorage(
-        Months.oct,
-        months.oct.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Nov = useLocalStorage(
-        Months.nov,
-        months.nov.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
-    const Dec = useLocalStorage(
-        Months.dec,
-        months.dec.salary,
-        updateSalaries,
-        setSalariesToStorage,
-        calcSummary
-    );
-
+    const { months } = useTypedSelector((state) => state.salarySlice);
+    const storageSalary: ISalaryStorage = useSalaryStorageSelector();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
 
     useEffect(() => {
-        for (const month in months) {
-            const salary: ISalary[] = months[month].salary;
-            const employee = salaryEmployeeUpdate(employees, salary);
-            const leftSalaries = salaryEmployeeDelete(employees, salary);
+        for (const month in storageSalary.months) {
+            const salary = storageSalary.months[month];
+            console.log(salary);
+
+            const employee = salaryEmployeeUpdate(
+                storageSalary.employees,
+                salary
+            );
+            const leftSalaries = salaryEmployeeDelete(
+                storageSalary.employees,
+                salary
+            );
             // порядок dispatch имеет значение! сначала диспатч оставшихся сотрудинков
             leftSalaries && dispatch(updateSalaries(leftSalaries, month));
             // затем обновления конкретного сотрудника. В ином случае обновления будут внесены, но диспатч оставшихся перезапишет обновленного сотрудника старыми значениями и новая информация будет доступна не сразу
@@ -144,7 +46,7 @@ const Salary: FC = () => {
                 );
             }
         }
-    }, [employees]);
+    }, [storageSalary.employees]);
 
     return (
         <>
@@ -183,93 +85,90 @@ const Salary: FC = () => {
                 >
                     <SelectTaxRate />
                 </Box>
-                {/* <Suspense fallback={<>Loading</>}> */}
-
                 <TabPanelWrapper
                     value={value}
                     index={0}
-                    salary={Jan}
+                    salary={storageSalary.jan}
                     summary={months.jan.summary}
                     table={Months.jan}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={1}
-                    salary={Feb}
+                    salary={storageSalary.feb}
                     summary={months.feb.summary}
                     table={Months.feb}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={2}
-                    salary={March}
+                    salary={storageSalary.march}
                     summary={months.march.summary}
                     table={Months.march}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={3}
-                    salary={April}
+                    salary={storageSalary.april}
                     summary={months.april.summary}
                     table={Months.april}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={4}
-                    salary={May}
+                    salary={storageSalary.may}
                     summary={months.may.summary}
                     table={Months.may}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={5}
-                    salary={June}
+                    salary={storageSalary.june}
                     summary={months.june.summary}
                     table={Months.june}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={6}
-                    salary={July}
+                    salary={storageSalary.july}
                     summary={months.july.summary}
                     table={Months.july}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={7}
-                    salary={Aug}
+                    salary={storageSalary.aug}
                     summary={months.aug.summary}
                     table={Months.aug}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={8}
-                    salary={Sep}
+                    salary={storageSalary.sep}
                     summary={months.sep.summary}
                     table={Months.sep}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={9}
-                    salary={Oct}
+                    salary={storageSalary.oct}
                     summary={months.oct.summary}
                     table={Months.oct}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={10}
-                    salary={Nov}
+                    salary={storageSalary.nov}
                     summary={months.nov.summary}
                     table={Months.nov}
                 />
                 <TabPanelWrapper
                     value={value}
                     index={11}
-                    salary={Dec}
+                    salary={storageSalary.dec}
                     summary={months.dec.summary}
                     table={Months.dec}
                 />
-                {/* </Suspense> */}
             </Container>
         </>
     );

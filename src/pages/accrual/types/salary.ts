@@ -1,7 +1,5 @@
-import { ids } from "webpack";
-
 // таблица
-interface IMonths {
+export interface IMonths {
     jan: {
         salary: ISalary[];
         summary: ISalarySummary;
@@ -107,4 +105,21 @@ interface IInsurance {
     medical: number;
     social: number;
     accident: number;
+}
+
+export interface ISalaryStorage {
+    jan: ISalary[];
+    feb: ISalary[];
+    march: ISalary[];
+    april: ISalary[];
+    may: ISalary[];
+    june: ISalary[];
+    july: ISalary[];
+    aug: ISalary[];
+    sep: ISalary[];
+    oct: ISalary[];
+    nov: ISalary[];
+    dec: ISalary[];
+    employees: IEmployee[];
+    [prop: string]: any;
 }

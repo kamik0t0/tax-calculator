@@ -74,7 +74,7 @@ export interface ITax {
     };
 }
 
-interface calcData {
+export interface calcData {
     rate: number;
     income?: number;
     salary?: number;

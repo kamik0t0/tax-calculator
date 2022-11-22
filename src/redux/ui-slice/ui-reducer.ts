@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ISnackBar } from "types/snackBar";
 import {
-    setDialogRducer,
+    setDialogReducer,
     shouldShowTipsReducer,
     showSuccessSnackBarReducer,
 } from "./ui-cases";
@@ -20,7 +20,7 @@ export const snackBarSlice = createSlice({
     reducers: {
         showSuccessSnackBar: showSuccessSnackBarReducer,
         shouldShowTips: shouldShowTipsReducer,
-        setDialog: setDialogRducer,
+        setDialog: setDialogReducer,
     },
 });
 

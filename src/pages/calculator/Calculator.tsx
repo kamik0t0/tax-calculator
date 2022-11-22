@@ -1,6 +1,7 @@
 import { useFontHeaders } from "@customhooks/useFontHeader";
 import { useToggle } from "@customhooks/useToggle";
 import { Box, Container, Divider, Typography } from "@mui/material";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import {
     CalcDataOutput,
@@ -12,6 +13,8 @@ import {
 const Calculator: React.FC = () => {
     const [isDialog, toggleDialog] = useToggle(false);
     const [headersTextColor] = useFontHeaders();
+    const { sales } = useTypedSelector((state) => state.invoiceSlice.summary);
+
     return (
         <>
             <br />

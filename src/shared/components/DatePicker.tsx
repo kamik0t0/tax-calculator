@@ -6,9 +6,11 @@ import React from "react";
 
 const DatePicker: React.FC<{
     value: string;
-    onChange: (date: Dayjs | null) => void;
     error: boolean;
-}> = ({ value, onChange, error }) => {
+    onChange: (date: Dayjs | null) => void;
+    focus?: boolean;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+}> = ({ value, onChange, error, focus, onKeyDown }) => {
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -20,6 +22,8 @@ const DatePicker: React.FC<{
                         <TextField
                             {...params}
                             sx={{ width: 150 }}
+                            autoFocus={focus || false}
+                            onKeyDown={onKeyDown}
                             error={error}
                         />
                     )}

@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs as MuiTabs } from "@mui/material";
 import React, { FC } from "react";
 import { a11yProps } from "@utils/a11yProps";
-import { TabsTables } from "../exports/utils";
+import { InvoicesTabs } from "../exports/utils";
 
 const Tabs: FC<{
     value: number;
@@ -14,10 +14,10 @@ const Tabs: FC<{
             aria-label="basic tabs example"
             centered={true}
         >
-            <Tab label={TabsTables.Sale} {...a11yProps(0)} />
-            <Tab label={TabsTables.Purchase} {...a11yProps(1)} />
-            <Tab label={TabsTables.Received} {...a11yProps(2)} />
-            <Tab label={TabsTables.Issued} {...a11yProps(3)} />
+            <Tab label={InvoicesTabs.Sale} {...a11yProps(0)} />
+            <Tab label={InvoicesTabs.Purchase} {...a11yProps(1)} />
+            <Tab label={InvoicesTabs.Received} {...a11yProps(2)} />
+            <Tab label={InvoicesTabs.Issued} {...a11yProps(3)} />
         </MuiTabs>
     );
 };

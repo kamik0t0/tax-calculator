@@ -3,6 +3,6 @@ export {
     ClyentTypes,
     HeaderNames,
     SortFields,
-    Tables,
-    TabsTables,
+    Invoices,
+    InvoicesTabs,
 } from "../utils/enums";

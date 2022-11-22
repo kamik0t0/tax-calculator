@@ -23,11 +23,18 @@ type total = {
     nds: number;
 };
 
-interface ISummary {
+export interface ISummary {
     purches: total;
     sales: total;
     issued: total;
     recieved: total;
     nds: number;
     [prop: string]: any;
+}
+
+export interface IInvoiceStorage {
+    sales: IInvoice[];
+    purches: IInvoice[];
+    recieved: IInvoice[];
+    issued: IInvoice[];
 }

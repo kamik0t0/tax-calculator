@@ -1,11 +1,11 @@
-export enum TabsTables {
+export enum InvoicesTabs {
     Sale = "Продажи",
     Purchase = "Покупки",
     Received = "Авансы полученные",
     Issued = "Авансы выданные",
 }
 
-export enum Tables {
+export enum Invoices {
     Sale = "sales",
     Purchase = "purches",
     Received = "recieved",

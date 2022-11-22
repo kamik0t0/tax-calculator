@@ -8,7 +8,6 @@ import {
     setTaxSalary,
 } from "@calcstore/calculator-reducer";
 import { CalcActionButtons } from "../exports/components";
-import { useFontHeaders } from "@customhooks/useFontHeader";
 
 const UserInputData: React.FC<{ toggleDialog: () => void }> = ({
     toggleDialog,
@@ -27,8 +26,6 @@ const UserInputData: React.FC<{ toggleDialog: () => void }> = ({
     const getSalaryValue = (value: number) => {
         dispatch(setTaxSalary(value));
     };
-
-    const [headersTextColor] = useFontHeaders();
 
     return (
         <Container

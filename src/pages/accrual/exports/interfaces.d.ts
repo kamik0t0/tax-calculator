@@ -4,4 +4,5 @@ export type {
     IEmployee,
     ISalaries,
     ISalary,
+    ISalaryStorage,
 } from "../types/salary";

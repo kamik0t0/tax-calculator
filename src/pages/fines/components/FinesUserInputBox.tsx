@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 
-const FinesUserInputBox: React.FC<{ children: ReactNode }> = ({ children }) => {
+const FinesUserInputBox = ({ children }: PropsWithChildren<{}>) => {
     return (
         <Box
             sx={{

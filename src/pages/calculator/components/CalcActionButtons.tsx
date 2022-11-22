@@ -2,10 +2,12 @@ import {
     calculateTaxes,
     fillWithAvailableData,
 } from "@calcstore/calculator-reducer";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import { totalSalarySelector } from "../exports/selectors";
+import PolyButton from "@sharedcomponents/PolyButton";
+import { showSuccessSnackBar } from "@uistore/ui-reducer";
 
 const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
     toggleDialog,
@@ -17,14 +19,22 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
         (state) => state.invoiceSlice.summary.purches.summ
     );
     const SalarySumm = useTypedSelector(totalSalarySelector);
-    const getAvailableData = () =>
-        dispatch(
+    const getAvailableData = () => {
+        const data = dispatch(
             fillWithAvailableData(
                 VATIncomeSumm,
                 VATExpensesSumm + SalarySumm,
                 SalarySumm
             )
         );
+        // dispatch(showSuccessSnackBar({
+        //     open: true,
+        //     severity: "success",
+        //     message: `НДС не может превышать 20% от суммы документа (${toRU.format(
+        //         maxVAT
+        //     )}})`,
+        // }))
+    };
     const dispatch = useTypedDispatch();
     const calcTaxes = () => dispatch(calculateTaxes());
     return (
@@ -41,7 +51,7 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
                     mb: 15,
                 }}
             >
-                <Button
+                <PolyButton
                     size="large"
                     variant="outlined"
                     onClick={getAvailableData}
@@ -50,8 +60,8 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
                     }}
                 >
                     Заполнить
-                </Button>
-                <Button
+                </PolyButton>
+                <PolyButton
                     size="large"
                     variant="outlined"
                     onClick={toggleDialog}
@@ -60,9 +70,9 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
                     }}
                 >
                     Ставки
-                </Button>
+                </PolyButton>
             </Box>
-            <Button
+            <PolyButton
                 size="large"
                 variant="contained"
                 onClick={calcTaxes}
@@ -72,7 +82,7 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
                 }}
             >
                 Рассчитать
-            </Button>
+            </PolyButton>
         </>
     );
 };

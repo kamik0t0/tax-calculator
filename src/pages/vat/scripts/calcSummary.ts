@@ -5,8 +5,10 @@ export const calcSummary = (
     summary: { summ: number; nds: number },
     table: IInvoice[]
 ) => {
-    summary.summ = table.reduce((acc, current) => acc + +current.summ, 0);
-    summary.nds = table.reduce((acc, current) => acc + +current.nds, 0);
+    if (table) {
+        summary.summ = table.reduce((acc, current) => acc + +current.summ, 0);
+        summary.nds = table.reduce((acc, current) => acc + +current.nds, 0);
+    }
 
     state.summary.nds =
         state.summary.sales.nds +
