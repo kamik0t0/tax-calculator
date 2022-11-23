@@ -1,32 +1,18 @@
 import { Container, Divider, Stack, Typography } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import { UserInputField } from "../exports/components";
-import {
-    setTaxExpanses,
-    setTaxIncome,
-    setTaxSalary,
-} from "@calcstore/calculator-reducer";
 import { CalcActionButtons } from "../exports/components";
+import { useUserInputData } from "../exports/hooks";
 
 const UserInputData: React.FC<{ toggleDialog: () => void }> = ({
     toggleDialog,
 }) => {
-    const dispatch = useTypedDispatch();
     const { income, expenses, salary } = useTypedSelector(
         (state) => state.calcSlice
     );
-
-    const getIncomeValue = (value: number) => {
-        dispatch(setTaxIncome(value));
-    };
-    const getExpensesValue = (value: number) => {
-        dispatch(setTaxExpanses(value));
-    };
-    const getSalaryValue = (value: number) => {
-        dispatch(setTaxSalary(value));
-    };
-
+    const { getIncomeValue, getExpensesValue, getSalaryValue } =
+        useUserInputData();
     return (
         <Container
             maxWidth="md"

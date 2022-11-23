@@ -1,4 +1,10 @@
-export { newInvoice } from "../scripts/createData";
-export { calcInvoice } from "../scripts/calcInvoice";
-export { calculateVAT } from "../scripts/calcVAT";
+export {
+    InvoiceClient,
+    InvoiceDate,
+    InvoiceNDS,
+    InvoiceNum,
+    InvoiceRate,
+    InvoiceSumm,
+} from "../classes/calcInvoice";
 export { calcSummary } from "../scripts/calcSummary";
+export { newInvoice } from "../scripts/createData";

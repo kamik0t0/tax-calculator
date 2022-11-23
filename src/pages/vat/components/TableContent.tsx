@@ -18,7 +18,8 @@ const TableContent: FC<{
 }> = ({ filtered, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => dispatch(deleteTableRow(index, table));
-    const [getInputData, getDate, getRateValue] = useInvoiceData(table);
+    const { getNDS, getDate, getRate, getSumm, getNum, getClient } =
+        useInvoiceData(table);
 
     return (
         <>
@@ -39,7 +40,7 @@ const TableContent: FC<{
                             index={index}
                             type="string"
                             prop="number"
-                            getInputData={getInputData}
+                            getInputData={getNum}
                         >
                             {invoice.number}
                         </InputCell>
@@ -50,14 +51,11 @@ const TableContent: FC<{
                             index={index}
                             type="string"
                             prop="client"
-                            getInputData={getInputData}
+                            getInputData={getClient}
                         >
                             {invoice.client}
                         </InputCell>
-                        <SelectRateCell
-                            index={index}
-                            getSelectValue={getRateValue}
-                        >
+                        <SelectRateCell index={index} getSelectValue={getRate}>
                             {invoice.rate}
                         </SelectRateCell>
                         <InputCell
@@ -65,7 +63,7 @@ const TableContent: FC<{
                             type="number"
                             prop="nds"
                             isMoney={true}
-                            getInputData={getInputData}
+                            getInputData={getNDS}
                         >
                             {invoice.nds}
                         </InputCell>
@@ -74,7 +72,7 @@ const TableContent: FC<{
                             type="number"
                             prop="summ"
                             isMoney={true}
-                            getInputData={getInputData}
+                            getInputData={getSumm}
                         >
                             {invoice.summ}
                         </InputCell>

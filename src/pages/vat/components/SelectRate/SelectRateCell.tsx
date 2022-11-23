@@ -30,7 +30,7 @@ const Cell: FC<{
                     >
                         <SelectRate
                             value={children.toString()}
-                            width={30}
+                            width={120}
                             onChange={onChange}
                         />
                         <VatRateButtons

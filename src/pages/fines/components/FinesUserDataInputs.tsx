@@ -1,39 +1,19 @@
-import {
-    setFinesDebt,
-    setFinesDueDate,
-    setFinesPayDate,
-} from "@finestore/fines-reducer";
 import { makeDefaultDate } from "@helpers/dateHelpers";
 import { Typography } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import { Dayjs } from "dayjs";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import {
     DatePicker,
     NumberField,
     FinesUserInputBox,
 } from "../exports/components";
+import { useFinesInput } from "../hooks/useFinesInput";
 
 const FinesUserDataInputs: React.FC = () => {
-    const dispatch = useTypedDispatch();
     const { debt, dueDate, payDate, isError } = useTypedSelector(
         (state) => state.fineSlice
     );
-
-    const getDebt = (value: number) => dispatch(setFinesDebt(value));
-    const handleDueDate = (date: Dayjs | null) => {
-        const parsedDate = date && Date.parse(date.format());
-        if (parsedDate) {
-            dispatch(setFinesDueDate(parsedDate));
-        }
-    };
-    const handlePayDay = (date: Dayjs | null) => {
-        const parsedDate = date && Date.parse(date.format());
-        if (parsedDate) {
-            dispatch(setFinesPayDate(parsedDate));
-        }
-    };
-
+    const { getDebt, handleDueDate, handlePayDay } = useFinesInput();
     // Форматирование даты
     const formattedDueDateValue = dueDate === 0 ? "" : makeDefaultDate(dueDate);
     const formattedPayDateValue = payDate === 0 ? "" : makeDefaultDate(payDate);

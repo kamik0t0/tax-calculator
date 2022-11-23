@@ -1,19 +1,13 @@
 import { IInvoice, IInvoices } from "../exports/interfaces";
 
-export const calcSummary = (
-    state: IInvoices,
-    summary: { summ: number; nds: number },
-    table: IInvoice[]
-) => {
-    if (table) {
-        summary.summ = table.reduce((acc, current) => acc + +current.summ, 0);
-        summary.nds = table.reduce((acc, current) => acc + +current.nds, 0);
-    }
-
-    state.summary.nds =
+export const calcSummary = (state: IInvoices, table: IInvoice[]) => {
+    const summ = table.reduce((acc, current) => acc + +current.summ, 0);
+    const nds = table.reduce((acc, current) => acc + +current.nds, 0);
+    const calculatedNDS =
         state.summary.sales.nds +
         state.summary.recieved.nds -
         state.summary.purches.nds -
         state.summary.issued.nds;
-    if (state.summary.nds < 0) state.summary.nds = 0;
+    const finalNDS = calculatedNDS < 0 ? 0 : calculatedNDS;
+    return [summ, nds, finalNDS];
 };

@@ -1,42 +1,12 @@
-import {
-    calculateTaxes,
-    fillWithAvailableData,
-} from "@calcstore/calculator-reducer";
 import { Box } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
-import { totalSalarySelector } from "../exports/selectors";
 import PolyButton from "@sharedcomponents/PolyButton";
-import { showSuccessSnackBar } from "@uistore/ui-reducer";
+import { useCalcActions } from "../hooks/useCalcActions";
 
 const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
     toggleDialog,
 }) => {
-    const VATIncomeSumm = useTypedSelector(
-        (state) => state.invoiceSlice.summary.sales.summ
-    );
-    const VATExpensesSumm = useTypedSelector(
-        (state) => state.invoiceSlice.summary.purches.summ
-    );
-    const SalarySumm = useTypedSelector(totalSalarySelector);
-    const getAvailableData = () => {
-        const data = dispatch(
-            fillWithAvailableData(
-                VATIncomeSumm,
-                VATExpensesSumm + SalarySumm,
-                SalarySumm
-            )
-        );
-        // dispatch(showSuccessSnackBar({
-        //     open: true,
-        //     severity: "success",
-        //     message: `НДС не может превышать 20% от суммы документа (${toRU.format(
-        //         maxVAT
-        //     )}})`,
-        // }))
-    };
-    const dispatch = useTypedDispatch();
-    const calcTaxes = () => dispatch(calculateTaxes());
+    const [fillWithAvailableData, calcTaxes] = useCalcActions();
     return (
         <>
             <br />
@@ -54,7 +24,7 @@ const CalcActionButtons: React.FC<{ toggleDialog: () => void }> = ({
                 <PolyButton
                     size="large"
                     variant="outlined"
-                    onClick={getAvailableData}
+                    onClick={fillWithAvailableData}
                     sx={{
                         width: "150px",
                     }}

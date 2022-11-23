@@ -6,9 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React, { FC } from "react";
-import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import { setIsDialogEmployeeDelete } from "@dialogstore/dialog-reducer";
 import { deleteEmployee } from "@salarystore/salary-reducer";
+import { useSnack } from "@customhooks/useSnack";
 
 // TODO: придумать как вызывать диалог с разными children
 const DeleteEmployeeDialog: FC = () => {
@@ -17,16 +17,11 @@ const DeleteEmployeeDialog: FC = () => {
     const { isDialogDeleteEmployee } = useTypedSelector(
         (state) => state.dialogSlice
     );
+    const showSnack = useSnack();
 
     const handleClose = () => {
         dispatch(deleteEmployee(employee.id));
-        dispatch(
-            showSuccessSnackBar({
-                open: true,
-                severity: "success",
-                message: "Сотрудник удаден",
-            })
-        );
+        showSnack("success", "Сотрудник удаден");
         dispatch(setIsDialogEmployeeDelete(false));
     };
 

@@ -19,6 +19,8 @@ const SelectRate: React.FC<{
     width: number;
     onChange: (event: SelectChangeEvent<string>) => void;
 }> = ({ value, width, onChange }) => {
+    console.log(value);
+
     return (
         <Select
             value={value}

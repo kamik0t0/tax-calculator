@@ -6,9 +6,9 @@ import {
     ValidateSliceCaseReducers,
 } from "@reduxjs/toolkit";
 import { IInvoices } from "../exports/interfaces";
+import { calcSummary as calculateSummary } from "../exports/scripts";
 import * as InvoiceReducers from "./invoice-cases";
 import { initialState } from "./invoice-initial";
-import { calcSummary as calculateSummary } from "../exports/scripts";
 
 const createGenericSlice = <Reducers extends SliceCaseReducers<IInvoices>>({
     name = "invoices",
@@ -27,16 +27,13 @@ const createGenericSlice = <Reducers extends SliceCaseReducers<IInvoices>>({
             deleteRow: InvoiceReducers.deleteRowReducer(),
             setCheckBox: InvoiceReducers.setCheckBoxReducer(),
             updateInvoices: InvoiceReducers.updateInvoicesReducer(),
-            updateInvoice: InvoiceReducers.updateInvoiceReducer(),
+            updateInvoiceSumm: InvoiceReducers.updateInvoiceSummReducer(),
+            updateInvoiceRate: InvoiceReducers.updateInvoiceRateReducer(),
+            updateInvoiceDate: InvoiceReducers.updateInvoiceDateReducer(),
+            updateInvoiceNum: InvoiceReducers.updateInvoiceNumReducer(),
+            updateInvoiceClient: InvoiceReducers.updateInvoiceClientReducer(),
+            updateInvoiceNDS: InvoiceReducers.updateInvoiceNDSReducer(),
             deleteRows: InvoiceReducers.deleteRowsReducer,
-            setLocalStorage(state: IInvoices, action: PayloadAction<string>) {
-                const { payload: table } = action;
-                localStorage.setItem(table, JSON.stringify(state[table]));
-            },
-            calcSummary(state: IInvoices, action: PayloadAction<string>) {
-                const { payload: table } = action;
-                calculateSummary(state, state.summary[table], state[table]);
-            },
             ...reducers,
         },
     });
@@ -52,7 +49,11 @@ const wrappedSlice = createGenericSlice({
         },
         calcSummary(state: IInvoices, action: PayloadAction<string>) {
             const { payload: table } = action;
-            calculateSummary(state, state.summary[table], state[table]);
+            const [summ, nds, finalNDS] = calculateSummary(state, state[table]);
+
+            state.summary[table].summ = summ;
+            state.summary[table].nds = nds;
+            state.summary.nds = finalNDS;
         },
     },
 });
@@ -62,7 +63,12 @@ export const {
     deleteRow,
     updateInvoices,
     setCheckBox,
-    updateInvoice,
+    updateInvoiceSumm,
+    updateInvoiceRate,
+    updateInvoiceDate,
+    updateInvoiceNum,
+    updateInvoiceClient,
+    updateInvoiceNDS,
     deleteRows,
     setLocalStorage,
     calcSummary,

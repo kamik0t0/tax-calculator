@@ -47,9 +47,9 @@ const App: React.FC = () => {
                     <SalaryStorageProvider value={storageSalaryData}>
                         <InvoiceStorageProvider value={storageInvoiceData}>
                             <AppRouter />
+                            <SnackBars />
                         </InvoiceStorageProvider>
                     </SalaryStorageProvider>
-                    <SnackBars />
                     {isDialogEmployee && <EmployeeDialog />}
                 </ThemeProvider>
             </ColorProvider>

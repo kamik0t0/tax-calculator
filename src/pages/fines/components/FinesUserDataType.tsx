@@ -1,4 +1,3 @@
-import { setDebtorType } from "@finestore/fines-reducer";
 import {
     FormControl,
     FormControlLabel,
@@ -6,16 +5,14 @@ import {
     RadioGroup,
     Typography,
 } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import { FinesUserInputBox } from "../exports/components";
+import { useFinesInput } from "../hooks/useFinesInput";
 
 const FinesUserDataType: React.FC = () => {
-    const dispatch = useTypedDispatch();
-    const handleDebtorType = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(setDebtorType((event.target as HTMLInputElement).value));
-    };
     const { debtorType } = useTypedSelector((state) => state.fineSlice);
+    const { handleDebtorType } = useFinesInput();
     return (
         <FinesUserInputBox>
             <Typography variant="h6">Должник</Typography>

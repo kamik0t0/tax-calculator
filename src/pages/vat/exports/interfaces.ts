@@ -3,4 +3,5 @@ export type {
     IInvoices,
     IInvoiceStorage,
     ISummary,
+    IInvoiceProp,
 } from "../types/invoice";

@@ -1,3 +1,4 @@
+import { useSnack } from "@customhooks/useSnack";
 import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -7,7 +8,6 @@ import {
     updateCivilContract,
     updateEmployee,
 } from "@salarystore/salary-reducer";
-import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { IEmployee } from "../exports/types";
@@ -16,17 +16,12 @@ export const useEmployeeDialog = () => {
     const dispatch = useTypedDispatch();
     const { employee } = useTypedSelector((state) => state.salarySlice);
     const [dialogEmployee, setEmployeeValues] = useState<IEmployee>(employee);
+    const showSnack = useSnack();
 
     const handleClose = () => {
         if (dialogEmployee.id.length > 0) {
             dispatch(updateEmployee(dialogEmployee));
-            dispatch(
-                showSuccessSnackBar({
-                    open: true,
-                    severity: "success",
-                    message: "Данные сотрудника успешно обновлены!",
-                })
-            );
+            showSnack("success", "Данные сотрудника успешно обновлены!");
             dispatch(setIsDialogEmployee(false));
             dispatch(setEmployee(dialogEmployee));
         } else {
@@ -34,26 +29,13 @@ export const useEmployeeDialog = () => {
                 dialogEmployee.name.length === 0 ||
                 dialogEmployee.surname.length === 0
             )
-                return dispatch(
-                    showSuccessSnackBar({
-                        open: true,
-                        severity: "error",
-                        message: "Заполните поля со звездочкой",
-                    })
-                );
-
+                return showSnack("error", "Заполните поля со звездочкой");
             const employee = Object.assign({}, dialogEmployee, {
                 id: nanoid(6),
             });
 
             dispatch(addEmployee(employee as unknown as IEmployee));
-            dispatch(
-                showSuccessSnackBar({
-                    open: true,
-                    severity: "success",
-                    message: "Сотрудник успешно добавлен!",
-                })
-            );
+            showSnack("success", "Сотрудник успешно добавлен!");
             dispatch(setIsDialogEmployee(false));
         }
     };

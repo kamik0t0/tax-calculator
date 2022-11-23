@@ -6,6 +6,8 @@ export const showSuccessSnackBarReducer: CaseReducer<
     PayloadAction<ISnackBar>
 > = (state, action) => {
     if (state.shouldShow) {
+        console.log(343);
+
         state.message = action.payload.message;
         state.open = action.payload.open;
         state.severity = action.payload.severity;

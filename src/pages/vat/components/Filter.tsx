@@ -1,9 +1,9 @@
+import { useSnack } from "@customhooks/useSnack";
 import { useToggle } from "@customhooks/useToggle";
 import { useValue } from "@customhooks/useValue";
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import { filterByString, filterBySumm } from "@scripts/filters";
-import { showSuccessSnackBar } from "@uistore/ui-reducer";
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import { FilterDate, FilterSelect } from "../exports/components";
 import { useFilterCriterion } from "../exports/hooks";
@@ -15,7 +15,6 @@ type FilterTyped = {
     setFiltered: Dispatch<SetStateAction<IInvoice[]>>;
 };
 const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
-    const dispatch = useTypedDispatch();
     // стейт выбора колонки фильтрации
     const [, handleSelectColumn] = useToggle(false);
     // стейт выбора критерия фильтрации
@@ -24,6 +23,7 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
     const [summCriterion, handleChangeCriterion] = useValue("more");
     // хук значений фильтрации
     const [column, handleChangeColumn, inputType] = useFilterCriterion();
+    const showSnack = useSnack();
 
     const filterNumHandler = (event: ChangeEvent<HTMLInputElement>): void => {
         const summ = +event.target.value;
@@ -40,13 +40,7 @@ const Filter: FC<FilterTyped> = ({ invoices, setFiltered }) => {
 
     // сброс фильтра
     const reset = () => {
-        dispatch(
-            showSuccessSnackBar({
-                open: true,
-                severity: "info",
-                message: "Результат фильтрации сброшен!",
-            })
-        );
+        showSnack("info", "Результат фильтрации сброшен!");
         setFiltered(invoices);
     };
 

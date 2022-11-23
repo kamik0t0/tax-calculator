@@ -13,7 +13,6 @@ import {
 const Calculator: React.FC = () => {
     const [isDialog, toggleDialog] = useToggle(false);
     const [headersTextColor] = useFontHeaders();
-    const { sales } = useTypedSelector((state) => state.invoiceSlice.summary);
 
     return (
         <>

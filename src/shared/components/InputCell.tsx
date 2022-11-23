@@ -21,18 +21,17 @@ const InputCell: FC<{
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const numValue = roundNumber(event.target.value, 2);
-        getInputData(numValue, index, prop);
+        getInputData(event.target.value, index, prop);
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.code === "Enter" || event.code === "NumpadEnter") {
             const ChangeEvent =
                 event as unknown as React.ChangeEvent<HTMLInputElement>;
-            const numValue = roundNumber(ChangeEvent.target.value, 2);
+            // const numValue = roundNumber(ChangeEvent.target.value, 2);
             setInput(false);
-            setPrevValue(numValue);
-            getInputData(numValue, index, prop);
+            setPrevValue(ChangeEvent.target.value);
+            getInputData(ChangeEvent.target.value, index, prop);
         }
         // возврат текущего значения
         if (event.code === "Escape") {

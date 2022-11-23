@@ -38,3 +38,7 @@ export interface IInvoiceStorage {
     recieved: IInvoice[];
     issued: IInvoice[];
 }
+
+export interface IInvoiceProp<Type> {
+    createWith(prop: Type): IInvoice;
+}
