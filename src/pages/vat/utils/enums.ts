@@ -30,3 +30,12 @@ export enum HeaderNames {
     nds = "в т.ч. НДС",
     summ = "Сумма",
 }
+
+export enum InvoiceProps {
+    summ = "summ",
+    nds = "nds",
+    rate = "rate",
+    num = "num",
+    date = "date",
+    client = "client",
+}

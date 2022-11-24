@@ -5,3 +5,5 @@ export type {
     ISummary,
     IInvoiceProp,
 } from "../types/invoice";
+
+export type { IInvoiceValue } from "../types/reducers";

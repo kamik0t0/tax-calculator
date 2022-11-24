@@ -1,14 +1,6 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
 import { IInvoice, IInvoices } from "../exports/interfaces";
-import {
-    InvoiceRate,
-    InvoiceNDS,
-    InvoiceSumm,
-    InvoiceNum,
-    InvoiceDate,
-    InvoiceClient,
-    // InvoiceCheck,
-} from "../exports/scripts";
+import { Invoice } from "../exports/scripts";
 
 export const updateInvoicesReducer = () => ({
     reducer(
@@ -23,97 +15,20 @@ export const updateInvoicesReducer = () => ({
     },
 });
 
-export const updateInvoiceSummReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<number, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const summ = action.payload;
-        const invoices = state[table];
-        state[table][index] = new InvoiceSumm(invoices, index).createWith(summ);
-    },
-    prepare(payload: number, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
-
-export const updateInvoiceRateReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<number, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const rate = action.payload;
-        console.log(rate);
-
-        const invoices = state[table];
-        state[table][index] = new InvoiceRate(invoices, index).createWith(rate);
-    },
-    prepare(payload: number, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
-
-export const updateInvoiceDateReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<number, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const date = action.payload;
-        const invoices = state[table];
-        state[table][index] = new InvoiceDate(invoices, index).createWith(date);
-    },
-    prepare(payload: number, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
-
-export const updateInvoiceNumReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<string, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const num = action.payload;
-        const invoices = state[table];
-        state[table][index] = new InvoiceNum(invoices, index).createWith(num);
-    },
-    prepare(payload: string, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
-
-export const updateInvoiceClientReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<string, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const cl = action.payload;
-        const invoices = state[table];
-        state[table][index] = new InvoiceClient(invoices, index).createWith(cl);
-    },
-    prepare(payload: string, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
-
-export const updateInvoiceNDSReducer = () => ({
-    reducer(
-        state: IInvoices,
-        action: PayloadAction<number, string, { table: string; index: number }>
-    ) {
-        const { index, table } = action.meta;
-        const nds = action.payload;
-        const invoices = state[table];
-        state[table][index] = new InvoiceNDS(invoices, index).createWith(nds);
-    },
-    prepare(payload: number, table: string, index: number) {
-        return { payload, meta: { table, index } };
-    },
-});
+interface InvoiceConstructor {
+    value: string | number;
+    prop: "nds" | "summ" | "client" | "rate" | "num" | "date";
+    index: number;
+    table: string;
+}
+export const updateInvoiceReducer: CaseReducer<
+    IInvoices,
+    PayloadAction<InvoiceConstructor>
+> = (state, action) => {
+    const { value, prop, index, table } = action.payload;
+    const invoices = state[table];
+    state[table][index] = new Invoice(value, prop, invoices, index).create();
+};
 
 export const deleteRowsReducer: CaseReducer<
     IInvoices,

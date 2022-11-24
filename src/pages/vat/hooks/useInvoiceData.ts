@@ -1,13 +1,6 @@
 import { useSnack } from "@customhooks/useSnack";
 import { toRU } from "@helpers/currencyFormat";
-import {
-    updateInvoiceClient,
-    updateInvoiceDate,
-    updateInvoiceNDS,
-    updateInvoiceNum,
-    updateInvoiceRate,
-    updateInvoiceSumm,
-} from "@invoicesstore/invoice-reducer";
+import { updateInvoice } from "@invoicesstore/invoice-reducer";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 
 export const useInvoiceData = (table: string) => {
@@ -26,9 +19,15 @@ export const useInvoiceData = (table: string) => {
                 )}})`
             );
 
-        dispatch(updateInvoiceNDS(value as number, table, index));
+        dispatch(
+            updateInvoice({
+                value: value as number,
+                table,
+                index,
+                prop: "nds",
+            })
+        );
     };
-
     const getDate = (date: number, index: number) => {
         const Year = new Date().getFullYear();
         const userYear = new Date(date).getFullYear();
@@ -38,17 +37,29 @@ export const useInvoiceData = (table: string) => {
                 `Допустима дата в рамках текущего года - ${Year}`
             );
 
-        dispatch(updateInvoiceDate(date, table, index));
+        dispatch(updateInvoice({ value: date, table, index, prop: "date" }));
     };
-
     const getRate = (rate: number | string, index: number) =>
-        dispatch(updateInvoiceRate(rate as number, table, index));
+        dispatch(
+            updateInvoice({ value: rate as number, table, index, prop: "rate" })
+        );
     const getSumm = (summ: number | string, index: number) =>
-        dispatch(updateInvoiceSumm(summ as number, table, index));
+        dispatch(
+            updateInvoice({ value: summ as number, table, index, prop: "summ" })
+        );
     const getNum = (num: number | string, index: number) =>
-        dispatch(updateInvoiceNum(num as string, table, index));
+        dispatch(
+            updateInvoice({ value: num as string, table, index, prop: "num" })
+        );
     const getClient = (client: number | string, index: number) =>
-        dispatch(updateInvoiceClient(client as string, table, index));
+        dispatch(
+            updateInvoice({
+                value: client as string,
+                table,
+                index,
+                prop: "client",
+            })
+        );
 
     return { getNDS, getDate, getRate, getSumm, getNum, getClient };
 };

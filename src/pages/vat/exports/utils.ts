@@ -5,4 +5,5 @@ export {
     SortFields,
     Invoices,
     InvoicesTabs,
+    InvoiceProps,
 } from "../utils/enums";

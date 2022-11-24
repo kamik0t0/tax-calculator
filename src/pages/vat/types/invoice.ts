@@ -40,5 +40,5 @@ export interface IInvoiceStorage {
 }
 
 export interface IInvoiceProp<Type> {
-    createWith(prop: Type): IInvoice;
+    updateWith(prop: Type, invoice: IInvoice): IInvoice | null;
 }
