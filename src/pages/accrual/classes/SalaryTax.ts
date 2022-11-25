@@ -1,6 +1,7 @@
 import { ISalaries, ISalary } from "../exports/interfaces";
 import { getMinimalSalary, setIsCivilContract } from "../exports/scripts";
 import { Limits, months } from "../exports/utils";
+import { IMonths } from "../types/salary";
 
 export class SalaryTax {
     protected readonly isCivilContract: boolean;
@@ -12,7 +13,7 @@ export class SalaryTax {
     protected readonly employeeId: string;
     protected readonly socialLimit: number;
     protected readonly retireLimit: number;
-    protected _minimalSalary: number;
+    protected readonly _minimalSalary: number;
 
     constructor(
         state: ISalaries,
@@ -28,37 +29,31 @@ export class SalaryTax {
         this.retireLimit = Limits.retirement;
         this.monthIndex = months.findIndex((month) => month === this.month);
         this.employeeId = state.months[month].salary[index].employeeId;
+        this._minimalSalary = getMinimalSalary(month);
         this.isCivilContract = setIsCivilContract(
             this.state.employees,
             this.employeeId
         );
-        this._minimalSalary = getMinimalSalary(month);
     }
 
-    public get totalSalary(): { prevMonth: number; currentMonth: number } {
+    public get totalSalary() {
         const { prevMonthsTotalSalary, currMonthsTotalSalary } =
-            this.calcMonthsCumulativeSalary();
+            this.calcMonthsCumulativeSalary(this.state.months);
         return {
             prevMonth: prevMonthsTotalSalary,
             currentMonth: currMonthsTotalSalary,
         };
     }
     // Сумма начислений нарастающим итогом по сотруднику
-    protected calcMonthsCumulativeSalary(): {
-        prevMonthsTotalSalary: number;
-        currMonthsTotalSalary: number;
-    } {
+    protected calcMonthsCumulativeSalary(months: IMonths) {
         const prevMonthCumulative: ISalary[] = [];
         let monthCounter = 0;
-        for (const month in this.state.months) {
+        for (const month in months) {
             // 2) по id сотрудника выбрать начисления в предшествующих месяцах...
             if (this.employeeId) {
-                const employeeAccrual: ISalary = this.state.months[
-                    month
-                ].salary.find(
+                const employeeAccrual: ISalary = months[month].salary.find(
                     (accrual: ISalary) => accrual.employeeId === this.employeeId
                 );
-
                 if (monthCounter === this.monthIndex) break;
                 // ... если не undefined
                 employeeAccrual && prevMonthCumulative.push(employeeAccrual);
@@ -75,14 +70,7 @@ export class SalaryTax {
         return { prevMonthsTotalSalary, currMonthsTotalSalary };
     }
     // расчет взносов с учетом лимита начисления по тарифам, где ставка применяется ко всей сумме начислений (FixBase)
-    protected calcInsuranceFixBase(
-        limit: number,
-        rate: number
-    ): {
-        exceedInsurancelLimit: number;
-        insurance: number;
-        insuranceBase: number;
-    } {
+    protected calcInsuranceFixBase(limit: number, rate: number) {
         let exceedInsurancelLimit = 0;
         let insurance = 0;
         let insuranceBase = 0;
@@ -111,12 +99,7 @@ export class SalaryTax {
         limit: number,
         basicRate: number,
         businessRate: number
-    ): {
-        exceedInsurancelLimit: number;
-        insurance: number;
-        insuranceBase: number;
-        minimalInsurance: number;
-    } {
+    ) {
         let exceedInsurancelLimit = 0;
         let insurance = 0;
         let insuranceBase = 0;

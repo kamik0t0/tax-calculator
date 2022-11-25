@@ -1,8 +1,8 @@
 import { SalaryTax } from "../exports/classes";
-import { ISalaries } from "../exports/interfaces";
+import { ISalaries, ISalaryClass } from "../exports/interfaces";
 import { itRates, StaticRates } from "../utils/salaryConsts";
 
-export class SalaryItTax extends SalaryTax {
+export class SalaryItTax extends SalaryTax implements ISalaryClass {
     private readonly _retireRate: number;
     private readonly _socialRate: number;
     private readonly _accidentRate: number;
@@ -29,11 +29,7 @@ export class SalaryItTax extends SalaryTax {
         return this.salary * this._medicalRate;
     }
     // расчет взносов IT-компаний на пенсионное страхование
-    public calcRetireInsurance(): {
-        retire: number;
-        exceedRetireLimit: number;
-        retireBase: number;
-    } {
+    public calcRetireInsurance() {
         const { exceedInsurancelLimit, insurance, insuranceBase } =
             this.calcInsuranceFixBase(this.retireLimit, this._retireRate);
         return {
@@ -43,11 +39,7 @@ export class SalaryItTax extends SalaryTax {
         };
     }
     // расчет взносов IT-компаний на социальное страхование
-    public calcSocialInsurance(): {
-        social: number;
-        exceedSocialLimit: number;
-        socialBase: number;
-    } {
+    public calcSocialInsurance() {
         if (!this.isCivilContract) {
             const { exceedInsurancelLimit, insurance, insuranceBase } =
                 this.calcInsuranceFixBase(this.socialLimit, this._socialRate);

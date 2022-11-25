@@ -7,3 +7,4 @@ export {
     InvoicesTabs,
     InvoiceProps,
 } from "../utils/enums";
+export { propsMap } from "../classes/calcInvoice";

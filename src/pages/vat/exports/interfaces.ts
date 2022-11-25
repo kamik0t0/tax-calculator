@@ -6,4 +6,4 @@ export type {
     IInvoiceProp,
 } from "../types/invoice";
 
-export type { IInvoiceValue } from "../types/reducers";
+export type { IInvoiceValue, InvoiceConstructor } from "../types/reducers";

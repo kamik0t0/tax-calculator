@@ -1,7 +1,8 @@
 import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
-import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
-import { calcPIT, calcTax, fillByPrevMonth } from "../exports/scripts";
+import { IEmployee, IMonths, ISalaries, ISalary } from "../exports/interfaces";
+import { calcPIT, fillByPrevMonth } from "../exports/scripts";
 import { newEmployee } from "../exports/utils";
+import { calcSalaryTaxes } from "../classes/calcSalaryTax";
 
 // Удаление начисления по сотруднику в конкретном месяце
 export const deleteRowsReducer: CaseReducer<
@@ -62,7 +63,7 @@ export const updateSalaryReducer = () => ({
                 const {
                     PIT: PITwithRecoupment,
                     payment: paymentWithRecoupment,
-                } = calcPIT(state, +value, table, index);
+                } = calcPIT(state.months, +value, table, index);
 
                 state.months[table].salary[index].tax = +PITwithRecoupment;
                 state.months[table].salary[index].pay = +paymentWithRecoupment;
@@ -128,63 +129,8 @@ export const setSalaryTaxRateReducer: CaseReducer<
 > = (state, action) => {
     const rateCode = action.payload;
     state.rateCode = rateCode;
-    // Итерация по всем таблицам (месяцам)
-    for (const table in state.months) {
-        // массив зарплат в каждом месяце
-        const salary: ISalary[] = state.months[table].salary;
-        // итерация по сотрудникам в массиве зарплат в рамках одного месяца
-        // пересчет взносов в месяце
-        if (salary.length > 0) {
-            salary.forEach((employee, index) => {
-                const insuranceData = calcTax(
-                    state,
-                    employee.accrued,
-                    table,
-                    index,
-                    state.rateCode
-                );
-
-                const { PIT, payment } = calcPIT(
-                    state,
-                    employee.childrenQtty,
-                    table,
-                    index
-                );
-
-                const { retire, retireBase, exceedRetireLimit } =
-                    insuranceData.calcRetireInsurance();
-                const { social, socialBase, exceedSocialLimit } =
-                    insuranceData.calcSocialInsurance();
-                const accident = insuranceData.calcAccidentInsurance();
-                const medical = insuranceData.calcMedicalInsurance();
-
-                state.months[table].salary[index].tax = +PIT;
-                state.months[table].salary[index].pay = +payment;
-
-                state.months[table].salary[index].insurance.accident =
-                    +accident;
-                state.months[table].salary[index].insurance.medical = +medical;
-
-                state.months[table].salary[index].insurance.retirement =
-                    +retire;
-                state.months[table].salary[index].overRetirmentLimit =
-                    exceedRetireLimit;
-                state.months[table].salary[index].insuranceRetirementBase =
-                    retireBase;
-
-                state.months[table].salary[index].insurance.social = +social;
-                state.months[table].salary[index].overSocialLimit =
-                    exceedSocialLimit;
-                state.months[table].salary[index].insuranceSocialBase =
-                    socialBase;
-
-                state.months[table].salary[index].cumulativeAccrual =
-                    insuranceData.totalSalary.currentMonth;
-                state.months[table].salary[index].insuranceTotal =
-                    social + retire + accident + medical;
-            });
-        }
-    }
+    const taxCalculations = new calcSalaryTaxes(state, rateCode);
+    state.months = taxCalculations.recalcYearSalary(state.months);
 };
 // выбор (checkbox) сотрудника в таблице
 export const setCheckBoxReducer = () => ({

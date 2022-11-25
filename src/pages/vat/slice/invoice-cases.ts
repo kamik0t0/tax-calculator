@@ -1,5 +1,5 @@
 import { CaseReducer, current, PayloadAction } from "@reduxjs/toolkit";
-import { IInvoice, IInvoices } from "../exports/interfaces";
+import { IInvoice, IInvoices, InvoiceConstructor } from "../exports/interfaces";
 import { Invoice } from "../exports/scripts";
 
 export const updateInvoicesReducer = () => ({
@@ -15,12 +15,6 @@ export const updateInvoicesReducer = () => ({
     },
 });
 
-interface InvoiceConstructor {
-    value: string | number;
-    prop: "nds" | "summ" | "client" | "rate" | "num" | "date";
-    index: number;
-    table: string;
-}
 export const updateInvoiceReducer: CaseReducer<
     IInvoices,
     PayloadAction<InvoiceConstructor>

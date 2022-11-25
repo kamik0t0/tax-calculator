@@ -1,15 +1,15 @@
-import { ISalaries } from "../exports/interfaces";
+import { IMonths } from "../exports/interfaces";
 import { StaticRates } from "../exports/utils";
 
 // Перерасчет НДФЛ с учетом вычетов
 export const calcPIT = (
-    state: ISalaries,
+    months: IMonths,
     value: number,
     table: string,
     index: number
 ) => {
     const recoupment = calcRecoupment(+value);
-    const accrued = +state.months[table].salary[index].accrued;
+    const accrued = +months[table].salary[index].accrued;
     const taxPITBase = +accrued - +recoupment;
     const PIT = taxPITBase * StaticRates.PIT;
     const payment = accrued - PIT;
@@ -19,15 +19,13 @@ export const calcPIT = (
 
 // Базовый расчет НДФЛ
 export const calcBasicPIT = (
-    state: ISalaries,
+    months: IMonths,
     value: number,
     table: string,
     index: number
 ) => {
     // НДФЛ (personal income tax)
-    const recoupment = calcRecoupment(
-        state.months[table].salary[index].childrenQtty
-    );
+    const recoupment = calcRecoupment(months[table].salary[index].childrenQtty);
     const PIT = (value - recoupment) * StaticRates.PIT;
     const payment = value - PIT;
     return { PIT, payment };

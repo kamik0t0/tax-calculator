@@ -28,6 +28,7 @@ export const useInvoiceData = (table: string) => {
             })
         );
     };
+
     const getDate = (date: number, index: number) => {
         const Year = new Date().getFullYear();
         const userYear = new Date(date).getFullYear();
@@ -39,18 +40,22 @@ export const useInvoiceData = (table: string) => {
 
         dispatch(updateInvoice({ value: date, table, index, prop: "date" }));
     };
+
     const getRate = (rate: number | string, index: number) =>
         dispatch(
             updateInvoice({ value: rate as number, table, index, prop: "rate" })
         );
+
     const getSumm = (summ: number | string, index: number) =>
         dispatch(
             updateInvoice({ value: summ as number, table, index, prop: "summ" })
         );
+
     const getNum = (num: number | string, index: number) =>
         dispatch(
             updateInvoice({ value: num as string, table, index, prop: "num" })
         );
+
     const getClient = (client: number | string, index: number) =>
         dispatch(
             updateInvoice({
