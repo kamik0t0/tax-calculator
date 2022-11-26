@@ -1,3 +1,6 @@
+/**
+ * @description Exclude chosen employees
+ */
 export const arrayComparsion = <
     T extends { id: string },
     S extends { employeeId: string }

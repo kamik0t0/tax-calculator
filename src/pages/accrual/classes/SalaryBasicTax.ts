@@ -2,6 +2,9 @@ import { SalaryTax } from "../exports/classes";
 import { ISalaries, ISalaryClass } from "../exports/interfaces";
 import { BasicRates, StaticRates } from "../utils/salaryConsts";
 
+/** 
+    Содержит свойства и реализует методы расчета страховых взносов по коду тарифа 01 - основной тариф
+  */
 export class SalaryBasicTax extends SalaryTax implements ISalaryClass {
     private readonly _accidentRate: number;
     private readonly _medicalRate: number;

@@ -1,6 +1,5 @@
 // related scripts
 export { arrayComparsion } from "../scripts/arrayComparsion";
-export { calcPIT } from "../scripts/calculatePIT";
 export { fillByPrevMonth } from "../scripts/fillByPrevMonth";
 export { getMinimalSalary } from "../scripts/getMinimalSalary";
 export { getPrevMonth } from "../scripts/getPrevMonth";

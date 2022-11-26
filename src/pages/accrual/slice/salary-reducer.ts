@@ -38,6 +38,8 @@ const createGenericSlice = <Reducers extends SliceCaseReducers<ISalaries>>({
             setMinimalSalary: SalaryReducers.setMinimalSalaryReducer,
             setEmployeeById: SalaryReducers.setEmployeeByIdReducer,
             deleteEmployee: SalaryReducers.deleteEmployeeReducer,
+            updateEmployeesInSalaries:
+                SalaryReducers.updateEmployeesInSalariesReducer,
             setCivil: SalaryReducers.setCivilReducer(),
             updateCivilContract: SalaryReducers.updateCivilContractReducer(),
             ...reducers,
@@ -102,6 +104,7 @@ export const {
     setMinimalSalary,
     setEmployeeById,
     deleteEmployee,
+    updateEmployeesInSalaries,
     setCivil,
     updateCivilContract,
 } = wrappedSlice.actions;

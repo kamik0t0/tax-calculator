@@ -1,6 +1,11 @@
 import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
-import { IEmployee, IMonths, ISalaries, ISalary } from "../exports/interfaces";
-import { calcPIT, fillByPrevMonth } from "../exports/scripts";
+import {
+    employeeType,
+    IEmployee,
+    ISalaries,
+    ISalary,
+} from "../exports/interfaces";
+import { fillByPrevMonth } from "../exports/scripts";
 import { newEmployee } from "../exports/utils";
 import { calcSalaryTaxes } from "../classes/calcSalaryTax";
 
@@ -43,6 +48,28 @@ export const fillByPrevMonthReducer: CaseReducer<
     const filledMonth: ISalary[] = fillByPrevMonth(state, table);
     state.months[table].salary = filledMonth;
 };
+
+export const updateEmployeesInSalariesReducer: CaseReducer<
+    ISalaries,
+    PayloadAction<employeeType[]>
+> = (state, action) => {
+    const employeesId = action.payload.map((emp) => emp.id);
+
+    for (const month in state.months) {
+        state.months[month].salary.forEach((data, index) => {
+            if (employeesId.includes(data.employeeId)) {
+                const employee = state.employees.find(
+                    (emp) => emp.id === data.employeeId
+                );
+                if (employee) {
+                    state.months[month].salary[
+                        index
+                    ].name = `${employee.surname} ${employee.name}`;
+                }
+            }
+        });
+    }
+};
 // TODO переписать на разные редюсеры (избавиться от switch)
 export const updateSalaryReducer = () => ({
     reducer(
@@ -59,27 +86,24 @@ export const updateSalaryReducer = () => ({
 
         switch (prop) {
             case "childrenQtty":
-                state.months[table].salary[index].childrenQtty = +value;
-                const {
-                    PIT: PITwithRecoupment,
-                    payment: paymentWithRecoupment,
-                } = calcPIT(state.months, +value, table, index);
+                const getPIT = calcSalaryTaxes.calcPIT;
+                const salary = state.months[table].salary[index].accrued;
+                const { PIT, payment } = getPIT(salary, +value);
 
-                state.months[table].salary[index].tax = +PITwithRecoupment;
-                state.months[table].salary[index].pay = +paymentWithRecoupment;
+                state.months[table].salary[index].childrenQtty = +value;
+                state.months[table].salary[index].tax = +PIT;
+                state.months[table].salary[index].pay = +payment;
                 break;
             case "employee":
                 const employee = state.employees.find(
                     (employee) => employee.id === value
                 );
                 if (employee) {
-                    state.months[table].salary[
-                        index
-                    ].name = `${employee.surname} ${employee.name}`;
-
-                    state.months[table].salary[index].employeeId = employee.id;
+                    const id = employee.id;
+                    const name = `${employee.surname} ${employee.name}`;
+                    state.months[table].salary[index].name = name;
+                    state.months[table].salary[index].employeeId = id;
                 }
-
                 break;
             default:
                 state.months[table].salary[index].accrued = +value;
@@ -102,7 +126,7 @@ export const updateCivilContractReducer = () => ({
     ) {
         const isCivilContract = action.payload;
         const employeeId = action.meta.employeeId;
-
+        // Обновить поле civilContract по работнику в каждом месяце
         for (const table in state.months) {
             const accrualIndex = state.months[table].salary.findIndex(
                 (accrual: ISalary) => {
@@ -130,7 +154,7 @@ export const setSalaryTaxRateReducer: CaseReducer<
     const rateCode = action.payload;
     state.rateCode = rateCode;
     const taxCalculations = new calcSalaryTaxes(state, rateCode);
-    state.months = taxCalculations.recalcYearSalary(state.months);
+    taxCalculations.recalcYearSalary(state.months);
 };
 // выбор (checkbox) сотрудника в таблице
 export const setCheckBoxReducer = () => ({
@@ -186,9 +210,8 @@ export const deleteRowReducer = () => ({
     ) {
         const index = action.payload;
         const { table } = action.meta;
-
         state.months[table].salary = state.months[table].salary.filter(
-            (_: never, i: number) => i !== index
+            (_, i) => i !== index
         );
     },
     prepare(payload: number, table: string) {

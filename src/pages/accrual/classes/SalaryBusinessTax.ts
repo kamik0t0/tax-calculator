@@ -1,7 +1,9 @@
 import { SalaryTax } from "../exports/classes";
 import { ISalaries, ISalaryClass } from "../exports/interfaces";
 import { BasicRates, BusinessRates, StaticRates } from "../utils/salaryConsts";
-
+/** 
+    Содержит свойства и реализует методы расчета страховых взносов по коду тарифа 20 - малый бизнес
+  */
 export class SalaryBusinessTax extends SalaryTax implements ISalaryClass {
     private readonly _retireBusinessRate: number;
     private readonly _medicalBusinessRate: number;
@@ -27,18 +29,25 @@ export class SalaryBusinessTax extends SalaryTax implements ISalaryClass {
         this._socialBasicRate = BasicRates.social;
         this._accidentRate = StaticRates.accident;
     }
-    // расчет взносов малых организаций на НС и ПЗ
+
+    /**  
+     Расчет взносов малых организаций на НС и ПЗ
+     */
     public calcAccidentInsurance(): number {
         return this.isCivilContract ? 0 : this.salary * this._accidentRate;
     }
-    // расчет взносов на медицинское страхование
+    /**  
+     Расчет взносов на медицинское страхование
+     */
     public calcMedicalInsurance(): number {
         return this.calcInsuranceFloatBaseLimitless(
             this._medicalBasicRate,
             this._medicalBusinessRate
         );
     }
-    // расчет взносов малых организаций на пенсионное страхование
+    /**
+      Расчет взносов малых организаций на пенсионное страхование
+    */
     public calcRetireInsurance = () => {
         const {
             exceedInsurancelLimit: exceedRetireLimit,
@@ -56,7 +65,9 @@ export class SalaryBusinessTax extends SalaryTax implements ISalaryClass {
             retireBase,
         };
     };
-    // расчет взносов малых организаций на социальное страхование
+    /**
+      Расчет взносов малых организаций на социальное страхование
+    */
     public calcSocialInsurance() {
         if (!this.isCivilContract) {
             const {

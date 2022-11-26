@@ -57,8 +57,6 @@ export class FinesCalcLLC extends FinesCalc {
 
     // Массив пеней по соответствующим ставкам для юр лиц
     public finesArr(): IFinesData[] {
-        console.log(this._dueDay);
-        console.log(this._payDay);
         const filteredRates = this._filterRates(this._dueDay, this._payDay);
         if (this._isHigherRate) {
             // фильтр первых 30 дней применения основной ставки 1/300

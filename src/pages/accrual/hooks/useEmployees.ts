@@ -11,7 +11,6 @@ import { IEmployee } from "../exports/interfaces";
 
 export const useEmployees = (table: string) => {
     const dispatch = useTypedDispatch();
-
     const { months, employees } = useTypedSelector(
         (state) => state.salarySlice
     );
@@ -22,7 +21,7 @@ export const useEmployees = (table: string) => {
         setEmployees,
         setEmployeesToStorage
     );
-    // стейт фильтрованных сотрудников
+
     const [filteredEmployees, setFilteredEmployees] =
         useState<IEmployee[]>(watchedEmployees);
 

@@ -1,9 +1,7 @@
 import { useLocalStorage } from "@customhooks/useLocalStorage";
-import { calcSummary } from "@salarystore/salary-reducer";
 import { useTypedSelector } from "@reduxhooks/hooks";
 import {
-    setEmployees,
-    setEmployeesToStorage,
+    calcSummary,
     setSalariesToStorage,
     updateSalaries,
 } from "@salarystore/salary-reducer";
@@ -109,12 +107,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         setSalariesToStorage,
         calcSummary
     );
-    const watchedEmployees = useLocalStorage(
-        "employees",
-        employees,
-        setEmployees,
-        setEmployeesToStorage
-    );
     const salaryStorageData: ISalaryStorage = {
         jan: Jan || months.jan,
         feb: Feb || months.feb,
@@ -128,7 +120,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         oct: Oct || months.oct,
         nov: Nov || months.nov,
         dec: Dec || months.dec,
-        employees: watchedEmployees || employees,
     };
     return salaryStorageData;
 };

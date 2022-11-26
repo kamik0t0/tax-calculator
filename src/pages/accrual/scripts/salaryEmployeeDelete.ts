@@ -1,6 +1,12 @@
 import { IEmployee, ISalary } from "../exports/interfaces";
 
-// В случае изменения данных сотрудника в стейте employees функция ищет такого сотрудника в таблицах начислений и, если находит, вносит соответствующие обновления
+/**
+ * @function salaryEmployeeDelete
+ * @description delete employee and all related data
+ * @param {IEmployee[]} employees employees array
+ * @param {ISalary[]} salary salary array
+ * @returns {ISalary[] | null} ISalary[] | null
+ */
 export const salaryEmployeeDelete = (
     employees: IEmployee[],
     salary: ISalary[]
@@ -8,7 +14,7 @@ export const salaryEmployeeDelete = (
     const leftSalaries: ISalary[] = [];
     const mapped1: string[] = [...employees].map((elem) => elem.id);
     const mapped2: string[] = [...salary].map((elem) => elem.id);
-    // salary.length = 0 - при первом запуске приложения либо при обновлении, т.е. в данном случае все данные в таблице начислений (если например стартануть не с неё) просто сотрутся
+
     if (salary.length > 0) {
         mapped2.forEach((id) => {
             const existedAccrual = salary.find(

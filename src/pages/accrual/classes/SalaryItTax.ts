@@ -1,7 +1,9 @@
 import { SalaryTax } from "../exports/classes";
 import { ISalaries, ISalaryClass } from "../exports/interfaces";
 import { itRates, StaticRates } from "../utils/salaryConsts";
-
+/** 
+    Содержит свойства и реализует методы расчета страховых взносов по коду тарифа 06 - IT компании
+  */
 export class SalaryItTax extends SalaryTax implements ISalaryClass {
     private readonly _retireRate: number;
     private readonly _socialRate: number;

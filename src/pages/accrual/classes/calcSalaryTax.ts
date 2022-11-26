@@ -4,6 +4,10 @@ import { SalaryBasicTax } from "./SalaryBasicTax";
 import { SalaryBusinessTax } from "./SalaryBusinessTax";
 import { SalaryItTax } from "./SalaryItTax";
 
+/** 
+    Содержит свойства и методы по расчету страховых взносов с заработной платы и НДФЛ
+*/
+
 export class calcSalaryTaxes {
     private readonly _state: ISalaries;
     private readonly rate: string;
@@ -12,7 +16,9 @@ export class calcSalaryTaxes {
         this._state = state;
         this.rate = rate;
     }
-
+    /**
+        Возвращает класс соответствующий коду тарифа. Класс имплементирует интерфейс ISalaryClass и, следовательно, реализует свою логику расчета на каждый описаный метод.
+     */
     private getSalaryData(value: number, table: string, index: number) {
         const props = [this._state, value, table, index] as const;
         const map = new Map();
@@ -21,21 +27,27 @@ export class calcSalaryTaxes {
             .set("20", new SalaryBusinessTax(...props));
         return map.get(this.rate);
     }
-
-    private calcRecoupment(childrenQtty: number) {
+    /**
+        Считает детские вычеты
+        TODO: абслютные значения в константы
+     */
+    static calcRecoupment(childrenQtty: number) {
         if (childrenQtty <= 2) return childrenQtty * 1400;
         else return (childrenQtty - 2) * 3000 + 2800;
     }
-
-    public calcPIT(salary: number, children: number) {
-        const recoupment = this.calcRecoupment(children);
+    /**
+        Считает НДФЛ с учетом вычетов
+      */
+    static calcPIT(salary: number, children: number) {
+        const recoupment = calcSalaryTaxes.calcRecoupment(children);
         const PIT = (salary - recoupment) * StaticRates.PIT;
         const payment = salary - PIT;
         return { PIT, payment };
     }
-
-    public recalcYearSalary(monthsFromState: IMonths) {
-        const months: IMonths = Object.assign({}, monthsFromState);
+    /**
+        Производит перерасчет зарплаты по году. Принимает аргументом стейт и внутри мутирует поля. Вероятно спорное решение 
+    */
+    public recalcYearSalary(months: IMonths) {
         for (const table in months) {
             // массив зарплат в каждом месяце
             const totalMonthSalary: ISalary[] = months[table].salary;
@@ -48,7 +60,10 @@ export class calcSalaryTaxes {
 
                     const taxes = this.getSalaryData(salary, table, index);
 
-                    const { PIT, payment } = this.calcPIT(salary, children);
+                    const { PIT, payment } = calcSalaryTaxes.calcPIT(
+                        salary,
+                        children
+                    );
                     months[table].salary[index].tax = +PIT;
                     months[table].salary[index].pay = +payment;
 
@@ -81,6 +96,5 @@ export class calcSalaryTaxes {
                 });
             }
         }
-        return months;
     }
 }

@@ -1,3 +1,5 @@
+import { InvoiceProps } from "../exports/utils";
+
 export interface IInvoiceValue {
     value: string | number;
     prop: string;
@@ -7,7 +9,7 @@ export interface IInvoiceValue {
 
 export interface InvoiceConstructor {
     value: string | number;
-    prop: "nds" | "summ" | "client" | "rate" | "num" | "date";
+    prop: InvoiceProps;
     index: number;
     table: string;
 }

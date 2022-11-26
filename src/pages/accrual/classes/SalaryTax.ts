@@ -51,7 +51,9 @@ export class SalaryTax {
         for (const month in months) {
             // 2) по id сотрудника выбрать начисления в предшествующих месяцах...
             if (this.employeeId) {
-                const employeeAccrual: ISalary = months[month].salary.find(
+                const employeeAccrual: ISalary | undefined = months[
+                    month
+                ].salary.find(
                     (accrual: ISalary) => accrual.employeeId === this.employeeId
                 );
                 if (monthCounter === this.monthIndex) break;

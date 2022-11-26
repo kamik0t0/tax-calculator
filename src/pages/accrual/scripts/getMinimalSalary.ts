@@ -4,7 +4,6 @@ import {
     Months,
 } from "../exports/utils";
 
-// Получение МРОТ
 export const getMinimalSalary = (month: string) => {
     if (
         month === Months.jan ||

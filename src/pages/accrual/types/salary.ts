@@ -1,55 +1,14 @@
-// таблица
-export interface IMonths {
-    jan: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    feb: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    march: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    april: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    may: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    june: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    july: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    aug: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    sep: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    oct: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    nov: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    dec: {
-        salary: ISalary[];
-        summary: ISalarySummary;
-    };
-    [prop: string]: any;
-}
+import { Months } from "../exports/utils";
+
+type TMonthName = Months;
+type TMonthSalaryData = {
+    salary: ISalary[];
+    summary: ISalarySummary;
+};
+type TDynamicMonth = Record<string, TMonthSalaryData>;
+
+export type IMonths = Record<TMonthName, TMonthSalaryData> & TDynamicMonth;
+
 // объект employee должен содержать данные сотрудника и его зарплату за все периоды
 export interface IEmployee {
     id: string;
@@ -60,7 +19,7 @@ export interface IEmployee {
     civilContract: boolean;
     sex?: string;
     patronymic?: string;
-    [prop: string]: any;
+    [prop: string]: string | boolean | number | undefined;
 }
 
 export interface ISalary {
@@ -80,7 +39,7 @@ export interface ISalary {
     insuranceTotal: number;
     checked: boolean;
     civilContract: boolean;
-    [prop: string]: any;
+    [prop: string]: string | number | boolean | IInsurance;
 }
 
 export interface ISalarySummary {
@@ -97,7 +56,7 @@ export interface ISalaries {
     rateCode: string;
     districtCoeff: number;
     minimalSalary: number;
-    [prop: string]: any;
+    [prop: string]: IMonths | IEmployee | string | number | IEmployee[];
 }
 
 interface IInsurance {
@@ -107,19 +66,16 @@ interface IInsurance {
     accident: number;
 }
 
-export interface ISalaryStorage {
-    jan: ISalary[];
-    feb: ISalary[];
-    march: ISalary[];
-    april: ISalary[];
-    may: ISalary[];
-    june: ISalary[];
-    july: ISalary[];
-    aug: ISalary[];
-    sep: ISalary[];
-    oct: ISalary[];
-    nov: ISalary[];
-    dec: ISalary[];
+type TDynamicSalary = Record<string, ISalary[]>;
+export type ISalaryStorage = Record<Months, ISalary[]> & TDynamicSalary;
+
+type TDynamicEmployee = Record<string, IEmployee[]>;
+export type IEmployeeStorage = IStorageEmployees & TDynamicEmployee;
+
+type IStorageEmployees = {
     employees: IEmployee[];
-    [prop: string]: any;
-}
+};
+export type employeeType = {
+    id: string;
+    index: number;
+};

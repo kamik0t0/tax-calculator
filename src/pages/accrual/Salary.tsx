@@ -1,52 +1,45 @@
 import { Box, Container, Tab, Tabs as MaterialTabs } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import { updateSalaries, updateSalary } from "@salarystore/salary-reducer";
+import {
+    updateSalaries,
+    updateEmployeesInSalaries,
+} from "@salarystore/salary-reducer";
 import { a11yProps } from "@utils/a11yProps";
 import React, { FC, useEffect } from "react";
-import { SelectTaxRate, TabPanelWrapper } from "./exports/components";
-import { salaryEmployeeUpdate } from "./exports/scripts";
-import { Months, MonthsDisplay } from "./exports/utils";
-import { salaryEmployeeDelete } from "./exports/scripts";
 import { useSalaryStorageSelector } from "../../App";
-import { ISalaryStorage } from "./exports/interfaces";
+import { SelectTaxRate, TabPanelWrapper } from "./exports/components";
+import { ISalary, ISalaryStorage } from "./exports/interfaces";
+import { salaryEmployeeDelete, salaryEmployeeUpdate } from "./exports/scripts";
+import { Months, MonthsDisplay } from "./exports/utils";
 
 const Salary: FC = () => {
     const dispatch = useTypedDispatch();
-    const { months } = useTypedSelector((state) => state.salarySlice);
+    const { months, employees } = useTypedSelector(
+        (state) => state.salarySlice
+    );
     const storageSalary: ISalaryStorage = useSalaryStorageSelector();
+    // const storageEmployee: IEmployeeStorage = useEmployeeStorageSelector();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
 
     useEffect(() => {
-        for (const month in storageSalary.months) {
-            const salary = storageSalary.months[month];
-            console.log(salary);
+        console.log("effect");
 
-            const employee = salaryEmployeeUpdate(
-                storageSalary.employees,
-                salary
-            );
-            const leftSalaries = salaryEmployeeDelete(
-                storageSalary.employees,
-                salary
-            );
-            // порядок dispatch имеет значение! сначала диспатч оставшихся сотрудинков
+        for (const month in months) {
+            const salary = months[month].salary as unknown as ISalary[];
+            const employeesToUpdate = salaryEmployeeUpdate(employees, salary);
+
+            const leftSalaries = salaryEmployeeDelete(employees, salary);
+
             leftSalaries && dispatch(updateSalaries(leftSalaries, month));
-            // затем обновления конкретного сотрудника. В ином случае обновления будут внесены, но диспатч оставшихся перезапишет обновленного сотрудника старыми значениями и новая информация будет доступна не сразу
-            if (employee) {
-                dispatch(
-                    updateSalary(
-                        employee.id,
-                        month,
-                        employee.index.toString(),
-                        "employee"
-                    )
-                );
+
+            if (employeesToUpdate.length > 0) {
+                dispatch(updateEmployeesInSalaries(employeesToUpdate));
             }
         }
-    }, [storageSalary.employees]);
+    }, [storageSalary.employees, employees]);
 
     return (
         <>
