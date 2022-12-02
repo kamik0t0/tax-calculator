@@ -1,10 +1,6 @@
 import { useLocalStorage } from "@customhooks/useLocalStorage";
 import { useTypedSelector } from "@reduxhooks/hooks";
-import {
-    calcSummary,
-    setSalariesToStorage,
-    updateSalaries,
-} from "@salarystore/salary-reducer";
+import { calcSummary, updateSalaries } from "@salarystore/salary-reducer";
 import { ISalaryStorage } from "../exports/interfaces";
 import { Months } from "../exports/utils";
 
@@ -16,7 +12,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.jan,
         months.jan.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -24,7 +19,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.feb,
         months.feb.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -32,7 +26,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.march,
         months.march.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -40,7 +33,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.april,
         months.april.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -48,7 +40,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.may,
         months.may.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -56,7 +47,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.june,
         months.june.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -64,7 +54,7 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.july,
         months.july.salary,
         updateSalaries,
-        setSalariesToStorage,
+
         calcSummary
     );
 
@@ -72,7 +62,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.aug,
         months.aug.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -80,7 +69,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.sep,
         months.sep.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -88,7 +76,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.oct,
         months.oct.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -96,7 +83,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.nov,
         months.nov.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
 
@@ -104,7 +90,6 @@ export const useSalaryStorage = (): ISalaryStorage => {
         Months.dec,
         months.dec.salary,
         updateSalaries,
-        setSalariesToStorage,
         calcSummary
     );
     const salaryStorageData: ISalaryStorage = {

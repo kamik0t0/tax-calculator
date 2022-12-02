@@ -38,10 +38,6 @@ const wrappedSlice = createGenericSlice({
     name: "wrappedInvoices",
     initialState,
     reducers: {
-        setLocalStorage(state: IInvoices, action: PayloadAction<string>) {
-            const { payload: table } = action;
-            localStorage.setItem(table, JSON.stringify(state[table]));
-        },
         calcSummary(state: IInvoices, action: PayloadAction<string>) {
             const { payload: table } = action;
             const [summ, nds, finalNDS] = calculateSummary(state, state[table]);
@@ -60,7 +56,6 @@ export const {
     setCheckBox,
     updateInvoice,
     deleteRows,
-    setLocalStorage,
     calcSummary,
 } = wrappedSlice.actions;
 

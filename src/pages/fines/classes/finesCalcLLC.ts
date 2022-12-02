@@ -3,14 +3,14 @@ import { FinesCalc } from "./finesCalc";
 
 export class FinesCalcLLC extends FinesCalc {
     private readonly _fineRateLLC: number;
-    private readonly _inroductionHighRate: number;
+    private readonly _introductionHighRate: number;
     private readonly _cencelHighRateDate: number;
     private readonly _shift: number;
 
     constructor(debt: number, dueDay: number, payDay: number) {
         super(debt, dueDay, payDay);
         this._fineRateLLC = 150;
-        this._inroductionHighRate = Date.parse("2017-10-01");
+        this._introductionHighRate = Date.parse("2017-10-01");
         this._cencelHighRateDate = Date.parse("2022-03-09");
         this._shift = this._oneDay * 30;
     }
@@ -36,21 +36,34 @@ export class FinesCalcLLC extends FinesCalc {
 
     // Проверка применяется ли повышенная ставка пеней
     private get _isHigherRate(): boolean {
-        const dateDifference = this._getDif(this._payDay, this._dueDay);
+        const dueAndPayDateDifference = this._getDif(
+            this._payDay,
+            this._dueDay
+        );
+        const dueAndCencelHighRateDifference = this._getDif(
+            this._cencelHighRateDate,
+            this._dueDay
+        );
+
         // Если дата возникновения задолженности ранее чем 29.09.2017 включительно то повышенные пени не начисляются
-        if (this._dueDay + this._oneDay < this._inroductionHighRate)
+        if (this._dueDay + this._oneDay < this._introductionHighRate)
             return false;
 
         // Если возникновение задолженности в рамках периода действия повышенной ставки но период начисления пеней <= 30 дней то повышенные пени не начисляются
         if (
-            this._dueDay >= this._inroductionHighRate &&
+            this._dueDay >= this._introductionHighRate &&
             this._payDay < this._cencelHighRateDate &&
-            dateDifference <= 30
+            dueAndPayDateDifference <= 30
         )
             return false;
+
+        // Если отмена льготы произошла менее чем через 30 дней возникновения задолженности
+        if (dueAndCencelHighRateDifference <= 30) return false;
+
         // Если дата возникновения задолженности >= 09.03.2022 то повышенная ставка не применяется
         if (this._dueDay >= this._cencelHighRateDate - this._oneDay)
             return false;
+
         // В остальных случаях повышенная ставка может применяется
         return true;
     }

@@ -12,7 +12,19 @@ export interface IFinesData {
 }
 
 export interface IFines {
+    // id: string;
     finesData: IFinesData[];
+    debt: number;
+    dueDate: number;
+    payDate: number;
+    debtorType: string;
+    fineSumm: number;
+    days: number;
+    isError: boolean;
+}
+
+export interface IFinesProps {
+    id: string;
     debt: number;
     dueDate: number;
     payDate: number;

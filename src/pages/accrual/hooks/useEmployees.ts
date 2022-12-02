@@ -1,10 +1,6 @@
 import { useLocalStorage } from "@customhooks/useLocalStorage";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import {
-    setEmployees,
-    setEmployeesToStorage,
-    updateSalary,
-} from "@salarystore/salary-reducer";
+import { setEmployees, updateSalary } from "@salarystore/salary-reducer";
 import React, { useEffect, useState } from "react";
 import { arrayComparsion } from "../exports/scripts";
 import { IEmployee } from "../exports/interfaces";
@@ -18,8 +14,7 @@ export const useEmployees = (table: string) => {
     const watchedEmployees = useLocalStorage(
         "employees",
         employees,
-        setEmployees,
-        setEmployeesToStorage
+        setEmployees
     );
 
     const [filteredEmployees, setFilteredEmployees] =

@@ -8,7 +8,8 @@ const DateCell: FC<{
     children: number;
     index: number;
     getDate: (date: number, index: number) => any;
-}> = ({ children, index, getDate }) => {
+    width?: number;
+}> = ({ children, index, getDate, width = 150 }) => {
     const [input, setInput] = useState<boolean>(false);
     const [prevValue, setPrevValue] = useState<number>();
     const [error, setError] = useState<boolean>(false);
@@ -53,13 +54,19 @@ const DateCell: FC<{
     return (
         <>
             {input ? (
-                <TableCell variant="body" align="center">
+                <TableCell
+                    variant="body"
+                    align="center"
+                    sx={{ padding: 0.5, width }}
+                    data-testid="DateCell"
+                >
                     <DatePicker
                         value={formattedDateValue}
                         onChange={onChange}
                         error={error}
                         focus={input}
                         onKeyDown={onKeyDown}
+                        width={100}
                     />
                 </TableCell>
             ) : (
@@ -67,11 +74,16 @@ const DateCell: FC<{
                     variant="body"
                     onClick={handleSwitchInput}
                     align="center"
+                    data-testid="DateCell"
                     sx={{
                         "&:hover": { cursor: "pointer" },
+                        padding: 1,
+                        width,
                     }}
                 >
-                    <Typography>{formattedDateChildren}</Typography>
+                    <Typography sx={{ margin: 0.5, height: 20 }}>
+                        {formattedDateChildren}
+                    </Typography>
                 </TableCell>
             )}
         </>

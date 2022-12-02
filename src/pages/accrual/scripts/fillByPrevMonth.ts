@@ -1,21 +1,24 @@
 import { nanoid } from "@reduxjs/toolkit";
-import { ISalaries, ISalary } from "../exports/interfaces";
+import { IMonths, ISalary } from "../exports/interfaces";
 import { months } from "../exports/utils";
 import { getPrevMonth } from "../exports/scripts";
 
 /**
  * @function fillByPrevMonth
  * @description fills current month will previouse month data
- * @param {ISalaries} state state ISalaries
+ * @param {IMonths} stateMonths
  * @param {string} month month name
  * @returns {ISalary[]} ISalary[] current month
  */
 
-export const fillByPrevMonth = (state: ISalaries, month: string) => {
+export const fillByPrevMonth = (
+    stateMonths: IMonths,
+    month: string
+): ISalary[] => {
     const prevMonth = getPrevMonth(month, months)!;
     const currentMonthSalary: ISalary[] = [];
 
-    state.months[prevMonth].salary.forEach((accrual: ISalary) => {
+    stateMonths[prevMonth].salary.forEach((accrual: ISalary) => {
         currentMonthSalary.push(
             Object.assign({}, accrual, {
                 id: nanoid(6),

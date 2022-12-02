@@ -133,9 +133,9 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
+            "@helpers/*": ["helpers/*"],
             "@sharedcomponents/*": ["shared/components/*"],
             "@customhooks/*": ["hooks/*"],
-            "@helpers/*": ["helpers/*"],
             "@scripts/*": ["scripts/*"],
             "@utils/*": ["utils/*"],
             "@reduxhooks/*": ["redux/hooks/*"],
@@ -159,7 +159,7 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "NodeNext",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
@@ -167,7 +167,8 @@
     },
     "include": [
         "src/**/*",
-        "../../Business-helper/front/src/testGenericComponent"
+        "../../Business-helper/front/src/testGenericComponent",
+        "./jest-setup.ts"
     ],
     "exclude": ["node_modules"]
 }

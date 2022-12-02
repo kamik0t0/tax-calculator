@@ -19,11 +19,11 @@ export class FinesCalc {
     }
     // Расчет пеней
     public calcFines(arr: IFinesData[]): number {
-        return arr.reduce((summ, cumm) => summ + cumm.fines, 0);
+        return +arr.reduce((summ, cumm) => summ + cumm.fines, 0).toFixed(2);
     }
     // Количество дней просрочки
     public calcDays(arr: IFinesData[]): number {
-        return arr.reduce((summ, cumm) => summ + cumm.days, 0);
+        return +arr.reduce((summ, cumm) => summ + cumm.days, 0).toFixed();
     }
     // Рассчет пени
     protected _getFine = (dif: number, _fineRate: number, rate: number) =>

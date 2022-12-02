@@ -7,7 +7,7 @@ import { useTypedDispatch } from "@reduxhooks/hooks";
 
 export function useLocalStorage<T>(
     key: string,
-    items: T[],
+    initialItems: T[],
     loadAction:
         | ActionCreatorWithPreparedPayload<
               [payload: T[], table: string],
@@ -17,30 +17,29 @@ export function useLocalStorage<T>(
               { table: string }
           >
         | ActionCreatorWithPayload<T[]>,
-    setLocalStorageAction: ActionCreatorWithPayload<string>,
     ...sideActions: ActionCreatorWithPayload<string>[]
 ): T[] {
+    let data: T[] = initialItems;
+
     const dispatch = useTypedDispatch();
 
-    const getStorageData = () => {
+    const getStorageData = (key: string) => {
         const storageData = localStorage.getItem(key);
-
-        if (storageData) return JSON.parse(storageData);
-        else return items;
+        return storageData ? JSON.parse(storageData) : initialItems;
     };
 
     useEffect(() => {
-        const data = getStorageData();
+        data = getStorageData(key);
         dispatch(loadAction(data, key));
     }, []);
 
     useEffect(() => {
-        dispatch(setLocalStorageAction(key));
+        localStorage.setItem(key, JSON.stringify(data));
         if (sideActions.length > 0)
             sideActions.forEach((action) => {
                 dispatch(action(key));
             });
-    }, [items]);
+    }, [initialItems]);
 
-    return items;
+    return data;
 }

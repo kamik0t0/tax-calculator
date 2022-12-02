@@ -28,7 +28,8 @@ const FilterDate: React.FC<{
             <DatePicker
                 value={startDateDisplay}
                 onChange={startDateHandler}
-                error={isCorrect}
+                error={!isCorrect}
+                width={100}
             />
             <InputLabel
                 sx={{
@@ -41,7 +42,8 @@ const FilterDate: React.FC<{
             <DatePicker
                 value={endDateDisplay}
                 onChange={endDateHandler}
-                error={isCorrect}
+                error={!isCorrect}
+                width={100}
             />
         </>
     );

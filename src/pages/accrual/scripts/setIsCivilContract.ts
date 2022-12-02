@@ -8,13 +8,13 @@ import { IEmployee } from "../exports/interfaces";
  * @param {string} employeeId - employee id
  * @return {boolean} boolean
  */
+
 export function setIsCivilContract(
-    employees: IEmployee[],
+    employees: Pick<IEmployee, "civilContract" | "id">[],
     employeeId: string
 ): boolean {
-    const employee: IEmployee | undefined = employees.find(
-        (employee) => employee.id === employeeId
-    );
+    const employee: Pick<IEmployee, "civilContract" | "id"> | undefined =
+        employees.find((employee) => employee.id === employeeId);
 
     const isCivilContract = employee && employee.civilContract;
     return isCivilContract || false;

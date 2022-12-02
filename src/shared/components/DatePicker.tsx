@@ -10,7 +10,8 @@ const DatePicker: React.FC<{
     onChange: (date: Dayjs | null) => void;
     focus?: boolean;
     onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-}> = ({ value, onChange, error, focus, onKeyDown }) => {
+    width?: number;
+}> = ({ value, onChange, error, focus, onKeyDown, width }) => {
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -18,15 +19,24 @@ const DatePicker: React.FC<{
                     inputFormat="DD.MM.YYYY"
                     value={value}
                     onChange={onChange}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            sx={{ width: 150 }}
-                            autoFocus={focus || false}
-                            onKeyDown={onKeyDown}
-                            error={error}
-                        />
-                    )}
+                    renderInput={(params) => {
+                        return (
+                            <TextField
+                                {...params}
+                                sx={{
+                                    "& .MuiInputBase-input": {
+                                        height: 20,
+                                        padding: 0.5,
+                                        margin: 0.5,
+                                        width: width ? width : 150,
+                                    },
+                                }}
+                                autoFocus={focus || false}
+                                onKeyDown={onKeyDown}
+                                error={error}
+                            />
+                        );
+                    }}
                 />
             </LocalizationProvider>
         </>

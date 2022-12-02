@@ -51,14 +51,6 @@ const wrappedSlice = createGenericSlice({
     name: "test",
     initialState,
     reducers: {
-        setSalariesToStorage(state: ISalaries, action: PayloadAction<string>) {
-            const { payload: key } = action;
-            localStorage.setItem(key, JSON.stringify(state.months[key].salary));
-        },
-        setEmployeesToStorage(state: ISalaries, action: PayloadAction<string>) {
-            const { payload: key } = action;
-            localStorage.setItem(key, JSON.stringify(state.employees));
-        },
         calcSummary(state: ISalaries, action: PayloadAction<string>) {
             const { payload: table } = action;
             const salary: ISalary[] = state.months[table].salary;
@@ -95,8 +87,6 @@ export const {
     setEmployee,
     updateEmployee,
     setEmployees,
-    setSalariesToStorage,
-    setEmployeesToStorage,
     setTaxStateRate,
     calcSummary,
     fillByPrevMonth,

@@ -7,11 +7,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import {
-    setEmployeeById,
-    setEmployees,
-    setEmployeesToStorage,
-} from "@salarystore/salary-reducer";
+import { setEmployeeById, setEmployees } from "@salarystore/salary-reducer";
 import React from "react";
 
 const EmployeesList: React.FC = (props) => {
@@ -22,8 +18,7 @@ const EmployeesList: React.FC = (props) => {
     const watchedEmployees = useLocalStorage(
         "employees",
         employees,
-        setEmployees,
-        setEmployeesToStorage
+        setEmployees
     );
 
     const handleSelectEmployee = (event: SelectChangeEvent<string>) => {

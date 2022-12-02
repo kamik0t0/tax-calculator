@@ -2,6 +2,7 @@ import { useSnack } from "@customhooks/useSnack";
 import { toRU } from "@helpers/currencyFormat";
 import { updateInvoice } from "@invoicesstore/invoice-reducer";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import { InvoiceProps } from "../exports/utils";
 
 export const useInvoiceData = (table: string) => {
     const dispatch = useTypedDispatch();
@@ -24,7 +25,7 @@ export const useInvoiceData = (table: string) => {
                 value: value as number,
                 table,
                 index,
-                prop: "nds",
+                prop: InvoiceProps.nds,
             })
         );
     };
@@ -38,22 +39,44 @@ export const useInvoiceData = (table: string) => {
                 `Допустима дата в рамках текущего года - ${Year}`
             );
 
-        dispatch(updateInvoice({ value: date, table, index, prop: "date" }));
+        dispatch(
+            updateInvoice({
+                value: date,
+                table,
+                index,
+                prop: InvoiceProps.date,
+            })
+        );
     };
 
     const getRate = (rate: number | string, index: number) =>
         dispatch(
-            updateInvoice({ value: rate as number, table, index, prop: "rate" })
+            updateInvoice({
+                value: rate as number,
+                table,
+                index,
+                prop: InvoiceProps.rate,
+            })
         );
 
     const getSumm = (summ: number | string, index: number) =>
         dispatch(
-            updateInvoice({ value: summ as number, table, index, prop: "summ" })
+            updateInvoice({
+                value: summ as number,
+                table,
+                index,
+                prop: InvoiceProps.summ,
+            })
         );
 
     const getNum = (num: number | string, index: number) =>
         dispatch(
-            updateInvoice({ value: num as string, table, index, prop: "num" })
+            updateInvoice({
+                value: num as string,
+                table,
+                index,
+                prop: InvoiceProps.num,
+            })
         );
 
     const getClient = (client: number | string, index: number) =>
@@ -62,7 +85,7 @@ export const useInvoiceData = (table: string) => {
                 value: client as string,
                 table,
                 index,
-                prop: "client",
+                prop: InvoiceProps.client,
             })
         );
 

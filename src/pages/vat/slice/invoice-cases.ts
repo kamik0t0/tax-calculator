@@ -9,6 +9,7 @@ export const updateInvoicesReducer = () => ({
     ) {
         const { table } = action.meta;
         state[table] = action.payload;
+        console.log(action.payload);
     },
     prepare(payload: IInvoice[], table: string) {
         return { payload, meta: { table } };
@@ -24,13 +25,13 @@ export const updateInvoiceReducer: CaseReducer<
     state[table][index] = new Invoice(value, prop, invoices, index).create();
 };
 
-export const deleteRowsReducer: CaseReducer<
-    IInvoices,
-    PayloadAction<string>
-> = (state, action) => {
-    const table = action.payload;
-    state[table] = state[table].filter((invoice: IInvoice) => !invoice.checked);
-};
+export const deleteRowsReducer: CaseReducer<IInvoices, PayloadAction<string>> =
+    (state, action) => {
+        const table = action.payload;
+        state[table] = state[table].filter(
+            (invoice: IInvoice) => !invoice.checked
+        );
+    };
 
 export const setCheckBoxReducer = () => ({
     reducer(

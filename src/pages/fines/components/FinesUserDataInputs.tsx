@@ -33,6 +33,7 @@ const FinesUserDataInputs: React.FC = () => {
                     value={formattedDueDateValue}
                     onChange={handleDueDate}
                     error={isError}
+                    width={90}
                 />
             </FinesUserInputBox>
             <FinesUserInputBox>
@@ -41,6 +42,7 @@ const FinesUserDataInputs: React.FC = () => {
                     value={formattedPayDateValue}
                     onChange={handlePayDay}
                     error={isError}
+                    width={90}
                 />
             </FinesUserInputBox>
         </>

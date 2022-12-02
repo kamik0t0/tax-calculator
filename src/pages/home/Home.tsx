@@ -93,15 +93,17 @@ export default function SimpleAccordion() {
                         нажав на большой плюсик. В первую очередь следует
                         создать/выбрать сотрудника нажав на ячейку (указатель
                         изменит форму). Правее будут располагаться две кнопки:
-                        <br />
-                        <ul>
+                    </Typography>
+                    <br />
+                    <ul>
+                        <Typography>
                             <li>
                                 1) создать/редактировать (контекстно), при
                                 нажатии на которую откроется диалоговое окно
                             </li>
                             <li>2) добавить в таблицу</li>
-                        </ul>
-                    </Typography>
+                        </Typography>
+                    </ul>
                     <br />
                     <Typography sx={{ textIndent: 30 }}>
                         После выбора сотрудника станет доступен ввод сумм. После
@@ -121,12 +123,14 @@ export default function SimpleAccordion() {
                     <br />
                     <Typography sx={{ textIndent: 30 }}>
                         Реализованы расчеты взносов по трем кодам тарифов:
-                        <ul>
+                    </Typography>
+                    <ul>
+                        <Typography>
                             <li>код 01 - базовый</li>
                             <li>код 06 - для аккредитованных IT - компаний</li>
                             <li>код 20 - для малого бизнеса</li>
-                        </ul>
-                    </Typography>
+                        </Typography>
+                    </ul>
                     <br />
                     <Typography sx={{ textIndent: 30 }}>
                         При изменении тарифа страховых взносо пересчет будет

@@ -1,4 +1,4 @@
-import { formatDisplayedValue } from "@helpers/formatDisplayedValue";
+import { formatDisplayedRateValue } from "@helpers/formatDisplayedRateValue";
 import { Box, SelectChangeEvent, TableCell } from "@mui/material";
 import React, { FC, useState } from "react";
 import { SelectRate, VatRateButtons } from "../../exports/components";
@@ -15,7 +15,7 @@ const Cell: FC<{
     const onChange = (event: SelectChangeEvent<string>) =>
         getSelectValue(event.target.value, index);
 
-    const cellDisplayValue = formatDisplayedValue(children);
+    const cellDisplayValue = formatDisplayedRateValue(children);
 
     return (
         <>

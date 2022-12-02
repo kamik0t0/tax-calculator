@@ -31,14 +31,14 @@ export const useDateFilter = <T extends { date: number }>(
         dateHandler(date, setDateEnd, (date) => {
             const isDateCorrect = isDateInteravalCorrect(start, date);
             setIsCorrect(isDateCorrect);
-            return !isDateCorrect ? filterByDate(items, start, date) : items;
+            return isDateCorrect ? filterByDate(items, start, date) : items;
         });
     };
     const getStartDate = (date: Dayjs | null) => {
         dateHandler(date, setDateStart, (date) => {
             const isDateCorrect = isDateInteravalCorrect(date, end);
             setIsCorrect(isDateCorrect);
-            return !isDateCorrect ? filterByDate(items, date, end) : items;
+            return isDateCorrect ? filterByDate(items, date, end) : items;
         });
     };
 

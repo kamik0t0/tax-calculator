@@ -45,7 +45,7 @@ export const fillByPrevMonthReducer: CaseReducer<
     PayloadAction<string>
 > = (state, action) => {
     const table = action.payload;
-    const filledMonth: ISalary[] = fillByPrevMonth(state, table);
+    const filledMonth: ISalary[] = fillByPrevMonth(state.months, table);
     state.months[table].salary = filledMonth;
 };
 

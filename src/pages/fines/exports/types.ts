@@ -1,1 +1,1 @@
-export type { IFinesData, IRates, IFines } from "../types/types";
+export type { IFinesData, IRates, IFines, IFinesProps } from "../types/types";

@@ -1,6 +1,6 @@
 import { setFines } from "@finestore/fines-reducer";
 import { Box, Divider } from "@mui/material";
-import { useTypedDispatch } from "@reduxhooks/hooks";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React from "react";
 import {
     FineButton,

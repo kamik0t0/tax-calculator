@@ -1,6 +1,6 @@
 import { toPercentView } from "./currencyFormat";
 
-export const formatDisplayedValue = (rate: number) => {
+export const formatDisplayedRateValue = (rate: number) => {
     if (rate === -1) {
         return "mix";
     } else if (rate === 10 || rate === 20 || rate === 0) {

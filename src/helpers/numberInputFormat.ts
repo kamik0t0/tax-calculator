@@ -3,11 +3,7 @@ export const NoDecimalBoundary = (
 ) => {
     const value = event.target.value;
     const length = value.length;
-    console.log(length);
     if (event.target.value.indexOf(".") != -1) {
-        // const length = value.length;
-        // console.log(length - 2);
-
         event.target.value = event.target.value.substring(0, length);
     }
 };

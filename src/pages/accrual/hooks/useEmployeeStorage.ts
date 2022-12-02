@@ -1,9 +1,6 @@
 import { useLocalStorage } from "@customhooks/useLocalStorage";
 import { useTypedSelector } from "@reduxhooks/hooks";
-import {
-    setEmployees,
-    setEmployeesToStorage,
-} from "@salarystore/salary-reducer";
+import { setEmployees } from "@salarystore/salary-reducer";
 import { IEmployeeStorage } from "../exports/interfaces";
 
 export const useEmployeeStorage = (): IEmployeeStorage => {
@@ -12,8 +9,7 @@ export const useEmployeeStorage = (): IEmployeeStorage => {
     const watchedEmployees = useLocalStorage(
         "employees",
         employees,
-        setEmployees,
-        setEmployeesToStorage
+        setEmployees
     );
     const employeeStorageData: IEmployeeStorage = {
         employees: watchedEmployees || employees,

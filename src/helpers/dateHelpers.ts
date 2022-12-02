@@ -1,16 +1,19 @@
-export const isDateInteravalCorrect = (dateStart: number, dateEnd: number) => {
+export const isDateInteravalCorrect = (
+    dateStart: number,
+    dateEnd: number
+): boolean => {
     const dateDiff = dateEnd - dateStart;
-    if (dateDiff >= 0) return false;
+    if (dateDiff < 0) return false;
     else return true;
 };
 
-export const stampToStr = (timestamp: number) =>
+export const stampToStr = (timestamp: number): string =>
     new Date(timestamp).toLocaleDateString().split(".").reverse().join("-");
 
 export const timestampToNativeToLocaleString = (timestamp: number) =>
     new Date(timestamp).toLocaleDateString();
 
-export const defaultDateToLocalRU = (date: string) =>
+export const defaultDateToLocalRU = (date: string): string =>
     date.toString().split("-").reverse().join(".");
 
 export function makeDefaultDate(data: number): string {

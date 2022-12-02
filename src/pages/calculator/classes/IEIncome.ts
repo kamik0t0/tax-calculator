@@ -1,4 +1,4 @@
-import { IE } from "../exports/classes";
+import { IE } from "./IE";
 
 export class IEIncome extends IE {
     protected readonly _taxRate: number;
