@@ -5,9 +5,7 @@ import { ISalaryStorage } from "../exports/interfaces";
 import { Months } from "../exports/utils";
 
 export const useSalaryStorage = (): ISalaryStorage => {
-    const { months, employees } = useTypedSelector(
-        (state) => state.salarySlice
-    );
+    const { months } = useTypedSelector((state) => state.salarySlice);
     const Jan = useLocalStorage(
         Months.jan,
         months.jan.salary,

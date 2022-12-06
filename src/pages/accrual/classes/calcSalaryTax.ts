@@ -1,5 +1,5 @@
-import { IMonths, ISalaries, ISalary } from "../exports/interfaces";
-import { StaticRates } from "../exports/utils";
+import { IEmployee, IMonths, ISalary } from "../exports/interfaces";
+import { rates, StaticRates } from "../exports/utils";
 import { SalaryBasicTax } from "./SalaryBasicTax";
 import { SalaryBusinessTax } from "./SalaryBusinessTax";
 import { SalaryItTax } from "./SalaryItTax";
@@ -9,22 +9,33 @@ import { SalaryItTax } from "./SalaryItTax";
 */
 
 export class calcSalaryTaxes {
-    private readonly _state: ISalaries;
-    private readonly rate: string;
+    private readonly _months: IMonths;
+    private readonly rate: rates;
+    private readonly employees: IEmployee[];
 
-    constructor(state: ISalaries, rate: string) {
-        this._state = state;
+    constructor(months: IMonths, rate: rates, employees: IEmployee[]) {
+        this._months = months;
         this.rate = rate;
+        this.employees = employees;
     }
     /**
         Возвращает класс соответствующий коду тарифа. Класс имплементирует интерфейс ISalaryClass и, следовательно, реализует свою логику расчета на каждый описаный метод.
      */
     private getSalaryData(value: number, table: string, index: number) {
-        const props = [this._state, value, table, index] as const;
-        const map = new Map();
-        map.set("01", new SalaryBasicTax(...props))
-            .set("06", new SalaryItTax(...props))
-            .set("20", new SalaryBusinessTax(...props));
+        const props = [
+            this._months,
+            value,
+            table,
+            index,
+            this.employees,
+        ] as const;
+        const map = new Map<
+            string,
+            SalaryBasicTax | SalaryItTax | SalaryBusinessTax
+        >();
+        map.set(rates.basic, new SalaryBasicTax(...props))
+            .set(rates.it, new SalaryItTax(...props))
+            .set(rates.business, new SalaryBusinessTax(...props));
         return map.get(this.rate);
     }
     /**
@@ -68,11 +79,11 @@ export class calcSalaryTaxes {
                     months[table].salary[index].pay = +payment;
 
                     const { retire, retireBase, exceedRetireLimit } =
-                        taxes.calcRetireInsurance();
+                        taxes!.calcRetireInsurance();
                     const { social, socialBase, exceedSocialLimit } =
-                        taxes.calcSocialInsurance();
-                    const accident = taxes.calcAccidentInsurance();
-                    const medical = taxes.calcMedicalInsurance();
+                        taxes!.calcSocialInsurance();
+                    const accident = taxes!.calcAccidentInsurance();
+                    const medical = taxes!.calcMedicalInsurance();
 
                     months[table].salary[index].insurance.accident = +accident;
                     months[table].salary[index].insurance.medical = +medical;
@@ -90,7 +101,7 @@ export class calcSalaryTaxes {
                         socialBase;
 
                     months[table].salary[index].cumulativeAccrual =
-                        taxes.totalSalary.currentMonth;
+                        taxes!.totalSalary.currentMonth;
                     months[table].salary[index].insuranceTotal =
                         social + retire + accident + medical;
                 });

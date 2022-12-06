@@ -1,20 +1,22 @@
-import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
+import {
+    setEmployeeId,
+    setIsDialogEmployee,
+} from "@dialogstore/dialog-reducer";
 import { Icon, IconButton } from "@mui/material";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import { setEmployeeById } from "@salarystore/salary-reducer";
+import { useTypedDispatch } from "@reduxhooks/hooks";
 import React from "react";
+import { useEmployeeSelectors } from "../../exports/hooks";
 
 const EmployeeButtons: React.FC<{
     employeeId: string | undefined;
     handleSwitchInput: () => void;
 }> = ({ employeeId, handleSwitchInput }) => {
-    const { employees } = useTypedSelector((state) => state.salarySlice);
+    const { selectEmployeeById } = useEmployeeSelectors();
+    const employee = selectEmployeeById(employeeId);
 
-    // определяется сотрудник по которому изменяются начисления
-    const employee = employees.find((employee) => employee.id === employeeId);
     const dispatch = useTypedDispatch();
     const openDialog = () => {
-        dispatch(setEmployeeById(employee?.id || ""));
+        dispatch(setEmployeeId(employee?.id || ""));
         dispatch(setIsDialogEmployee(true));
     };
 

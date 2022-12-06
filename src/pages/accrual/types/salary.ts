@@ -1,13 +1,13 @@
-import { Months } from "../exports/utils";
+import { Months, rates } from "../exports/utils";
 
-type TMonthName = Months;
 type TMonthSalaryData = {
     salary: ISalary[];
     summary: ISalarySummary;
 };
+
 type TDynamicMonth = Record<string, TMonthSalaryData>;
 
-export type IMonths = Record<TMonthName, TMonthSalaryData> & TDynamicMonth;
+export type IMonths = Record<Months, TMonthSalaryData> & TDynamicMonth;
 
 // объект employee должен содержать данные сотрудника и его зарплату за все периоды
 export interface IEmployee {
@@ -51,9 +51,9 @@ export interface ISalarySummary {
 
 export interface ISalaries {
     months: IMonths;
-    employees: IEmployee[];
-    employee: IEmployee;
-    rateCode: string;
+    // employees: IEmployee[];
+    // employee: IEmployee;
+    rateCode: rates;
     districtCoeff: number;
     minimalSalary: number;
     [prop: string]: IMonths | IEmployee | string | number | IEmployee[];

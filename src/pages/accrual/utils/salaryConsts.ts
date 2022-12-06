@@ -38,6 +38,12 @@ export enum FixInsuranceValues {
     retirement = 34445,
 }
 
+export enum rates {
+    basic = "01",
+    it = "06",
+    business = "20",
+}
+
 export const FloatInsuranceRate = 0.01;
 export const RegionCoefficient = 0.15;
 export const MinimalSalary01012022 = 13890;

@@ -2,8 +2,9 @@ import { useSnack } from "@customhooks/useSnack";
 import { useTypedDispatch } from "@reduxhooks/hooks";
 import { updateSalary } from "@salarystore/salary-reducer";
 import { ISalary } from "../exports/interfaces";
+import { Months } from "../utils/months";
 
-export const useSalaryData = (salary: ISalary[], table: string) => {
+export const useSalaryData = (salary: ISalary[], table: Months) => {
     const dispatch = useTypedDispatch();
     const showSnack = useSnack();
     const getInputData = (

@@ -19,3 +19,9 @@ export const setIsDialogReportEmployeeRducer: CaseReducer<
 > = (state, action) => {
     state.isDialogReportEmployee = action.payload;
 };
+// заменить на entity adapter
+export const setEmployeeIdReducer: CaseReducer<IDialog, PayloadAction<string>> =
+    (state, action) => {
+        const employeeId = action.payload;
+        state.employeeId = employeeId;
+    };

@@ -1,5 +1,5 @@
 import { SalaryTax } from "../exports/classes";
-import { ISalaries, ISalaryClass } from "../exports/interfaces";
+import { IEmployee, IMonths, ISalaryClass } from "../exports/interfaces";
 import { itRates, StaticRates } from "../utils/salaryConsts";
 /** 
     Содержит свойства и реализует методы расчета страховых взносов по коду тарифа 06 - IT компании
@@ -11,12 +11,13 @@ export class SalaryItTax extends SalaryTax implements ISalaryClass {
     private readonly _medicalRate: number;
 
     constructor(
-        state: ISalaries,
+        months: IMonths,
         salary: number,
         month: string,
-        index: number
+        index: number,
+        employees: IEmployee[]
     ) {
-        super(state, salary, month, index);
+        super(months, salary, month, index, employees);
         this._retireRate = itRates.retirement;
         this._socialRate = itRates.social;
         this._accidentRate = StaticRates.accident;
@@ -24,6 +25,8 @@ export class SalaryItTax extends SalaryTax implements ISalaryClass {
     }
     // расчет взносов IT-компаний на НС и ПЗ страхование
     public calcAccidentInsurance(): number {
+        console.log(this.isCivilContract);
+
         return this.isCivilContract ? 0 : this.salary * this._accidentRate;
     }
     // расчет взносов IT-компаний на медицинское страхование

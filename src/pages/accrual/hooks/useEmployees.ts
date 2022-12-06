@@ -1,37 +1,30 @@
-import { useLocalStorage } from "@customhooks/useLocalStorage";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import { setEmployees, updateSalary } from "@salarystore/salary-reducer";
+import { setEmployeeToSalaryAccrual } from "@salarystore/salary-reducer";
 import React, { useEffect, useState } from "react";
-import { arrayComparsion } from "../exports/scripts";
+import { useEmployeeSelectors } from "../exports/hooks";
 import { IEmployee } from "../exports/interfaces";
+import { arrayComparsion } from "../exports/scripts";
+import { Months } from "../exports/utils";
 
-export const useEmployees = (table: string) => {
+export const useEmployees = (table: Months) => {
     const dispatch = useTypedDispatch();
-    const { months, employees } = useTypedSelector(
-        (state) => state.salarySlice
-    );
-    // привязка localStorage к стейту сотрудников
-    const watchedEmployees = useLocalStorage(
-        "employees",
-        employees,
-        setEmployees
-    );
+    const { months } = useTypedSelector((state) => state.salarySlice);
+    const { selectEmployees, selectEmployeeById } = useEmployeeSelectors();
+    const employees = selectEmployees();
 
     const [filteredEmployees, setFilteredEmployees] =
-        useState<IEmployee[]>(watchedEmployees);
+        useState<IEmployee[]>(employees);
 
     const getSelectValue = (employeeId: string, index: number) => {
-        dispatch(updateSalary(employeeId, table, index.toString(), "employee"));
+        const employee = selectEmployeeById(employeeId);
+        employee &&
+            dispatch(setEmployeeToSalaryAccrual(employee, table, index));
     };
 
     useEffect(() => {
-        const filtered = arrayComparsion(
-            watchedEmployees,
-            months[table].salary
-        );
-
+        const filtered = arrayComparsion(employees, months[table].salary);
         setFilteredEmployees(filtered);
-    }, [watchedEmployees, months]);
+    }, [employees, months]);
 
     return [getSelectValue, filteredEmployees] as const;
 };

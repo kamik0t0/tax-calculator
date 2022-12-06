@@ -1,11 +1,13 @@
-import { ISalaries, ISalary } from "../exports/interfaces";
+import { ISalary } from "../exports/interfaces";
 import { getMinimalSalary, setIsCivilContract } from "../exports/scripts";
-import { Limits, months } from "../exports/utils";
-import { IMonths } from "../types/salary";
+import { Limits, months as monthsSalary } from "../exports/utils";
+import { IEmployee, IMonths } from "../types/salary";
+import { store } from "@store/store";
+import { employeeSelectors } from "@employeestore/employee-reducer";
 
 export class SalaryTax {
     protected readonly isCivilContract: boolean;
-    protected readonly state: ISalaries;
+    protected readonly months: IMonths;
     protected readonly salary: number;
     protected readonly month: string;
     protected readonly index: number;
@@ -14,31 +16,36 @@ export class SalaryTax {
     protected readonly socialLimit: number;
     protected readonly retireLimit: number;
     protected readonly _minimalSalary: number;
+    protected readonly employees: IEmployee[];
 
     constructor(
-        state: ISalaries,
+        months: IMonths,
         salary: number,
         month: string,
-        index: number
+        index: number,
+        employees: IEmployee[]
     ) {
-        this.state = state;
+        this.months = months;
         this.salary = salary;
         this.month = month;
         this.index = index;
         this.socialLimit = Limits.social;
         this.retireLimit = Limits.retirement;
-        this.monthIndex = months.findIndex((month) => month === this.month);
-        this.employeeId = state.months[month].salary[index].employeeId;
+        this.monthIndex = monthsSalary.findIndex(
+            (month) => month === this.month
+        );
+        this.employeeId = months[month].salary[index].employeeId;
         this._minimalSalary = getMinimalSalary(month);
+        this.employees = employees;
         this.isCivilContract = setIsCivilContract(
-            this.state.employees,
+            this.employees,
             this.employeeId
         );
     }
 
     public get totalSalary() {
         const { prevMonthsTotalSalary, currMonthsTotalSalary } =
-            this.calcMonthsCumulativeSalary(this.state.months);
+            this.calcMonthsCumulativeSalary(this.months);
         return {
             prevMonth: prevMonthsTotalSalary,
             currentMonth: currMonthsTotalSalary,

@@ -6,10 +6,10 @@ import { addRow, deleteRows } from "@salarystore/salary-reducer";
 import LastRow from "@sharedcomponents/LastRow";
 import React from "react";
 import { TableContent, TableHeader } from "../../exports/components";
-import { newSalaryTableRow } from "../../exports/utils";
+import { Months, newSalaryTableRow } from "../../exports/utils";
 import { ISalary } from "../../types/salary";
 
-const SalaryTableData: React.FC<{ salary: ISalary[]; table: string }> = ({
+const SalaryTableData: React.FC<{ salary: ISalary[]; table: Months }> = ({
     salary,
     table,
 }) => {

@@ -1,9 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { State } from "types/state";
+import { RootState } from "@store/store";
 
-const calcEmployeeInsurance = (state: State) => {
+const calcEmployeeInsurance = (state: RootState) => {
     const { social, medical, retirement, accident } = state.calcSlice.insurance;
-
     return [social, medical, retirement, accident];
 };
 

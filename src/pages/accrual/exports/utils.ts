@@ -15,5 +15,6 @@ export {
     MinimalSalary01062022,
     RegionMinimalSalary01062022,
     SalaryInsuranceRate,
+    rates,
 } from "../utils/salaryConsts";
 export { SalarySortFields } from "../utils/sortFields";

@@ -1,75 +1,92 @@
-import { CaseReducer, PayloadAction } from "@reduxjs/toolkit";
-import {
-    employeeType,
-    IEmployee,
-    ISalaries,
-    ISalary,
-} from "../exports/interfaces";
-import { fillByPrevMonth } from "../exports/scripts";
-import { newEmployee } from "../exports/utils";
+import { CaseReducer, EntityId, PayloadAction } from "@reduxjs/toolkit";
 import { calcSalaryTaxes } from "../classes/calcSalaryTax";
+import { IEmployee, ISalaries, ISalary } from "../exports/interfaces";
+import { fillByPrevMonth } from "../exports/scripts";
+import { Months, rates } from "../exports/utils";
+
+// Добавление сотрудника в таблицу
+export const addRowReducer = () => {
+    return {
+        reducer(
+            state: ISalaries,
+            action: PayloadAction<ISalary, string, { table: Months }>
+        ) {
+            const { table } = action.meta;
+            const { payload: accrual } = action;
+            state.months[table].salary.push(accrual);
+        },
+        prepare(payload: ISalary, table: Months) {
+            return { payload, meta: { table } };
+        },
+    };
+};
+
+// удалить сотрудника из таблицы
+export const deleteRowReducer = () => ({
+    reducer(
+        state: ISalaries,
+        action: PayloadAction<number, string, { table: Months }>
+    ) {
+        const { payload: index } = action;
+        const { table } = action.meta;
+        state.months[table].salary = state.months[table].salary.filter(
+            (_, i) => i !== index
+        );
+    },
+    prepare(payload: number, table: Months) {
+        return { payload, meta: { table } };
+    },
+});
 
 // Удаление начисления по сотруднику в конкретном месяце
-export const deleteRowsReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const table = action.payload;
-    state.months[table].salary = state.months[table].salary.filter(
-        (salary: ISalary) => !salary.checked
-    );
-};
+export const deleteRowsReducer: CaseReducer<ISalaries, PayloadAction<Months>> =
+    (state, action) => {
+        const { payload: month } = action;
+        state.months[month].salary = state.months[month].salary.filter(
+            (salary: ISalary) => !salary.checked
+        );
+    };
+
 // Загрузка начислений в конкретный месяц
 export const updateSalariesReducer = () => ({
     reducer(
         state: ISalaries,
-        action: PayloadAction<ISalary[], string, { table: string }>
+        action: PayloadAction<ISalary[], string, { table: Months }>
     ) {
         const { table } = action.meta;
-        state.months[table].salary = action.payload;
+        const { payload: monthSalary } = action;
+        state.months[table].salary = monthSalary;
     },
     prepare(payload: ISalary[], table: string) {
         return { payload, meta: { table } };
     },
 });
-// Загрузка сотрудников из localStorage
-export const setEmployeesReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<IEmployee[]>
-> = (state, action) => {
-    state.employees = action.payload;
-};
-// Заполнить текущую таблицу на основе предыдущей
-export const fillByPrevMonthReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const table = action.payload;
-    const filledMonth: ISalary[] = fillByPrevMonth(state.months, table);
-    state.months[table].salary = filledMonth;
-};
-
-export const updateEmployeesInSalariesReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<employeeType[]>
-> = (state, action) => {
-    const employeesId = action.payload.map((emp) => emp.id);
-
-    for (const month in state.months) {
-        state.months[month].salary.forEach((data, index) => {
-            if (employeesId.includes(data.employeeId)) {
-                const employee = state.employees.find(
-                    (emp) => emp.id === data.employeeId
-                );
-                if (employee) {
-                    state.months[month].salary[
-                        index
-                    ].name = `${employee.surname} ${employee.name}`;
+export const updateEmployeesInSalariesReducer = () => ({
+    reducer(
+        state: ISalaries,
+        action: PayloadAction<EntityId[], string, { employees: IEmployee[] }>
+    ) {
+        const { payload: employeesIds } = action;
+        const { employees } = action.meta;
+        for (const month in state.months) {
+            state.months[month].salary.forEach((data, index) => {
+                if (employeesIds.includes(data.employeeId)) {
+                    const employee = employees.find(
+                        (emp) => emp.id === data.employeeId
+                    );
+                    if (employee) {
+                        const name = `${employee.surname} ${employee.name}`;
+                        state.months[month].salary[index].name = name;
+                    }
                 }
-            }
-        });
-    }
-};
+            });
+        }
+    },
+    prepare(payload: EntityId[], employees: IEmployee[]) {
+        return { payload, meta: { employees } };
+    },
+});
+
 // TODO переписать на разные редюсеры (избавиться от switch)
 export const updateSalaryReducer = () => ({
     reducer(
@@ -77,7 +94,7 @@ export const updateSalaryReducer = () => ({
         action: PayloadAction<
             string | number,
             string,
-            { table: string; index: string; prop: string }
+            { table: Months; index: string; prop: string }
         >
     ) {
         const value = action.payload;
@@ -94,17 +111,6 @@ export const updateSalaryReducer = () => ({
                 state.months[table].salary[index].tax = +PIT;
                 state.months[table].salary[index].pay = +payment;
                 break;
-            case "employee":
-                const employee = state.employees.find(
-                    (employee) => employee.id === value
-                );
-                if (employee) {
-                    const id = employee.id;
-                    const name = `${employee.surname} ${employee.name}`;
-                    state.months[table].salary[index].name = name;
-                    state.months[table].salary[index].employeeId = id;
-                }
-                break;
             default:
                 state.months[table].salary[index].accrued = +value;
                 break;
@@ -112,163 +118,91 @@ export const updateSalaryReducer = () => ({
     },
     prepare(
         payload: string | number,
-        table: string,
+        table: Months,
         index: string,
         prop: string
     ) {
         return { payload, meta: { table, index, prop } };
     },
 });
-export const updateCivilContractReducer = () => ({
+//
+export const setEmployeeToSalaryAccrualReducer = () => ({
     reducer(
         state: ISalaries,
-        action: PayloadAction<boolean, string, { employeeId: string }>
+        action: PayloadAction<
+            IEmployee,
+            string,
+            { table: Months; index: number }
+        >
     ) {
-        const isCivilContract = action.payload;
-        const employeeId = action.meta.employeeId;
-        // Обновить поле civilContract по работнику в каждом месяце
-        for (const table in state.months) {
-            const accrualIndex = state.months[table].salary.findIndex(
-                (accrual: ISalary) => {
-                    return employeeId === accrual.employeeId;
-                }
-            );
-            if (accrualIndex !== -1) {
-                if (state.months[table].salary.length > 0) {
-                    state.months[table].salary[accrualIndex].civilContract =
-                        isCivilContract;
-                }
-            }
-        }
+        const { payload: employee } = action;
+        const { index } = action.meta;
+        const { table } = action.meta;
+        const { id } = employee;
+
+        const name = `${employee.surname} ${employee.name}`;
+        state.months[table].salary[index].name = name;
+        state.months[table].salary[index].employeeId = id;
     },
-    prepare(payload: boolean, employeeId: string) {
-        return { payload, meta: { employeeId } };
+    prepare(payload: IEmployee, table: Months, index: number) {
+        return { payload, meta: { table, index } };
     },
 });
 
 // Изменение кода тарифа и пересчет страховых взносов
-export const setSalaryTaxRateReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const rateCode = action.payload;
-    state.rateCode = rateCode;
-    const taxCalculations = new calcSalaryTaxes(state, rateCode);
-    taxCalculations.recalcYearSalary(state.months);
-};
+export const setSalaryTaxRateReducer = () => ({
+    reducer(
+        state: ISalaries,
+        action: PayloadAction<rates, string, { employees: IEmployee[] }>
+    ) {
+        const { payload: rateCode } = action;
+        const { employees } = action.meta;
+
+        state.rateCode = rateCode;
+        const taxCalculations = new calcSalaryTaxes(
+            state.months,
+            rateCode,
+            employees
+        );
+        taxCalculations.recalcYearSalary(state.months);
+    },
+    prepare(payload: rates, employees: IEmployee[]) {
+        return { payload, meta: { employees } };
+    },
+});
+
 // выбор (checkbox) сотрудника в таблице
 export const setCheckBoxReducer = () => ({
     reducer(
         state: ISalaries,
-        action: PayloadAction<number, string, { table: string }>
+        action: PayloadAction<number, string, { table: Months }>
     ) {
         const index = action.payload;
         const { table } = action.meta;
         state.months[table].salary[index].checked =
             !state.months[table].salary[index].checked;
     },
-    prepare(payload: number, table: string) {
-        return { payload, meta: { table } };
-    },
-});
-// ГПХ / Трудовой
-export const setCivilReducer = () => ({
-    reducer(
-        state: ISalaries,
-        action: PayloadAction<number, string, { table: string }>
-    ) {
-        const index = action.payload;
-        const { table } = action.meta;
-        state.months[table].salary[index].civilContract =
-            !state.months[table].salary[index].civilContract;
-    },
-    prepare(payload: number, table: string) {
+    prepare(payload: number, table: Months) {
         return { payload, meta: { table } };
     },
 });
 
-// Добавление сотрудника в таблицу
-export const addRowReducer = () => {
-    return {
-        reducer(
-            state: ISalaries,
-            action: PayloadAction<ISalary, string, { table: string }>
-        ) {
-            const { table } = action.meta;
-            state.months[table].salary.push(action.payload);
-        },
-        prepare(payload: ISalary, table: string) {
-            return { payload, meta: { table } };
-        },
-    };
+// Заполнить текущую таблицу на основе предыдущей
+export const fillByPrevMonthReducer: CaseReducer<
+    ISalaries,
+    PayloadAction<Months>
+> = (state, action) => {
+    const { payload: table } = action;
+    const filledMonth: ISalary[] = fillByPrevMonth(state.months, table);
+    state.months[table].salary = filledMonth;
 };
-// удалить сотрудника из таблицы
-export const deleteRowReducer = () => ({
-    reducer(
-        state: ISalaries,
-        action: PayloadAction<number, string, { table: string }>
-    ) {
-        const index = action.payload;
-        const { table } = action.meta;
-        state.months[table].salary = state.months[table].salary.filter(
-            (_, i) => i !== index
-        );
-    },
-    prepare(payload: number, table: string) {
-        return { payload, meta: { table } };
-    },
-});
 
-// Добавление сотрудника в базу
-export const addEmployeeReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<IEmployee>
-> = (state, action) => {
-    state.employees.push(action.payload);
-};
-// Добавление сотрудника в базу
-export const deleteEmployeeReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const id = action.payload;
-    state.employees = state.employees.filter((employee) => employee.id !== id);
-};
-// Установка сотрудника
-export const setEmployeeReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<IEmployee>
-> = (state, action) => {
-    state.employee = action.payload;
-};
-export const setEmployeeByIdReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<string>
-> = (state, action) => {
-    const employee = state.employees.find(
-        (employee) => employee.id === action.payload
-    );
-    if (employee) {
-        state.employee = employee;
-    } else {
-        state.employee = newEmployee;
-    }
-};
-// удалить сотрудника из таблицы
-export const updateEmployeeReducer: CaseReducer<
-    ISalaries,
-    PayloadAction<IEmployee>
-> = (state, action) => {
-    const employee = action.payload;
-    const index = state.employees.findIndex((item) => item.id === employee.id);
-    state.employees[index] = employee;
-};
 // районный коэффициент
 export const setSalaryDistrictCoeffReducer: CaseReducer<
     ISalaries,
     PayloadAction<number>
 > = (state, action) => {
-    const districtCoeff = action.payload;
+    const { payload: districtCoeff } = action;
     state.districtCoeff = districtCoeff;
 };
 // МРОТ
@@ -276,6 +210,6 @@ export const setMinimalSalaryReducer: CaseReducer<
     ISalaries,
     PayloadAction<number>
 > = (state, action) => {
-    const minimalSalary = action.payload;
+    const { payload: minimalSalary } = action;
     state.minimalSalary = minimalSalary;
 };

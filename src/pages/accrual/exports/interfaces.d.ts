@@ -8,6 +8,7 @@ export type {
     IMonths,
     IEmployeeStorage,
     employeeType,
+    TMonthName,
 } from "../types/salary";
 
 export type { ISalaryClass } from "../types/salaryClass";

@@ -1,43 +1,42 @@
 import { Box, Container, Tab, Tabs as MaterialTabs } from "@mui/material";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import {
-    updateSalaries,
     updateEmployeesInSalaries,
+    updateSalaries,
 } from "@salarystore/salary-reducer";
 import { a11yProps } from "@utils/a11yProps";
 import React, { FC, useEffect } from "react";
 import { useSalaryStorageSelector } from "../../App";
 import { SelectTaxRate, TabPanelWrapper } from "./exports/components";
-import { ISalary, ISalaryStorage } from "./exports/interfaces";
+import { useEmployeeSelectors } from "./exports/hooks";
+import { ISalaryStorage } from "./exports/interfaces";
 import { salaryEmployeeDelete, salaryEmployeeUpdate } from "./exports/scripts";
 import { Months, MonthsDisplay } from "./exports/utils";
 
 const Salary: FC = () => {
     const dispatch = useTypedDispatch();
-    const { months, employees } = useTypedSelector(
-        (state) => state.salarySlice
-    );
+    const { months } = useTypedSelector((state) => state.salarySlice);
+    const { selectEmployees, selectIds } = useEmployeeSelectors();
+    const employees = selectEmployees();
+    const ids = selectIds();
+
     const storageSalary: ISalaryStorage = useSalaryStorageSelector();
-    // const storageEmployee: IEmployeeStorage = useEmployeeStorageSelector();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
 
     useEffect(() => {
-        console.log("effect");
-
         for (const month in months) {
-            const salary = months[month].salary as unknown as ISalary[];
+            const salary = months[month].salary;
             const employeesToUpdate = salaryEmployeeUpdate(employees, salary);
 
             const leftSalaries = salaryEmployeeDelete(employees, salary);
 
             leftSalaries && dispatch(updateSalaries(leftSalaries, month));
 
-            if (employeesToUpdate.length > 0) {
-                dispatch(updateEmployeesInSalaries(employeesToUpdate));
-            }
+            if (employeesToUpdate.length > 0)
+                dispatch(updateEmployeesInSalaries(ids, employees));
         }
     }, [storageSalary.employees, employees]);
 

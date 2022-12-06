@@ -1,23 +1,20 @@
-import { timestampToNativeToLocaleString } from "@helpers/dateHelpers";
 import { Box, DialogContentText, Typography } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
-import React from "react";
+import React, { useMemo } from "react";
 import { ReportHeaderColsWrapper } from "../exports/components";
+import { useEmployeeSelectors } from "../exports/hooks";
+import { getBirth, getSex } from "../exports/utils";
 
 const ReportHeader: React.FC<{}> = (props) => {
-    const { employee } = useTypedSelector((state) => state.salarySlice);
+    const { employeeId } = useTypedSelector((state) => state.dialogSlice);
+    const { selectEmployeeById } = useEmployeeSelectors();
+    const employee = selectEmployeeById(employeeId);
 
-    const birth = employee.birth
-        ? timestampToNativeToLocaleString(employee.birth)
-        : "";
-    const sex = employee.sex
-        ? employee.sex === "male"
-            ? "Мужской"
-            : "Женский"
-        : "";
+    const birth = useMemo(() => getBirth(employee?.birth), [employee]);
+    const sex = useMemo(() => getSex(employee?.sex), [employee]);
     return (
         <>
-            {employee.id && (
+            {employee?.id && (
                 <Box
                     sx={{
                         display: "flex",

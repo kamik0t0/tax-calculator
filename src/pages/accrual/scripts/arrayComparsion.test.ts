@@ -1,6 +1,7 @@
 import { arrayComparsion } from "./arrayComparsion";
 
 const employees_1 = [{ id: "12v" }, { id: "45d" }, { id: "25" }];
+const ids = ["12v", "45d", "25"];
 const employees_2 = [
     { id: "12v" },
     { id: "45d" },

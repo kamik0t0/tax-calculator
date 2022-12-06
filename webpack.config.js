@@ -104,8 +104,13 @@ module.exports = {
             "@utils": path.resolve(__dirname, "src/utils"),
             "@reduxhooks": path.resolve(__dirname, "src/redux/hooks"),
             "@salarystore": path.resolve(__dirname, "src/pages/accrual/slice"),
+            "@employeestore": path.resolve(
+                __dirname,
+                "src/pages/employees/slice"
+            ),
             "@uistore": path.resolve(__dirname, "src/redux/ui-slice"),
             "@dialogstore": path.resolve(__dirname, "src/redux/dialog-slice"),
+            "@store": path.resolve(__dirname, "src/redux"),
             "@invoicesstore": path.resolve(__dirname, "src/pages/vat/slice"),
             "@calcstore": path.resolve(__dirname, "src/pages/calculator/slice"),
             "@finestore": path.resolve(__dirname, "src/pages/fines/slice"),

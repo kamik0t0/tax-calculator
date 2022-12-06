@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { State } from "types/state";
+import { RootState } from "@store/store";
 
-const salaryTotalMonthSelector = (state: State) => {
+const salaryTotalMonthSelector = (state: RootState) => {
     const months = state.salarySlice.months;
     const arr: number[] = [];
     for (const month in months) {

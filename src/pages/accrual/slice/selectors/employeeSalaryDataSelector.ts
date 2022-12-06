@@ -1,10 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { State } from "types/state";
+import { RootState } from "@store/store";
 import { ISalary } from "../../exports/interfaces";
 
-const employeeSalaryData = (state: State) => {
+const employeeSalaryData = (state: RootState) => {
     const { months } = state.salarySlice;
-    const { id } = state.salarySlice.employee;
+    const { employeeId } = state.dialogSlice;
+    const id = state.employee.ids.find((id) => id === employeeId);
 
     const employeeSalaries: number[] = [];
     const cumSalary: number[] = [];

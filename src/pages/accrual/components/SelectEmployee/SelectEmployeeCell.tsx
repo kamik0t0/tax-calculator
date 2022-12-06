@@ -1,5 +1,6 @@
 import { SelectChangeEvent, TableCell, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { IEmployee } from "pages/accrual/types/salary";
 import React, { FC, useState } from "react";
 import EmployeeButtons from "./EmployeeButtons";
 import SelectEmployee from "./SelectEmployee";
@@ -8,7 +9,7 @@ const SelectEmployeeCell: FC<{
     children: string;
     index: number;
     employeeId: string;
-    selectItems: any[];
+    selectItems: IEmployee[];
     getSelectValue: (employeeId: string, index: number) => void;
 }> = React.memo(
     ({ children, index, employeeId, selectItems, getSelectValue }) => {

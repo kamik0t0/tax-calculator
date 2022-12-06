@@ -2,28 +2,32 @@ import { useSnack } from "@customhooks/useSnack";
 import { setIsDialogEmployee } from "@dialogstore/dialog-reducer";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import { nanoid } from "@reduxjs/toolkit";
-import {
-    addEmployee,
-    setEmployee,
-    updateCivilContract,
-    updateEmployee,
-} from "@salarystore/salary-reducer";
+import { updateEmployeesInSalaries } from "@salarystore/salary-reducer";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { IEmployee } from "../exports/types";
+import { useEmployeeActions } from "./useEmployeeActions";
+import { useEmployeeSelectors } from "./useEmployeeSelectors";
 
 export const useEmployeeDialog = () => {
     const dispatch = useTypedDispatch();
-    const { employee } = useTypedSelector((state) => state.salarySlice);
-    const [dialogEmployee, setEmployeeValues] = useState<IEmployee>(employee);
+    const { employeeId } = useTypedSelector((state) => state.dialogSlice);
+    const { selectEmployeeById, selectEmployees } = useEmployeeSelectors();
+    const { addEmployee, updateEmployee } = useEmployeeActions();
+    const employee = selectEmployeeById(employeeId || "");
+    const employees = selectEmployees();
+    const [dialogEmployee, setEmployeeValues] = useState<IEmployee>(() =>
+        employee !== undefined ? employee : ({} as IEmployee)
+    );
+
     const showSnack = useSnack();
 
     const handleClose = () => {
-        if (dialogEmployee.id.length > 0) {
-            dispatch(updateEmployee(dialogEmployee));
+        if (employee && employeeId) {
+            updateEmployee(employeeId, dialogEmployee);
+            dispatch(updateEmployeesInSalaries([employeeId], employees));
             showSnack("success", "Данные сотрудника успешно обновлены!");
             dispatch(setIsDialogEmployee(false));
-            dispatch(setEmployee(dialogEmployee));
         } else {
             if (
                 dialogEmployee.name.length === 0 ||
@@ -33,8 +37,7 @@ export const useEmployeeDialog = () => {
             const employee = Object.assign({}, dialogEmployee, {
                 id: nanoid(6),
             });
-
-            dispatch(addEmployee(employee as unknown as IEmployee));
+            addEmployee(employee);
             showSnack("success", "Сотрудник успешно добавлен!");
             dispatch(setIsDialogEmployee(false));
         }
@@ -74,7 +77,7 @@ export const useEmployeeDialog = () => {
             ...dialogEmployee,
             civilContract: event.target.checked,
         });
-        dispatch(updateCivilContract(event.target.checked, dialogEmployee.id));
+        employeeId && updateEmployee(employeeId, dialogEmployee);
     };
 
     return {
@@ -88,6 +91,6 @@ export const useEmployeeDialog = () => {
         handleCivilContract,
         handleSex,
         dialogEmployee,
-        employeeId: employee.id,
+        employeeId: employee?.id,
     };
 };

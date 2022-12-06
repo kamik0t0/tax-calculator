@@ -4,7 +4,3 @@ export { IEExpenses } from "../classes/IEExpenses";
 export { IEIncome } from "../classes/IEIncome";
 export { NDS } from "../classes/NDS";
 export { IncomeExpenses } from "../classes/IncomeExpenses";
-// export { LLCBasic } from "../classes/LLCBasic";
-// export { IEBasic } from "../classes/IEBasic";
-// export { LLCExpenses } from "../classes/LLCExpenses";
-// export { LLCIncome } from "../classes/LLCIncome";

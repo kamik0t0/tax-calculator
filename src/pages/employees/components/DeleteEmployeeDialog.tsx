@@ -1,3 +1,5 @@
+import { useSnack } from "@customhooks/useSnack";
+import { setIsDialogEmployeeDelete } from "@dialogstore/dialog-reducer";
 import { DialogTitle } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -6,21 +8,19 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import React, { FC } from "react";
-import { setIsDialogEmployeeDelete } from "@dialogstore/dialog-reducer";
-import { deleteEmployee } from "@salarystore/salary-reducer";
-import { useSnack } from "@customhooks/useSnack";
+import { useEmployeeActions } from "../hooks/useEmployeeActions";
 
 // TODO: придумать как вызывать диалог с разными children
 const DeleteEmployeeDialog: FC = () => {
     const dispatch = useTypedDispatch();
-    const { employee } = useTypedSelector((state) => state.salarySlice);
-    const { isDialogDeleteEmployee } = useTypedSelector(
+    const { employeeId, isDialogDeleteEmployee } = useTypedSelector(
         (state) => state.dialogSlice
     );
+    const { deleteEmployee } = useEmployeeActions();
     const showSnack = useSnack();
 
     const handleClose = () => {
-        dispatch(deleteEmployee(employee.id));
+        deleteEmployee(employeeId);
         showSnack("success", "Сотрудник удаден");
         dispatch(setIsDialogEmployeeDelete(false));
     };

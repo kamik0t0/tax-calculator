@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { useTypedSelector } from "@reduxhooks/hooks";
-import React, { FC } from "react";
+import React from "react";
 import {
     EmployeeBirth,
     EmployeeIsCivil,
@@ -16,7 +16,7 @@ import {
 import { useEmployeeDialog } from "../../exports/hooks";
 
 // TODO: придумать как вызывать диалог с разными children
-const FormDialog: FC = () => {
+const FormDialog = () => {
     const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
     const {
         handleClose,

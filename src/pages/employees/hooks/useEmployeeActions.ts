@@ -1,39 +1,21 @@
-import { useSnack } from "@customhooks/useSnack";
+import { store } from "@store/store";
 import {
-    setIsDialogEmployee,
-    setIsDialogEmployeeDelete,
-    setIsDialogReportEmployee,
-} from "@dialogstore/dialog-reducer";
-import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
-import { setEmployeeById } from "@salarystore/salary-reducer";
+    addEmployee as add,
+    updateEmployee as up,
+    deleteEmployee as del,
+} from "@employeestore/employee-reducer";
+import { IEmployee } from "../exports/types";
 
 export const useEmployeeActions = () => {
-    const dispatch = useTypedDispatch();
-    const showSnack = useSnack();
-    const { employee } = useTypedSelector((state) => state.salarySlice);
-    const openEmployee = () => {
-        dispatch(setEmployeeById(""));
-        dispatch(setIsDialogEmployee(true));
+    const addEmployee = (employee: IEmployee = {} as IEmployee) => {
+        store.dispatch(add(employee));
     };
-    const editEmployee = () => {
-        if (employee.id !== "") {
-            dispatch(setIsDialogEmployee(true));
-        } else showSnack("warning", "Сотрудник не выбран");
+    const updateEmployee = (id: string, employee: IEmployee) => {
+        store.dispatch(up({ id, changes: employee }));
     };
-    const deleteEmployeeHandler = () => {
-        if (employee.id !== "") {
-            dispatch(setIsDialogEmployeeDelete(true));
-        } else showSnack("warning", "Сотрудник не выбран");
+    const deleteEmployee = (id: string = "") => {
+        store.dispatch(del(id));
     };
-    const reportEmployeeHandler = () => {
-        if (employee.id !== "") {
-            dispatch(setIsDialogReportEmployee(true));
-        } else showSnack("warning", "Сотрудник не выбран");
-    };
-    return {
-        openEmployee,
-        editEmployee,
-        deleteEmployeeHandler,
-        reportEmployeeHandler,
-    };
+
+    return { addEmployee, deleteEmployee, updateEmployee };
 };

@@ -1,18 +1,17 @@
-import { timestampToNativeToLocaleString } from "@helpers/dateHelpers";
 import { Box, Typography } from "@mui/material";
 import { useTypedSelector } from "@reduxhooks/hooks";
-import React from "react";
+import React, { memo, useMemo } from "react";
+import { getBirth, getSex } from "../exports/utils";
+import { useEmployeeSelectors } from "../hooks/useEmployeeSelectors";
 
-const ShowEmployee: React.FC = () => {
-    const { employee } = useTypedSelector((state) => state.salarySlice);
-    const birth = employee.birth
-        ? timestampToNativeToLocaleString(employee.birth)
-        : "";
-    const sex = employee.sex
-        ? employee.sex === "male"
-            ? "Мужской"
-            : "Женский"
-        : "";
+const ShowEmployee: React.FC = memo(() => {
+    const { employeeId } = useTypedSelector((state) => state.dialogSlice);
+    const { selectEmployeeById } = useEmployeeSelectors();
+    const employee = selectEmployeeById(employeeId);
+
+    const birth = useMemo(() => getBirth(employee?.birth), [employee]);
+    const sex = useMemo(() => getSex(employee?.sex), [employee]);
+
     return (
         <Box
             sx={{
@@ -36,6 +35,6 @@ const ShowEmployee: React.FC = () => {
             )}
         </Box>
     );
-};
+});
 
 export default ShowEmployee;

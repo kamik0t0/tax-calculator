@@ -2,8 +2,9 @@ import { Box, Button } from "@mui/material";
 import React from "react";
 import { ISalary } from "../../exports/interfaces";
 import { useSalaryActions } from "../../exports/hooks";
+import { Months } from "../../exports/utils";
 
-const SalaryTableActions: React.FC<{ salary: ISalary[]; table: string }> = ({
+const SalaryTableActions: React.FC<{ salary: ISalary[]; table: Months }> = ({
     salary,
     table,
 }) => {

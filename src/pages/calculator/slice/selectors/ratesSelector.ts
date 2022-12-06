@@ -1,8 +1,8 @@
 import { toPercent } from "@helpers/toPercent";
 import { createSelector } from "@reduxjs/toolkit";
-import { State } from "types/state";
+import { RootState } from "@store/store";
 
-const ratesToPercent = (state: State) => {
+const ratesToPercent = (state: RootState) => {
     const { incomeRate, expensesRate, LLCIncomeRate } = state.calcSlice.rates;
     const incomeRatePercent = toPercent(incomeRate, 2);
     const expensesRatePercent = toPercent(expensesRate, 2);

@@ -1,5 +1,5 @@
 import { ISalaries } from "../exports/interfaces";
-import { BasicRates } from "../exports/utils";
+import { rates } from "../exports/utils";
 
 export const initialState: ISalaries = {
     months: {
@@ -112,18 +112,18 @@ export const initialState: ISalaries = {
             },
         },
     },
-    employees: [],
-    employee: {
-        id: "",
-        name: "",
-        surname: "",
-        position: "",
-        birth: 0,
-        sex: "",
-        patronymic: "",
-        civilContract: false,
-    },
-    rateCode: BasicRates.code as string,
+    // employees: [],
+    // employee: {
+    //     id: "",
+    //     name: "",
+    //     surname: "",
+    //     position: "",
+    //     birth: 0,
+    //     sex: "",
+    //     patronymic: "",
+    //     civilContract: false,
+    // },
+    rateCode: rates.basic,
     districtCoeff: 1,
     minimalSalary: 0,
 };

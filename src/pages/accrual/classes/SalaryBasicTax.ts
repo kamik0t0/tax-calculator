@@ -1,5 +1,5 @@
 import { SalaryTax } from "../exports/classes";
-import { ISalaries, ISalaryClass } from "../exports/interfaces";
+import { IEmployee, IMonths, ISalaryClass } from "../exports/interfaces";
 import { BasicRates, StaticRates } from "../utils/salaryConsts";
 
 /** 
@@ -12,12 +12,13 @@ export class SalaryBasicTax extends SalaryTax implements ISalaryClass {
     private readonly _socialRate: number;
 
     constructor(
-        state: ISalaries,
+        months: IMonths,
         salary: number,
         month: string,
-        index: number
+        index: number,
+        employees: IEmployee[]
     ) {
-        super(state, salary, month, index);
+        super(months, salary, month, index, employees);
         this._retireRate = BasicRates.retirement;
         this._socialRate = BasicRates.social;
         this._accidentRate = StaticRates.accident;

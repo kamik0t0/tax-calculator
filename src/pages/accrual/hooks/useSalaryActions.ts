@@ -4,13 +4,16 @@ import {
     fillByPrevMonth,
     setTaxStateRate as reCalculateAll,
 } from "@salarystore/salary-reducer";
+import { useEmployeeSelectors } from "../exports/hooks";
 import { ISalary } from "../exports/interfaces";
-import { months } from "../exports/utils";
+import { Months, months } from "../exports/utils";
 import { getPrevMonth } from "../scripts/getPrevMonth";
 
-export const useSalaryActions = (salary: ISalary[], table: string) => {
+export const useSalaryActions = (salary: ISalary[], table: Months) => {
     const dispatch = useTypedDispatch();
     const showSnack = useSnack();
+    const { selectEmployees } = useEmployeeSelectors();
+    const employees = selectEmployees();
 
     const slice = useTypedSelector((state) => state.salarySlice);
     const { rateCode } = useTypedSelector((state) => state.salarySlice);
@@ -33,7 +36,7 @@ export const useSalaryActions = (salary: ISalary[], table: string) => {
             return;
         }
         showSnack("info", "Взносы пересчитаны!");
-        dispatch(reCalculateAll(rateCode));
+        dispatch(reCalculateAll(rateCode, employees));
     };
 
     return [fillByPrevios, recalculate] as const;

@@ -4,13 +4,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
 import { setTaxStateRate } from "@salarystore/salary-reducer";
 import * as React from "react";
+import { useEmployeeSelectors } from "../exports/hooks";
+import { rates } from "../utils/salaryConsts";
 
 const SelectTaxRate: React.FC = React.memo(() => {
     const dispatch = useTypedDispatch();
     const { rateCode } = useTypedSelector((state) => state.salarySlice);
+    const { selectEmployees } = useEmployeeSelectors();
+    const employees = selectEmployees();
 
     const handleChange = (event: SelectChangeEvent) =>
-        dispatch(setTaxStateRate(event.target.value));
+        dispatch(setTaxStateRate(event.target.value as rates, employees));
 
     return (
         <Box

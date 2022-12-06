@@ -1,4 +1,5 @@
 import { Stack } from "@mui/material";
+import { Months } from "../../exports/utils";
 import React, { FC, memo } from "react";
 import {
     SalaryTableActions,
@@ -10,7 +11,7 @@ import { ISalary, ISalarySummary } from "../../exports/interfaces";
 const SalaryTable: FC<{
     salary: ISalary[];
     summary: ISalarySummary;
-    table: string;
+    table: Months;
 }> = memo(({ salary, summary, table }) => {
     return (
         <Stack spacing={2}>

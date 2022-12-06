@@ -13,20 +13,21 @@ import {
 } from "../exports/components";
 import { IEHeaders, LLCHeaders } from "../exports/utils";
 
-export const [useCalcReports, CalcReportsProvider] = CustomContext<{
-    isIncomeIEDialog: boolean;
-    isIncomeLLCDialog: boolean;
-    isExpensesIEDialog: boolean;
-    isExpensesLLCDialog: boolean;
-    isBasicIEDialog: boolean;
-    isBasicLLCDialog: boolean;
-    toggleIncomeIEDialog: () => void;
-    toggleIncomeLLCDialog: () => void;
-    toggleExpensesIEDialog: () => void;
-    toggleExpensesLLCDialog: () => void;
-    toggleBasicIEDialog: () => void;
-    toggleBasicLLCDialog: () => void;
-}>();
+export const [useCalcReports, CalcReportsProvider] =
+    CustomContext<{
+        isIncomeIEDialog: boolean;
+        isIncomeLLCDialog: boolean;
+        isExpensesIEDialog: boolean;
+        isExpensesLLCDialog: boolean;
+        isBasicIEDialog: boolean;
+        isBasicLLCDialog: boolean;
+        toggleIncomeIEDialog: () => void;
+        toggleIncomeLLCDialog: () => void;
+        toggleExpensesIEDialog: () => void;
+        toggleExpensesLLCDialog: () => void;
+        toggleBasicIEDialog: () => void;
+        toggleBasicLLCDialog: () => void;
+    }>();
 
 const CalcDataOutput: React.FC = () => {
     const [isIncomeIEDialog, toggleIncomeIEDialog] = useToggle(false);

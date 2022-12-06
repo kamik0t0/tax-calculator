@@ -1,5 +1,10 @@
 import { SalaryTax } from "../exports/classes";
-import { ISalaries, ISalaryClass } from "../exports/interfaces";
+import {
+    IEmployee,
+    IMonths,
+    ISalaries,
+    ISalaryClass,
+} from "../exports/interfaces";
 import { BasicRates, BusinessRates, StaticRates } from "../utils/salaryConsts";
 /** 
     Содержит свойства и реализует методы расчета страховых взносов по коду тарифа 20 - малый бизнес
@@ -14,12 +19,13 @@ export class SalaryBusinessTax extends SalaryTax implements ISalaryClass {
     private readonly _accidentRate: number;
 
     constructor(
-        state: ISalaries,
+        months: IMonths,
         salary: number,
         month: string,
-        index: number
+        index: number,
+        employees: IEmployee[]
     ) {
-        super(state, salary, month, index);
+        super(months, salary, month, index, employees);
 
         this._retireBusinessRate = BusinessRates.retirement;
         this._medicalBusinessRate = BusinessRates.medical;

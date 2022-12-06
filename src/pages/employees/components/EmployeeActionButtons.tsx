@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { useEmployeeActions } from "../exports/hooks";
+import { useEmployeeDialogActions } from "../exports/hooks";
 import React from "react";
 
 const EmployeeActionButtons: React.FC = (props) => {
@@ -8,7 +8,7 @@ const EmployeeActionButtons: React.FC = (props) => {
         editEmployee,
         deleteEmployeeHandler,
         reportEmployeeHandler,
-    } = useEmployeeActions();
+    } = useEmployeeDialogActions();
     return (
         <Box
             sx={{

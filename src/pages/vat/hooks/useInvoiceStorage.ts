@@ -8,6 +8,7 @@ export const useInvoiceStorage = (): IInvoiceStorage => {
     const { sales, purches, recieved, issued } = useTypedSelector(
         (state) => state.invoiceSlice
     );
+
     const watchedSales = useLocalStorage(
         Invoices.Sale,
         sales,
@@ -34,10 +35,10 @@ export const useInvoiceStorage = (): IInvoiceStorage => {
         calcSummary
     );
     const storage: IInvoiceStorage = {
-        sales: watchedSales || sales,
-        purches: watchedPurches || purches,
-        recieved: watchedRecieved || recieved,
-        issued: watchedIssued || issued,
+        sales: watchedSales,
+        purches: watchedPurches,
+        recieved: watchedRecieved,
+        issued: watchedIssued,
     };
     return storage;
 };

@@ -4,7 +4,7 @@ import { employeeType, IEmployee, ISalary } from "../exports/interfaces";
  * @function
  * @name salaryEmployeeUpdate
  * @description If employees updated - update employees in salaries
- * @returns {employeeType[]} employeeType[]
+ * @returns {IEmployee[]} employeeType[]
  */
 export const salaryEmployeeUpdate = (
     employees: Pick<IEmployee, "id" | "name" | "surname">[],

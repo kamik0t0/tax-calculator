@@ -21,17 +21,18 @@ import {
 import { useEmployees } from "../../exports/hooks";
 import { ISalary } from "../../exports/interfaces";
 import { useSalaryData } from "../../exports/hooks";
+import { Months } from "../../../../pages/accrual/exports/utils";
 
 const TableContent: FC<{
     salary: ISalary[];
-    table: string;
+    table: Months;
 }> = React.memo(({ salary, table }) => {
     const dispatch = useTypedDispatch();
     const deleteRow = (index: number) => {
         dispatch(deleteTableRow(index, table));
     };
     const getInputData = useSalaryData(salary, table);
-    // select
+    // TODO: Context
     const [getSelectValue, filteredEmployees] = useEmployees(table);
 
     return (

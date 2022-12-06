@@ -10,17 +10,19 @@ import { BrowserRouter } from "react-router-dom";
 import { CustomDrawer, EmployeeDialog, SnackBars } from "./components/index";
 import { ISalaryStorage } from "./pages/accrual/exports/interfaces";
 import { useSalaryStorage } from "./pages/accrual/hooks/useSalaryStorage";
-import { useEmployeeStorage } from "./pages/accrual/hooks/useEmployeeStorage";
+import { useEmployeeStorage } from "./pages/employees/hooks/useEmployeeStorage";
 import { IInvoiceStorage } from "./pages/vat/exports/interfaces";
 import { useInvoiceStorage } from "./pages/vat/hooks/useInvoiceStorage";
+import { IEmployee } from "./pages/accrual/types/salary";
 
-export const [useColorModeContext, ColorProvider] = CustomContext<{
-    toggleColorMode: () => void;
-}>();
+export const [useColorModeContext, ColorProvider] =
+    CustomContext<{
+        toggleColorMode: () => void;
+    }>();
 export const [useSalaryStorageSelector, SalaryStorageProvider] =
     CustomContext<ISalaryStorage>();
 export const [useEmployeeStorageSelector, EmployeeStorageProvider] =
-    CustomContext<IEmployeeStorage>();
+    CustomContext<IEmployee[]>();
 export const [useInvoiceStorageSelector, InvoiceStorageProvider] =
     CustomContext<IInvoiceStorage>();
 

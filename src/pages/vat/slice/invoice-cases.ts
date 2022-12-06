@@ -9,7 +9,6 @@ export const updateInvoicesReducer = () => ({
     ) {
         const { table } = action.meta;
         state[table] = action.payload;
-        console.log(action.payload);
     },
     prepare(payload: IInvoice[], table: string) {
         return { payload, meta: { table } };
