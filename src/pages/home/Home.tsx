@@ -7,7 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Container, Link, useTheme } from "@mui/material";
 import PolyButton from "@sharedcomponents/PolyButton";
 
-export default function SimpleAccordion() {
+export function Home() {
     const theme = useTheme();
     const headersTextColor =
         theme.palette.mode === "dark" ? { color: "snow" } : { color: "black" };

@@ -7,4 +7,6 @@
 # production
 /build
 /Задачи
-
+/test-results/
+/playwright-report/
+/playwright/.cache/

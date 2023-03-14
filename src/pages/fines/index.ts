@@ -1,1 +1,1 @@
-export { default } from "./components/Fines";
+export { Fines as default } from "./components/Fines";

@@ -1,1 +1,1 @@
-export { default } from "./dividends";
+export { Dividends as default } from "./dividends";

@@ -1,13 +1,24 @@
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DatePicker from "@sharedcomponents/DatePicker";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { getDesignTokens } from "@themes/themes";
 import React from "react";
 
+const light = createTheme(getDesignTokens("light"));
+
 export default {
-    title: "Shared/DatePicker/DatePickerDark",
+    title: "Shared/DatePicker/DatePickerLight",
     component: DatePicker,
+    decorators: [
+        (Story) => <ThemeProvider theme={light}>{<Story />}</ThemeProvider>,
+    ],
     parameters: {
         backgrounds: {
-            default: "dark",
+            default: "light",
+            values: [
+                { name: "dark", value: "#1E1E1E" },
+                { name: "light", value: "#F8F8F8" },
+            ],
         },
     },
     argTypes: {
@@ -38,21 +49,3 @@ Primary.args = {
     value: "2022-11-30",
     error: false,
 };
-
-// export const usablePrimary: React.FC = () => {
-//     const [date, setDate] = useState<string>("2022-11-28");
-//     const [error, setError] = useState<boolean>(false);
-
-//     const onChange = (date: Dayjs | null) => {
-//         if (date?.format() === "Invalid Date" || date?.format() === undefined) {
-//             setError(true);
-//             return;
-//         }
-//         const parsedDate = date && Date.parse(date.format());
-//         if (parsedDate) {
-//             setDate(date.format());
-//             setError(false);
-//         }
-//     };
-//     return <DatePicker value={date} error={error} onChange={onChange} />;
-// };

@@ -1,1 +1,1 @@
-export { default } from "./components/Employees";
+export { Employees as default } from "./components/Employees";

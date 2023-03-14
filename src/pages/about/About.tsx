@@ -11,7 +11,7 @@ import { Container } from "@mui/system";
 import * as React from "react";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 
-const About: React.FC = () => {
+export const About: React.FC = () => {
     const theme = useTheme();
     const headersTextColor =
         theme.palette.mode === "dark" ? { color: "snow" } : { color: "black" };
@@ -30,7 +30,7 @@ const About: React.FC = () => {
                                 <ArrowRight />
                             </ListItemIcon>
                             <Typography>
-                                Создать стабильно работающий FrontEnd проект
+                                Создать стабильно работающий front-end проект
                             </Typography>
                         </ListItem>
                         <ListItem>
@@ -78,7 +78,8 @@ const About: React.FC = () => {
                                 <ArrowRight />
                             </ListItemIcon>
                             <Typography>
-                                Менеджер состояний ReduxToolKit
+                                Менеджер состояний ReduxToolKit, в т.ч. Entity
+                                adapter, reselect
                             </Typography>
                         </ListItem>
                         <ListItem>
@@ -105,6 +106,29 @@ const About: React.FC = () => {
                                 Компилятор Babel для React TypeScript
                             </Typography>
                         </ListItem>
+                        <ListItem>
+                            <ListItemIcon>
+                                <ArrowRight />
+                            </ListItemIcon>
+                            <Typography>
+                                Разделение кода с React.lazy и динамические
+                                импорты
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemIcon>
+                                <ArrowRight />
+                            </ListItemIcon>
+                            <Typography>
+                                Тестирование с Jest и React Testing Library
+                            </Typography>
+                        </ListItem>
+                        <ListItem>
+                            <ListItemIcon>
+                                <ArrowRight />
+                            </ListItemIcon>
+                            <Typography>Storybook</Typography>
+                        </ListItem>
                     </List>
                 </Box>
             </Typography>
@@ -123,5 +147,3 @@ const About: React.FC = () => {
         </Container>
     );
 };
-
-export default About;

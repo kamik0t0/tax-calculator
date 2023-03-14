@@ -10,7 +10,7 @@ import {
     UserInputData,
 } from "./exports/components";
 
-const Calculator: React.FC = () => {
+export const Calculator: React.FC = () => {
     const [isDialog, toggleDialog] = useToggle(false);
     const [headersTextColor] = useFontHeaders();
 
@@ -61,5 +61,3 @@ const Calculator: React.FC = () => {
         </>
     );
 };
-
-export default Calculator;

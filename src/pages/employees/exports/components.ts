@@ -1,6 +1,6 @@
-export { default as EmployeeReportDialog } from "../components/EmployeeReportDialog";
-export { default as DeleteEmployeeDialog } from "../components/DeleteEmployeeDialog";
-export { default as EmployeeDialog } from "../components/EmployeeDialog/EmployeeDialog";
+// export { default as EmployeeReportDialog } from "../components/EmployeeReportDialog";
+// export { default as DeleteEmployeeDialog } from "../components/DeleteEmployeeDialog";
+// export { default as EmployeeDialog } from "../components/EmployeeDialog/EmployeeDialog";
 export { default as ReportHeader } from "../components/ReportHeader";
 export { default as ReportHeaderColsWrapper } from "../components/ReportHeaderCol";
 export { default as ReportBody } from "../components/ReportBody";

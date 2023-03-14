@@ -2,7 +2,7 @@ import { Box, Container, Stack, TextField } from "@mui/material";
 import Summary from "@sharedcomponents/Summary";
 import React, { useState } from "react";
 
-const Dividends: React.FC = () => {
+export const Dividends: React.FC = () => {
     const [dividendsByAccrual, setDividendsByAccrual] = useState({
         pit: 0,
         pay: 0,
@@ -94,5 +94,3 @@ const Dividends: React.FC = () => {
         </Container>
     );
 };
-
-export default Dividends;

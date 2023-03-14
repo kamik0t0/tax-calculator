@@ -29,10 +29,12 @@ export class calcSalaryTaxes {
             index,
             this.employees,
         ] as const;
+
         const map = new Map<
             string,
             SalaryBasicTax | SalaryItTax | SalaryBusinessTax
         >();
+
         map.set(rates.basic, new SalaryBasicTax(...props))
             .set(rates.it, new SalaryItTax(...props))
             .set(rates.business, new SalaryBusinessTax(...props));

@@ -28,12 +28,14 @@ const TableHeader: FC<{
     return (
         <TableHead>
             <TableRow>
-                <TableCell variant="head" width={30}>
-                    <Box sx={{ ml: 2 }}>
+                <TableCell variant="head" width={50}>
+                    <Box>
                         {sortOrder ? (
-                            <ArrowDownwardSharpIcon sx={{ height: 15 }} />
+                            <ArrowDownwardSharpIcon
+                                sx={{ height: 15, ml: 1 }}
+                            />
                         ) : (
-                            <ArrowUpwardIcon sx={{ height: 15 }} />
+                            <ArrowUpwardIcon sx={{ height: 15, ml: 1 }} />
                         )}
                     </Box>
                 </TableCell>
@@ -58,7 +60,7 @@ const TableHeader: FC<{
                 </TableCell>
                 <TableCell
                     variant="head"
-                    width={230}
+                    width={240}
                     sx={{ "&:hover": { cursor: "pointer" } }}
                     onClick={sortByString}
                     align="center"

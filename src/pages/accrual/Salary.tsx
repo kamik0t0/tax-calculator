@@ -13,7 +13,7 @@ import { ISalaryStorage } from "./exports/interfaces";
 import { salaryEmployeeDelete, salaryEmployeeUpdate } from "./exports/scripts";
 import { Months, MonthsDisplay } from "./exports/utils";
 
-const Salary: FC = () => {
+export const Salary: FC = () => {
     const dispatch = useTypedDispatch();
     const { months } = useTypedSelector((state) => state.salarySlice);
     const { selectEmployees, selectIds } = useEmployeeSelectors();
@@ -165,5 +165,3 @@ const Salary: FC = () => {
         </>
     );
 };
-
-export default Salary;

@@ -1,13 +1,11 @@
 import { CustomContext } from "@customhooks/customContext";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useTypedSelector } from "@reduxhooks/hooks";
 import AppRouter from "@router/AppRouter";
 import { getDesignTokens } from "@themes/themes";
-import { IEmployeeStorage } from "pages/accrual/types/salary";
 import React, { useMemo, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { CustomDrawer, EmployeeDialog, SnackBars } from "./components/index";
+import { CustomDrawer, SnackBars } from "./components/index";
 import { ISalaryStorage } from "./pages/accrual/exports/interfaces";
 import { useSalaryStorage } from "./pages/accrual/hooks/useSalaryStorage";
 import { useEmployeeStorage } from "./pages/employees/hooks/useEmployeeStorage";
@@ -27,7 +25,6 @@ export const [useInvoiceStorageSelector, InvoiceStorageProvider] =
     CustomContext<IInvoiceStorage>();
 
 const App: React.FC = () => {
-    const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
     const [mode, setMode] = useState<PaletteMode>("dark");
     const colorMode = useMemo(
         () => ({
@@ -39,6 +36,7 @@ const App: React.FC = () => {
         }),
         []
     );
+
     // Update the theme only if the mode changes
     const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
     // Работа с LocalStorage
@@ -59,7 +57,6 @@ const App: React.FC = () => {
                             </InvoiceStorageProvider>
                         </EmployeeStorageProvider>
                     </SalaryStorageProvider>
-                    {isDialogEmployee && <EmployeeDialog />}
                 </ThemeProvider>
             </ColorProvider>
         </BrowserRouter>

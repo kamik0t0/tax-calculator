@@ -14,7 +14,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import { Container } from "@mui/material";
 import React from "react";
 
-const Contacts: React.FC = (props) => {
+export const Contacts: React.FC = (props) => {
     const theme = useTheme();
     const headersTextColor =
         theme.palette.mode === "dark" ? { color: "snow" } : { color: "black" };
@@ -74,5 +74,3 @@ const Contacts: React.FC = (props) => {
         </Container>
     );
 };
-
-export default Contacts;

@@ -16,7 +16,7 @@ import {
 import { useEmployeeDialog } from "../../exports/hooks";
 
 // TODO: придумать как вызывать диалог с разными children
-const FormDialog = () => {
+const FormDialog: React.FC = () => {
     const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
     const {
         handleClose,

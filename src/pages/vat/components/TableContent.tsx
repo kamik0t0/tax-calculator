@@ -33,7 +33,6 @@ const TableContent: FC<{
                                 onChange={() =>
                                     dispatch(setCheckBox(index, table))
                                 }
-                                sx={{ ml: 1 }}
                             />
                         </TableCell>
                         <InputCell

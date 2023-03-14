@@ -1,4 +1,4 @@
-export { default } from "../Invoices";
+export { InvoiceTable as default } from "../Invoices";
 
 export { default as Filter } from "../components/Filter";
 export { default as FilterSelect } from "../components/FilterSelect";

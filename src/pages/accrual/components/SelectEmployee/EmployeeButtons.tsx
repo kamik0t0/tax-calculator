@@ -3,8 +3,8 @@ import {
     setIsDialogEmployee,
 } from "@dialogstore/dialog-reducer";
 import { Icon, IconButton } from "@mui/material";
-import { useTypedDispatch } from "@reduxhooks/hooks";
-import React from "react";
+import { useTypedDispatch, useTypedSelector } from "@reduxhooks/hooks";
+import React, { useState } from "react";
 import { useEmployeeSelectors } from "../../exports/hooks";
 
 const EmployeeButtons: React.FC<{
@@ -12,12 +12,20 @@ const EmployeeButtons: React.FC<{
     handleSwitchInput: () => void;
 }> = ({ employeeId, handleSwitchInput }) => {
     const { selectEmployeeById } = useEmployeeSelectors();
+    const { isDialogEmployee } = useTypedSelector((state) => state.dialogSlice);
+    const [ModalComponent, setModalComponent] = useState<React.FC | null>(null);
+
     const employee = selectEmployeeById(employeeId);
 
     const dispatch = useTypedDispatch();
-    const openDialog = () => {
+
+    const openDialog = async () => {
+        const { default: EmployeeDialog } = await import(
+            "../../../employees/components/EmployeeDialog/EmployeeDialog"
+        );
         dispatch(setEmployeeId(employee?.id || ""));
         dispatch(setIsDialogEmployee(true));
+        setModalComponent(() => EmployeeDialog);
     };
 
     return (
@@ -55,6 +63,7 @@ const EmployeeButtons: React.FC<{
                     check_circle
                 </Icon>
             </IconButton>
+            {isDialogEmployee && ModalComponent ? <ModalComponent /> : null}
         </>
     );
 };

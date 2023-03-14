@@ -1,19 +1,12 @@
 import { Container, Divider } from "@mui/material";
-import { useTypedSelector } from "@reduxhooks/hooks";
-import React from "react";
+import React, { FC } from "react";
 import {
-    DeleteEmployeeDialog,
     EmployeeActionButtons,
-    EmployeeDialog,
-    EmployeeReportDialog,
     EmployeesList,
     ShowEmployee,
 } from "../exports/components";
 
-const Employees: React.FC = () => {
-    const { isDialogDeleteEmployee, isDialogEmployee, isDialogReportEmployee } =
-        useTypedSelector((state) => state.dialogSlice);
-
+export const Employees: FC = () => {
     return (
         <>
             <Container
@@ -36,11 +29,6 @@ const Employees: React.FC = () => {
                 />
                 <EmployeeActionButtons />
             </Container>
-            {isDialogDeleteEmployee && <DeleteEmployeeDialog />}
-            {isDialogEmployee && <EmployeeDialog />}
-            {isDialogReportEmployee && <EmployeeReportDialog />}
         </>
     );
 };
-
-export default Employees;

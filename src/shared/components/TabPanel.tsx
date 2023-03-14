@@ -7,9 +7,7 @@ interface TabPanelProps {
     value: number;
 }
 
-const TabPanel: FC<TabPanelProps> = (props: TabPanelProps) => {
-    const { children, value, index, ...other } = props;
-
+const TabPanel: FC<TabPanelProps> = ({ children, value, index, ...other }) => {
     return (
         <div
             role="tabpanel"

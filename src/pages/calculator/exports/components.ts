@@ -1,5 +1,5 @@
 // outer world component
-export { default } from "../Calculator";
+export { Calculator as default } from "../Calculator";
 // related components
 export { default as NumberField } from "../../../shared/components/NumberField";
 export { default as Rate } from "../components/Rate";

@@ -3,11 +3,15 @@ import { TableCell, Typography } from "@mui/material";
 import DatePicker from "@sharedcomponents/DatePicker";
 import { Dayjs } from "dayjs";
 import React, { FC, useMemo, useState } from "react";
+import { ISnackBar } from "types/snackBar";
 
 const DateCell: FC<{
     children: number;
     index: number;
-    getDate: (date: number, index: number) => any;
+    getDate: (
+        date: number,
+        index: number
+    ) => { payload: ISnackBar; type: string } | undefined;
     width?: number;
 }> = ({ children, index, getDate, width = 150 }) => {
     const [input, setInput] = useState<boolean>(false);

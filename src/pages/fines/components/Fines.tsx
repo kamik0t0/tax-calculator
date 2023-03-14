@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import React from "react";
 import { FinesContent, Info, FinesHeader } from "../exports/components";
 
-const Fines: React.FC = (props) => {
+export const Fines: React.FC = (props) => {
     return (
         <>
             <Container
@@ -27,5 +27,3 @@ const Fines: React.FC = (props) => {
         </>
     );
 };
-
-export default Fines;

@@ -38,7 +38,8 @@ const createRuleWithPreset = (ext, rule) => {
 };
 
 // наименования файлов в зависимости от сборки
-const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
+const filename = (ext) =>
+    isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 module.exports = {
     context: path.resolve(__dirname, "src"),

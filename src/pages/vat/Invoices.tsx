@@ -10,7 +10,7 @@ import {
     InvoicesTabs,
 } from "./exports/utils";
 
-const InvoiceTable: FC = () => {
+export const InvoiceTable: FC = () => {
     const { summary } = useTypedSelector((state) => state.invoiceSlice);
     const { sales, purches, recieved, issued } = useInvoiceStorageSelector();
     const [value, setValue] = useState(0);
@@ -67,5 +67,3 @@ const InvoiceTable: FC = () => {
         </>
     );
 };
-
-export default InvoiceTable;
